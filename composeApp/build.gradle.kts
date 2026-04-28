@@ -12,7 +12,6 @@ plugins {
 }
 
 detekt {
-
     buildUponDefaultConfig = true
     allRules = false
     ignoreFailures = true
@@ -28,7 +27,7 @@ detekt {
 }
 
 tasks.withType<Detekt>().configureEach {
-    jvmTarget = JvmTarget.JVM_17.target
+    jvmTarget = JvmTarget.JVM_11.target
 
     reports {
         html.required.set(true)
@@ -40,7 +39,7 @@ tasks.withType<Detekt>().configureEach {
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
@@ -93,8 +92,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
