@@ -1,3 +1,4 @@
+import dev.detekt.gradle.Detekt
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -7,6 +8,32 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+    alias(libs.plugins.detekt)
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    ignoreFailures = true
+    autoCorrect = false
+
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+
+    source.setFrom(
+        "src/commonMain/kotlin",
+        "src/androidMain/kotlin",
+        "src/jvmMain/kotlin"
+    )
+}
+
+tasks.withType<Detekt>().configureEach {
+    jvmTarget = JvmTarget.JVM_11.target
+
+    reports {
+        html.required.set(true)
+        markdown.required.set(true)
+        sarif.required.set(true)
+    }
 }
 
 kotlin {
@@ -15,9 +42,9 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     jvm()
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
@@ -72,6 +99,7 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+    detektPlugins(libs.detekt.compose.rules)
 }
 
 compose.desktop {
