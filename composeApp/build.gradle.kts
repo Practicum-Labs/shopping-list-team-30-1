@@ -64,7 +64,7 @@ kotlin {
             implementation(libs.compose.ui)
 
             implementation(libs.room.runtime)
-            implementation(libs.room.ktx)
+            implementation(libs.sqlite.bundled.lib)
 
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -91,6 +91,7 @@ kotlin {
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.ktor.client.okhttp)
         }
     }
 }
@@ -125,13 +126,15 @@ android {
 dependencies {
     // Room KSP
     add("kspAndroid", libs.room.compiler)
+    add("kspJvm", libs.room.compiler)
 
     // Ktor
     add("kspCommonMainMetadata", libs.ktorfit.ksp)
+    add("kspAndroid", libs.ktorfit.ksp)
+    add("kspJvm", libs.ktorfit.ksp)
 
     // Compose debug tools
     debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.uiTooling)
     detektPlugins(libs.detekt.compose.rules)
 }
 
