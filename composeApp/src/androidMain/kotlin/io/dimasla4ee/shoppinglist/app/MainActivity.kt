@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist
+package io.dimasla4ee.shoppinglist.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
