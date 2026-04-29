@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist
+package io.dimasla4ee.shoppinglist.app
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
