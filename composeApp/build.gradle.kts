@@ -28,20 +28,16 @@ kotlin {
 
             implementation(libs.ktor.client.okhttp)
 
-            implementation(libs.room.runtime)
-            implementation(libs.room.ktx)
-
             implementation(libs.koin.android)
-
-            implementation(libs.coil.compose)
-            implementation(libs.coil.network)
-            implementation(libs.coil.svg)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
+
+            implementation(libs.room.runtime)
+            implementation(libs.room.ktx)
 
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -53,10 +49,15 @@ kotlin {
 
             implementation(libs.kotlinx.coroutines)
 
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+
             implementation(libs.compose.components.resources)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.ktorfit)
         }
         commonTest.dependencies {
             implementation(libs.junit)
@@ -97,6 +98,9 @@ android {
 dependencies {
     // Room KSP
     add("kspAndroid", libs.room.compiler)
+
+    // Ktor
+    add("kspCommonMainMetadata", libs.ktorfit.ksp)
 
     // Compose debug tools
     debugImplementation(libs.compose.ui.tooling)
