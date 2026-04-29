@@ -45,7 +45,7 @@
         <item name="liter">l</item>
         <item name="milliliter">ml</item>
         <item name="packaging">pkg</item>
-        <item name="pack">pac </item>
+        <item name="pack">pk</item>
         <item name="piece">pc</item>
         <item name="kilogram">kg</item>
         <item name="gram">g</item>
@@ -59,6 +59,10 @@
         <item name="square_meter">m²</item>
         <item name="square_centimetre">cm²</item>
         <item name="square_millimetre">mm²</item>
+        <item name="cubic_meter">m³</item>
+        <item name="cubic_decimeter">dm³</item>
+        <item name="cubic_centimetre">cm³</item>
+        <item name="cubic_millimetre">mm³</item>
     </string-array>
 
     <!-- Bottom menu -->
