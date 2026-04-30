@@ -111,6 +111,7 @@ complexity:
     allowedLines: 350
   LongMethod:
     active: true
+    ignoreAnnotated: [ 'Composable' ]
     allowedLines: 50
   LongParameterList:
     active: true
@@ -374,7 +375,7 @@ naming:
   PackageNaming:
     active: true
     aliases: ['PackageName']
-    packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9]*)*'
+    packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9_]*)*'
   TopLevelPropertyNaming:
     active: true
     constantPattern: '[A-Z][_A-Z0-9]*'
