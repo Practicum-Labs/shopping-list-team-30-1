@@ -4,6 +4,7 @@ import androidx.compose.material3.IconButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
+@Suppress("MagicNumber")
 object AppIconButtonDefaults {
     @Composable
     fun iconActionColors(
