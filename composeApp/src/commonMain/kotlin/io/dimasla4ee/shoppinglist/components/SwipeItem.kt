@@ -1,45 +1,40 @@
 package io.dimasla4ee.shoppinglist.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_copy_24
@@ -48,52 +43,55 @@ import shoppinglist.composeapp.generated.resources.ic_docs_add_24
 import shoppinglist.composeapp.generated.resources.ic_edit_24
 import shoppinglist.composeapp.generated.resources.ic_shopping_cart_24
 
-data class ShoppingListItem(
-    val name: String,
-    val iconRes: DrawableResource
-)
-
+sealed interface ShoppingListItemEvent {
+    data class Click(val item: ShoppingListItem) : ShoppingListItemEvent
+    data class Edit(val item: ShoppingListItem) : ShoppingListItemEvent
+    data class Copy(val item: ShoppingListItem) : ShoppingListItemEvent
+    data class ChangeIcon(val item: ShoppingListItem) : ShoppingListItemEvent
+    data class Delete(val item: ShoppingListItem) : ShoppingListItemEvent
+}
 
 @Composable
 fun SwipeItem(
     listItem: ShoppingListItem,
-    modifier: Modifier = Modifier
+    onEvent: (ShoppingListItemEvent) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val swipeableState = rememberSwipeToDismissBoxState()
     val scope = rememberCoroutineScope()
-    val log by remember {
-        derivedStateOf {
-            "settledValue: ${swipeableState.settledValue}\ntargetValue: ${swipeableState.targetValue}\ndismissDirection: ${swipeableState.dismissDirection}\nprogress: ${swipeableState.progress}"
-        }
+    val swipeState = rememberSwipeToDismissBoxState()
+    val isStartToEnd = swipeState.dismissDirection == SwipeToDismissBoxValue.StartToEnd
+    val backgroundColor = if (isStartToEnd) Color.Transparent else Color(0xFFFF6969)
+    val horizontalArrangement = if (isStartToEnd) Arrangement.spacedBy(8.dp) else Arrangement.End
+    val closeMenuAndFireEvent: (ShoppingListItemEvent) -> Unit = { event ->
+        onEvent(event)
+        scope.launch { swipeState.reset() }
     }
-
-
-
-    val (color, arrangement) = if (swipeableState.dismissDirection == SwipeToDismissBoxValue.StartToEnd) {
-        Color.Transparent to Arrangement.spacedBy(8.dp)
-    } else {
-        Color(0xFFFF6969) to Arrangement.End
-    }
-    Text(log)
 
     SwipeToDismissBox(
-        state = swipeableState,
+        state = swipeState,
+        onDismiss = { state ->
+            if (state == SwipeToDismissBoxValue.EndToStart) onEvent(
+                ShoppingListItemEvent.Delete(listItem)
+            )
+        },
         backgroundContent = {
             Surface(
                 modifier = modifier.wrapContentSize(),
                 shape = RoundedCornerShape(12.dp),
-                color = color
+                color = backgroundColor
             ) {
                 Row(
                     modifier = Modifier.fillMaxSize(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = arrangement
+                    horizontalArrangement = horizontalArrangement
                 ) {
-                    when (swipeableState.dismissDirection) {
+                    when (swipeState.dismissDirection) {
                         SwipeToDismissBoxValue.StartToEnd -> Actions(
-                            { scope.launch { swipeableState.reset() } },
-                            { scope.launch { swipeableState.reset() } },
-                            { scope.launch { swipeableState.reset() } }
+                            onEdit = { closeMenuAndFireEvent(ShoppingListItemEvent.Edit(listItem)) },
+                            onCopy = { closeMenuAndFireEvent(ShoppingListItemEvent.Copy(listItem)) },
+                            onIconChange = {
+                                closeMenuAndFireEvent(ShoppingListItemEvent.ChangeIcon(listItem))
+                            }
                         )
 
                         SwipeToDismissBoxValue.EndToStart -> {
@@ -114,19 +112,12 @@ fun SwipeItem(
         Card(
             modifier = modifier
                 .fillMaxWidth()
+                .defaultMinSize(minHeight = 56.dp)
                 .wrapContentHeight(),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            onClick = {
-                if (swipeableState.settledValue == SwipeToDismissBoxValue.StartToEnd) {
-                    scope.launch {
-                        swipeableState.reset()
-                    }
-                } else {
-                    //TODO navigate
-                }
-            }
+            onClick = { onEvent(ShoppingListItemEvent.Click(listItem)) }
         ) {
             ItemContent(listItem)
         }
@@ -135,34 +126,13 @@ fun SwipeItem(
 
 @Composable
 private fun Actions(
-    onEditAction: () -> Unit,
-    onCopyAction: () -> Unit,
-    onIconAction: () -> Unit
+    onEdit: () -> Unit,
+    onCopy: () -> Unit,
+    onIconChange: () -> Unit
 ) {
-    IconAction(Res.drawable.ic_edit_24) { onEditAction() }
-    IconAction(Res.drawable.ic_copy_24) { onCopyAction() }
-    IconAction(Res.drawable.ic_docs_add_24) { onIconAction() }
-}
-
-@Composable
-private fun IconAction(
-    res: DrawableResource,
-    contentDescription: String? = null,
-    onClick: () -> Unit
-) {
-    IconButton(
-        colors = IconButtonDefaults.filledIconButtonColors(
-            containerColor = Color(0xFFEEE0D5)
-        ),
-        onClick = {
-            onClick()
-        }
-    ) {
-        Icon(
-            painter = painterResource(res),
-            contentDescription = contentDescription
-        )
-    }
+    IconAction(Res.drawable.ic_edit_24) { onEdit() }
+    IconAction(Res.drawable.ic_copy_24) { onCopy() }
+    IconAction(Res.drawable.ic_docs_add_24) { onIconChange() }
 }
 
 @Composable
@@ -176,18 +146,10 @@ private fun ItemContent(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFFEDDBD)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(listItem.iconRes),
-                contentDescription = null
-            )
-        }
+        IconAction(
+            iconRes = listItem.iconRes,
+            contentDescription = null
+        )
         Text(listItem.name)
     }
 }
@@ -195,16 +157,69 @@ private fun ItemContent(
 @Preview
 @PreviewLightDark
 @Composable
-private fun SwipeItemPreview() {
+private fun SwipeItemPreview(
+    @PreviewParameter(ShoppingListItemProvider::class)
+    listItem: ShoppingListItem
+) {
     Box(
-        modifier = Modifier.height(100.dp).padding(16.dp),
+        modifier = Modifier.padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
-        SwipeItem(
-            ShoppingListItem(
-                "Продукты",
-                Res.drawable.ic_shopping_cart_24
+        SwipeItem(listItem, {})
+    }
+}
+
+@Preview
+@PreviewLightDark
+@Composable
+private fun SwipeItemListPreview() {
+    var items by remember {
+        mutableStateOf(
+            listOf(
+                ShoppingListItem(1L, "Продукты", Res.drawable.ic_shopping_cart_24),
+                ShoppingListItem(2L, "Аптека", Res.drawable.ic_shopping_cart_24),
+                ShoppingListItem(3L, "Хозтовары", Res.drawable.ic_shopping_cart_24),
+                ShoppingListItem(4L, "Игрушки", Res.drawable.ic_shopping_cart_24),
+                ShoppingListItem(5L, "Мыльнорыльные", Res.drawable.ic_shopping_cart_24),
+                ShoppingListItem(6L, "Для учёбы", Res.drawable.ic_shopping_cart_24),
+                ShoppingListItem(7L, "Подарки", Res.drawable.ic_shopping_cart_24)
             )
         )
+    }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(
+            items = items,
+            key = { it.id }
+        ) { item ->
+            SwipeItem(
+                listItem = item,
+                onEvent = { event ->
+                    when (event) {
+                        is ShoppingListItemEvent.Copy -> {
+                            val newId = items.maxOfOrNull { it.id }?.let { it + 1 } ?: 1L
+                            val newItem = item.copy(
+                                id = newId,
+                                name = "${item.name} (копия)"
+                            )
+                            val index = items.indexOf(item)
+                            items = items.toMutableList().apply {
+                                add(index + 1, newItem)
+                            }
+                        }
+
+                        is ShoppingListItemEvent.Delete -> {
+                            items = items.filter { it.id != item.id }
+                        }
+
+                        else -> {}
+                    }
+                }
+            )
+        }
     }
 }
