@@ -1,6 +1,7 @@
-package io.dimasla4ee.shoppinglist.components
+package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListItem
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_baby_stoller_24
 import shoppinglist.composeapp.generated.resources.ic_cake_24

@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.components
+package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui
 
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.runtime.Composable

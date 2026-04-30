@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.components
+package io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation
 
 sealed interface ShoppingListCardEvent {
     data class Click(val item: ShoppingListItem) : ShoppingListCardEvent

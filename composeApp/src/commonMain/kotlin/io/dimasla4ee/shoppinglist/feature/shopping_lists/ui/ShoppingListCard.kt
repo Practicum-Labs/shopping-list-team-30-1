@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.components
+package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,6 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListItem
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -43,18 +45,10 @@ import shoppinglist.composeapp.generated.resources.ic_docs_add_24
 import shoppinglist.composeapp.generated.resources.ic_edit_24
 import shoppinglist.composeapp.generated.resources.ic_shopping_cart_24
 
-sealed interface ShoppingListItemEvent {
-    data class Click(val item: ShoppingListItem) : ShoppingListItemEvent
-    data class Edit(val item: ShoppingListItem) : ShoppingListItemEvent
-    data class Copy(val item: ShoppingListItem) : ShoppingListItemEvent
-    data class ChangeIcon(val item: ShoppingListItem) : ShoppingListItemEvent
-    data class Delete(val item: ShoppingListItem) : ShoppingListItemEvent
-}
-
 @Composable
-fun SwipeItem(
+fun ShoppingListCard(
     listItem: ShoppingListItem,
-    onEvent: (ShoppingListItemEvent) -> Unit,
+    onEvent: (ShoppingListCardEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -62,7 +56,7 @@ fun SwipeItem(
     val isStartToEnd = swipeState.dismissDirection == SwipeToDismissBoxValue.StartToEnd
     val backgroundColor = if (isStartToEnd) Color.Transparent else Color(0xFFFF6969)
     val horizontalArrangement = if (isStartToEnd) Arrangement.spacedBy(8.dp) else Arrangement.End
-    val closeMenuAndFireEvent: (ShoppingListItemEvent) -> Unit = { event ->
+    val closeMenuAndFireEvent: (ShoppingListCardEvent) -> Unit = { event ->
         onEvent(event)
         scope.launch { swipeState.reset() }
     }
@@ -71,7 +65,7 @@ fun SwipeItem(
         state = swipeState,
         onDismiss = { state ->
             if (state == SwipeToDismissBoxValue.EndToStart) onEvent(
-                ShoppingListItemEvent.Delete(listItem)
+                ShoppingListCardEvent.Delete(listItem)
             )
         },
         backgroundContent = {
@@ -87,10 +81,10 @@ fun SwipeItem(
                 ) {
                     when (swipeState.dismissDirection) {
                         SwipeToDismissBoxValue.StartToEnd -> Actions(
-                            onEdit = { closeMenuAndFireEvent(ShoppingListItemEvent.Edit(listItem)) },
-                            onCopy = { closeMenuAndFireEvent(ShoppingListItemEvent.Copy(listItem)) },
+                            onEdit = { closeMenuAndFireEvent(ShoppingListCardEvent.Edit(listItem)) },
+                            onCopy = { closeMenuAndFireEvent(ShoppingListCardEvent.Copy(listItem)) },
                             onIconChange = {
-                                closeMenuAndFireEvent(ShoppingListItemEvent.ChangeIcon(listItem))
+                                closeMenuAndFireEvent(ShoppingListCardEvent.ChangeIcon(listItem))
                             }
                         )
 
@@ -117,7 +111,7 @@ fun SwipeItem(
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            onClick = { onEvent(ShoppingListItemEvent.Click(listItem)) }
+            onClick = { onEvent(ShoppingListCardEvent.Click(listItem)) }
         ) {
             ItemContent(listItem)
         }
@@ -130,9 +124,9 @@ private fun Actions(
     onCopy: () -> Unit,
     onIconChange: () -> Unit
 ) {
-    IconAction(Res.drawable.ic_edit_24) { onEdit() }
-    IconAction(Res.drawable.ic_copy_24) { onCopy() }
-    IconAction(Res.drawable.ic_docs_add_24) { onIconChange() }
+    AppIconButton(Res.drawable.ic_edit_24) { onEdit() }
+    AppIconButton(Res.drawable.ic_copy_24) { onCopy() }
+    AppIconButton(Res.drawable.ic_docs_add_24) { onIconChange() }
 }
 
 @Composable
@@ -146,7 +140,7 @@ private fun ItemContent(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconAction(
+        AppIconButton(
             iconRes = listItem.iconRes,
             contentDescription = null
         )
@@ -157,7 +151,7 @@ private fun ItemContent(
 @Preview
 @PreviewLightDark
 @Composable
-private fun SwipeItemPreview(
+private fun ShoppingListCardPreview(
     @PreviewParameter(ShoppingListItemProvider::class)
     listItem: ShoppingListItem
 ) {
@@ -165,14 +159,14 @@ private fun SwipeItemPreview(
         modifier = Modifier.padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
-        SwipeItem(listItem, {})
+        ShoppingListCard(listItem, {})
     }
 }
 
 @Preview
 @PreviewLightDark
 @Composable
-private fun SwipeItemListPreview() {
+private fun ShoppingListCardListPreview() {
     var items by remember {
         mutableStateOf(
             listOf(
@@ -196,11 +190,11 @@ private fun SwipeItemListPreview() {
             items = items,
             key = { it.id }
         ) { item ->
-            SwipeItem(
+            ShoppingListCard(
                 listItem = item,
                 onEvent = { event ->
                     when (event) {
-                        is ShoppingListItemEvent.Copy -> {
+                        is ShoppingListCardEvent.Copy -> {
                             val newId = items.maxOfOrNull { it.id }?.let { it + 1 } ?: 1L
                             val newItem = item.copy(
                                 id = newId,
@@ -212,7 +206,7 @@ private fun SwipeItemListPreview() {
                             }
                         }
 
-                        is ShoppingListItemEvent.Delete -> {
+                        is ShoppingListCardEvent.Delete -> {
                             items = items.filter { it.id != item.id }
                         }
 
