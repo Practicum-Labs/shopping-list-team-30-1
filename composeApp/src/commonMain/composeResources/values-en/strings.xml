@@ -1,0 +1,78 @@
+<resources>
+    <!-- Screen welcome -->
+    <string name="onboard_welcome_message">Welcome to the Shopping List!</string>
+    <string name="onboard_instruction">Create lists, add items, mark what has already been purchased</string>
+
+    <!-- Screen title -->
+    <string name="screen_title">My Lists</string>
+
+    <!-- Message about no lists -->
+    <string name="no_lists_message">You have no lists yet</string>
+    <string name="create_list_hint">Click the + button below to create your first list</string>
+
+    <!-- Search error message -->
+    <string name="search_not_found">We couldn’t find what you were looking for</string>
+    <string name="search_hint">Try changing your search query or checking the spelling</string>
+
+    <!-- Message about empty list -->
+    <string name="empty_list_message">The shopping list is empty</string>
+    <string name="add_items_hint">Click the + button below to add items</string>
+
+    <!-- Dialog titles -->
+    <string name="dialog_list_add">Add a List</string>
+    <string name="dialog_delete_all_lists">Delete all lists?</string>
+    <string name="dialog_delete_list">Delete the list\n«%s»?</string>
+    <string name="dialog_rename_list">Rename the list</string>
+    <string name="dialog_delete_all_items">Delete all items?</string>
+    <string name="dialog_delete_all_purchased_items">Delete\nall purchased\nitems?</string>
+
+    <!-- Dialog buttons -->
+    <string name="button_cancel">Cancel</string>
+    <string name="button_create">Create</string>
+    <string name="button_rename">Rename</string>
+    <string name="button_delete">Delete</string>
+
+    <!-- Hints -->
+    <string name="hint_name_list">List name</string>
+    <string name="hint_new_list">New list</string>
+    <string name="hint_search_list">Search lists</string>
+    <string name="hint_item">Item</string>
+    <string name="hint_quantity">Quantity</string>
+    <string name="hint_units">Units</string>
+
+    <!-- Units -->
+    <string-array name="list_units">
+        <item name="liter">l</item>
+        <item name="milliliter">ml</item>
+        <item name="packaging">pkg</item>
+        <item name="pack">pk</item>
+        <item name="piece">pc</item>
+        <item name="kilogram">kg</item>
+        <item name="gram">g</item>
+        <item name="milligrams">mg</item>
+        <item name="metre">m</item>
+        <item name="centimetre">cm</item>
+        <item name="millimetre">mm</item>
+        <item name="inch">in</item>
+        <item name="foot">ft</item>
+        <item name="yard">yd</item>
+        <item name="square_meter">m²</item>
+        <item name="square_centimetre">cm²</item>
+        <item name="square_millimetre">mm²</item>
+        <item name="cubic_meter">m³</item>
+        <item name="cubic_decimeter">dm³</item>
+        <item name="cubic_centimetre">cm³</item>
+        <item name="cubic_millimetre">mm³</item>
+    </string-array>
+
+    <!-- Bottom menu -->
+    <string name="btm_menu_sorting">Sort</string>
+    <string name="btm_menu_delete_all">Delete all</string>
+    <string name="btm_menu_clear_purchased_items">Clear purchased items</string>
+
+    <!-- Sorting options -->
+    <string-array name="sorting_options">
+        <item>Alphabetical</item>
+        <item>Custom</item>
+    </string-array>
+</resources>

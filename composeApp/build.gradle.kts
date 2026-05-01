@@ -140,7 +140,7 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "io.dimasla4ee.shoppinglist.MainKt"
+        mainClass = "io.dimasla4ee.shoppinglist.app.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
