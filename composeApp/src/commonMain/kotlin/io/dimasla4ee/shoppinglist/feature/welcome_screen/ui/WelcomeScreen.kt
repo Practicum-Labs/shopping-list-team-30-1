@@ -114,7 +114,7 @@ fun WelcomeScreen(
 
 @Preview
 @Composable
-fun WelcomeScreenPreview() {
+private fun WelcomeScreenPreview() {
     MaterialTheme {
         WelcomeScreen(onGoToShopping = {})
     }
