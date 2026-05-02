@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.app.theme
+package io.dimasla4ee.shoppinglist.app.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +14,9 @@ private val LightColorScheme = lightColorScheme(
 
     secondary = Brown300,
     onSecondary = Brown700,
+
+    tertiary = Beige300,
+    onTertiary = Brown400,
 
     background = Beige100,
     onBackground = Brown700,
@@ -38,6 +41,9 @@ private val DarkColorScheme = darkColorScheme(
 
     secondary = Brown100,
     onSecondary = White,
+
+    tertiary = Brown550,
+    onTertiary = Brown150,
 
     background = Brown800,
     onBackground = White,

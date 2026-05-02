@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.app.theme
+package io.dimasla4ee.shoppinglist.app.ui.theme
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
@@ -14,6 +14,9 @@ data class AppColors(
 
     val icon: Color,
 
+    val buttonAddDialogContainer: Color,
+    val buttonAddDialogText: Color,
+
     val buttonDeleteContainer: Color,
     val buttonDeleteText: Color,
 
@@ -23,7 +26,7 @@ data class AppColors(
     val bottomSheetBackground: Color,
     val bottomSheetHandle: Color,
 
-    val searchBackground: Color,
+    val addDialogBackground: Color,
     val dropdownBackground: Color,
 
     val accent: Color
@@ -44,6 +47,9 @@ val LightAppColors = AppColors(
 
     icon = Brown400,
 
+    buttonAddDialogContainer = Beige300,
+    buttonAddDialogText = Brown300,
+
     buttonDeleteContainer = Brown300,
     buttonDeleteText = White,
 
@@ -53,7 +59,7 @@ val LightAppColors = AppColors(
     bottomSheetBackground = Gray300,
     bottomSheetHandle = Gray500,
 
-    searchBackground = Beige300,
+    addDialogBackground = Beige300,
     dropdownBackground = Beige200,
 
     accent = Green500
@@ -70,6 +76,9 @@ val DarkAppColors = AppColors(
 
     icon = Gray300,
 
+    buttonAddDialogContainer = Brown550,
+    buttonAddDialogText = Brown100,
+
     buttonDeleteContainer = Orange500,
     buttonDeleteText = Brown900,
 
@@ -79,7 +88,7 @@ val DarkAppColors = AppColors(
     bottomSheetBackground = Brown700,
     bottomSheetHandle = Gray400,
 
-    searchBackground = Brown800,
+    addDialogBackground = Brown550,
     dropdownBackground = Gray600,
 
     accent = Green500
