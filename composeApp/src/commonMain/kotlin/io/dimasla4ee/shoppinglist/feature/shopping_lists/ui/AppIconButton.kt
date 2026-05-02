@@ -2,6 +2,7 @@ package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.DrawableResource
@@ -15,6 +16,7 @@ import org.jetbrains.compose.resources.painterResource
  *
  * @param iconRes Ресурс иконки для отрисовки.
  * @param modifier Модификатор для настройки макета кнопки (размер, отступы и т.д.).
+ * @param colors Цвета иконки.
  * @param contentDescription Описание контента для специальных возможностей (Accessibility).
  * @param onClick Коллбэк, вызываемый при нажатии. Если передано null, кнопка становится неактивной.
  */
@@ -22,12 +24,13 @@ import org.jetbrains.compose.resources.painterResource
 fun AppIconButton(
     iconRes: DrawableResource,
     modifier: Modifier = Modifier,
+    colors: IconButtonColors = AppIconButtonDefaults.appIconButtonColors(),
     contentDescription: String? = null,
     onClick: (() -> Unit)? = null
 ) {
     IconButton(
         modifier = modifier,
-        colors = AppIconButtonDefaults.iconActionColors(),
+        colors = colors,
         onClick = { onClick?.invoke() },
         enabled = onClick != null
     ) {

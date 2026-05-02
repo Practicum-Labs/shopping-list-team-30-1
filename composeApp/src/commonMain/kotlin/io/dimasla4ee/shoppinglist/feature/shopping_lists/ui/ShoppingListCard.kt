@@ -14,8 +14,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
@@ -55,12 +57,20 @@ fun ShoppingListCard(
     listItem: ShoppingListItem,
     onEvent: (ShoppingListCardEvent) -> Unit,
     modifier: Modifier = Modifier,
+    colors: CardColors = ShoppingListCardDefaults.shoppingListCardColors(),
+    elevation: CardElevation = ShoppingListCardDefaults.shoppingListCardElevation()
 ) {
     val scope = rememberCoroutineScope()
     val swipeState = rememberSwipeToDismissBoxState()
     val isStartToEnd = swipeState.dismissDirection == SwipeToDismissBoxValue.StartToEnd
-    val backgroundColor = if (isStartToEnd) Color.Transparent else Color(0xFFFF6969)
-    val horizontalArrangement = if (isStartToEnd) Arrangement.spacedBy(8.dp) else Arrangement.End
+    val backgroundColor = when (isStartToEnd) {
+        true -> Color.Transparent
+        false -> MaterialTheme.colorScheme.errorContainer //0xFFFF6969
+    }
+    val horizontalArrangement = when (isStartToEnd) {
+        true -> Arrangement.spacedBy(8.dp)
+        false -> Arrangement.End
+    }
     val closeMenuAndFireEvent: (ShoppingListCardEvent) -> Unit = { event ->
         onEvent(event)
         scope.launch { swipeState.reset() }
@@ -69,9 +79,9 @@ fun ShoppingListCard(
     SwipeToDismissBox(
         state = swipeState,
         onDismiss = { state ->
-            if (state == SwipeToDismissBoxValue.EndToStart) onEvent(
-                ShoppingListCardEvent.Delete(listItem)
-            )
+            if (state == SwipeToDismissBoxValue.EndToStart) {
+                onEvent(ShoppingListCardEvent.Delete(listItem))
+            }
         },
         backgroundContent = {
             Surface(
@@ -98,7 +108,7 @@ fun ShoppingListCard(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 painter = painterResource(Res.drawable.ic_delete_24),
                                 contentDescription = stringResource(Res.string.cd_delete_shopping_list),
-                                tint = Color.White
+                                tint = MaterialTheme.colorScheme.onErrorContainer
                             )
                         }
 
@@ -114,8 +124,8 @@ fun ShoppingListCard(
                 .defaultMinSize(minHeight = 56.dp)
                 .wrapContentHeight(),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            colors = colors,
+            elevation = elevation,
             onClick = { onEvent(ShoppingListCardEvent.Click(listItem)) }
         ) {
             ItemContent(listItem)
