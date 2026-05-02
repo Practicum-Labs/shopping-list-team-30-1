@@ -32,6 +32,7 @@ data class AppColors(
     val accent: Color
 )
 
+@Suppress("CompositionLocalAllowlist")
 val LocalAppColors = staticCompositionLocalOf<AppColors> {
     error("No colors provided")
 }
