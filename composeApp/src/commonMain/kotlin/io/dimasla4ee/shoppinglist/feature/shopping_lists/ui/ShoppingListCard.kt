@@ -38,7 +38,12 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListItem
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.cd_change_shopping_list_icon
+import shoppinglist.composeapp.generated.resources.cd_copy_shopping_list
+import shoppinglist.composeapp.generated.resources.cd_delete_shopping_list
+import shoppinglist.composeapp.generated.resources.cd_edit_shopping_list
 import shoppinglist.composeapp.generated.resources.ic_copy_24
 import shoppinglist.composeapp.generated.resources.ic_delete_24
 import shoppinglist.composeapp.generated.resources.ic_docs_add_24
@@ -92,7 +97,7 @@ fun ShoppingListCard(
                             Icon(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 painter = painterResource(Res.drawable.ic_delete_24),
-                                contentDescription = null,
+                                contentDescription = stringResource(Res.string.cd_delete_shopping_list),
                                 tint = Color.White
                             )
                         }
@@ -124,9 +129,18 @@ private fun Actions(
     onCopy: () -> Unit,
     onIconChange: () -> Unit
 ) {
-    AppIconButton(Res.drawable.ic_edit_24) { onEdit() }
-    AppIconButton(Res.drawable.ic_copy_24) { onCopy() }
-    AppIconButton(Res.drawable.ic_docs_add_24) { onIconChange() }
+    AppIconButton(
+        iconRes = Res.drawable.ic_edit_24,
+        contentDescription = stringResource(Res.string.cd_edit_shopping_list)
+    ) { onEdit() }
+    AppIconButton(
+        iconRes = Res.drawable.ic_copy_24,
+        contentDescription = stringResource(Res.string.cd_copy_shopping_list)
+    ) { onCopy() }
+    AppIconButton(
+        iconRes = Res.drawable.ic_docs_add_24,
+        contentDescription = stringResource(Res.string.cd_change_shopping_list_icon)
+    ) { onIconChange() }
 }
 
 @Composable

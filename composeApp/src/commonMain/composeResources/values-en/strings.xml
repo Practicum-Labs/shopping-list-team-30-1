@@ -40,6 +40,12 @@
     <string name="hint_quantity">Quantity</string>
     <string name="hint_units">Units</string>
 
+    <!-- Shopping list interactions -->
+    <string name="cd_edit_shopping_list">Edit shopping list</string>
+    <string name="cd_copy_shopping_list">Copy shopping list</string>
+    <string name="cd_change_shopping_list_icon">Change shopping list icon</string>
+    <string name="cd_delete_shopping_list">Delete shopping list</string>
+
     <!-- Units -->
     <string-array name="list_units">
         <item name="liter">l</item>
