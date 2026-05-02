@@ -6,7 +6,7 @@ import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon.*
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.*
 
-class ShoppingListIconMappersTest {
+class ShoppingListIconMapperTest {
 
     @Test
     fun `every ShoppingListIcon maps to correct drawable resource`() {
