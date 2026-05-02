@@ -10,7 +10,7 @@ enum class ShoppingListIcon {
     DRINKS,
     PICNIC_TABLE,
     PRESENT,
-    BABY_STROLLER,  // TODO: В файле опечатка (stoller)
+    BABY_STROLLER,
     BONE,
     CAT,
     CHILD,
@@ -19,7 +19,7 @@ enum class ShoppingListIcon {
     CONSTRUCTION,
     HOME,
     MICROWAVE,
-    DUMBBELL,       // TODO: TODO: В файле опечатка (dumbell)
+    DUMBBELL,
     FLOWER,
     GAMEPAD,
     JIGSAW,

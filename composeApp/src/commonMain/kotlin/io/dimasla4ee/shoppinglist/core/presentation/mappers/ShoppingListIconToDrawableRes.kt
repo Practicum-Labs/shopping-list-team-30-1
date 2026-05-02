@@ -1,3 +1,5 @@
+@file:Suppress("WildcardImport ForbiddenComment")
+
 package io.dimasla4ee.shoppinglist.core.presentation.mappers
 
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
@@ -16,7 +18,7 @@ fun ShoppingListIcon.toDrawableResource(): DrawableResource = when(this) {
     DRINKS -> Res.drawable.ic_drinks_24
     PICNIC_TABLE -> Res.drawable.ic_picnic_table_24
     PRESENT -> Res.drawable.ic_present_24
-    BABY_STROLLER -> Res.drawable.ic_baby_stoller_24
+    BABY_STROLLER -> Res.drawable.ic_baby_stoller_24    // TODO: В res опечатка (stoller)
     BONE -> Res.drawable.ic_bone_24
     CAT -> Res.drawable.ic_cat_24
     CHILD -> Res.drawable.ic_child_24
@@ -25,7 +27,7 @@ fun ShoppingListIcon.toDrawableResource(): DrawableResource = when(this) {
     CONSTRUCTION -> Res.drawable.ic_construction_24
     HOME -> Res.drawable.ic_home_24
     MICROWAVE -> Res.drawable.ic_microwave_24
-    DUMBBELL -> Res.drawable.ic_dumbell_24
+    DUMBBELL -> Res.drawable.ic_dumbell_24              // TODO: В res опечатка (dumbell)
     FLOWER -> Res.drawable.ic_flower_24
     GAMEPAD -> Res.drawable.ic_gamepad_24
     JIGSAW -> Res.drawable.ic_jigsaw_24

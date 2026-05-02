@@ -1,3 +1,5 @@
+@file:Suppress("WildcardImport")
+
 package io.dimasla4ee.shoppinglist.core.presentation.mappers
 
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
