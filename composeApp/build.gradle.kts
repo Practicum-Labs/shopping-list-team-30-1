@@ -124,6 +124,7 @@ android {
 }
 
 dependencies {
+    testImplementation(libs.jupiter.junit.jupiter)
     // Room KSP
     add("kspAndroid", libs.room.compiler)
     add("kspJvm", libs.room.compiler)
