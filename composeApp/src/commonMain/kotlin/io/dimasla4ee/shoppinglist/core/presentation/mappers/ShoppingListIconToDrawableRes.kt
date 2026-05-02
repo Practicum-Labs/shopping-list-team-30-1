@@ -1,4 +1,4 @@
-@file:Suppress("WildcardImport ForbiddenComment")
+@file:Suppress("WildcardImport", "ForbiddenComment")
 
 package io.dimasla4ee.shoppinglist.core.presentation.mappers
 
