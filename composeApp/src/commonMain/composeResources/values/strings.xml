@@ -43,29 +43,27 @@
     <string name="hint_units">Единицы</string>
 
     <!-- Единицы -->
-    <string-array name="list_units">
-        <item name="liter">л</item>
-        <item name="milliliter">мл</item>
-        <item name="packaging">уп</item>
-        <item name="pack">пач</item>
-        <item name="piece">шт</item>
-        <item name="kilogram">кг</item>
-        <item name="gram">г</item>
-        <item name="milligrams">мг</item>
-        <item name="metre">м</item>
-        <item name="centimetre">см</item>
-        <item name="millimetre">мм</item>
-        <item name="inch">д</item>
-        <item name="foot">фут</item>
-        <item name="yard">ярд</item>
-        <item name="square_meter">м²</item>
-        <item name="square_centimetre">см²</item>
-        <item name="square_millimetre">мм²</item>
-        <item name="cubic_meter">м³</item>
-        <item name="cubic_decimeter">дм³</item>
-        <item name="cubic_centimetre">см³</item>
-        <item name="cubic_millimetre">мм³</item>
-    </string-array>
+    <string name="liter">л</string>
+    <string name="milliliter">мл</string>
+    <string name="packaging">уп</string>
+    <string name="pack">пач</string>
+    <string name="piece">шт</string>
+    <string name="kilogram">кг</string>
+    <string name="gram">г</string>
+    <string name="milligrams">мг</string>
+    <string name="metre">м</string>
+    <string name="centimetre">см</string>
+    <string name="millimetre">мм</string>
+    <string name="inch">д</string>
+    <string name="foot">фут</string>
+    <string name="yard">ярд</string>
+    <string name="square_meter">м²</string>
+    <string name="square_centimetre">см²</string>
+    <string name="square_millimetre">мм²</string>
+    <string name="cubic_meter">м³</string>
+    <string name="cubic_decimeter">дм³</string>
+    <string name="cubic_centimetre">см³</string>
+    <string name="cubic_millimetre">мм³</string>
 
     <!-- Нижнее меню -->
     <string name="btm_menu_sorting">Сортировка</string>
