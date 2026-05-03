@@ -38,14 +38,14 @@ import shoppinglist.composeapp.generated.resources.welcome_screen_title
 
 @Composable
 fun WelcomeScreen(
-    modifier: Modifier = Modifier,
-    onGoToShopping: () -> Unit
+    onGoToShopping: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .background(MaterialTheme.colorScheme.primaryContainer)
             .safeContentPadding()
             .fillMaxSize(),
@@ -118,8 +118,8 @@ fun WelcomeScreen(
 private fun WelcomeScreenPreview() {
     MaterialTheme {
         WelcomeScreen(
-            modifier = Modifier.fillMaxSize(),
-            onGoToShopping = {}
+            onGoToShopping = {},
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
