@@ -8,10 +8,10 @@ import androidx.compose.ui.graphics.Color
 object AppIconButtonDefaults {
     @Composable
     fun appIconButtonColors(
-        containerColor: Color = MaterialTheme.colorScheme.primaryContainer,             // 0xFFEEE0D5
-        contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,             // 0xFF845416
-        disabledContainerColor: Color = MaterialTheme.colorScheme.tertiaryContainer,    // 0xFFFEDDBD
-        disabledContentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer     // 0xFF281805
+        containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+        contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledContainerColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+        disabledContentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer
     ): IconButtonColors = IconButtonColors(
         containerColor = containerColor,
         contentColor = contentColor,

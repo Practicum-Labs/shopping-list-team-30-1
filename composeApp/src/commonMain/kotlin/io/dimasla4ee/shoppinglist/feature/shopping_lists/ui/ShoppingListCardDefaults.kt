@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.dp
 object ShoppingListCardDefaults {
     @Composable
     fun shoppingListCardColors(
-        containerColor: Color = MaterialTheme.colorScheme.background,
-        contentColor: Color = MaterialTheme.colorScheme.onBackground,
+        containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
+        contentColor: Color = MaterialTheme.colorScheme.onSurface,
         disabledContainerColor: Color = Color.Unspecified,
         disabledContentColor: Color = Color.Unspecified
     ): CardColors = CardColors(
@@ -41,11 +41,11 @@ object ShoppingListCardDefaults {
     )
 
     private object ShoppingListCardTokens {
-        val DisabledContainerElevation: Dp = 0.dp
-        val DraggedContainerElevation: Dp = 0.dp
-        val FocusContainerElevation: Dp = 0.dp
-        val HoverContainerElevation: Dp = 0.dp
-        val PressedContainerElevation: Dp = 0.dp
-        val ContainerElevation: Dp = 4.dp
+        val DisabledContainerElevation: Dp = 2.dp
+        val DraggedContainerElevation: Dp = 8.dp
+        val FocusContainerElevation: Dp = 2.dp
+        val HoverContainerElevation: Dp = 3.dp
+        val PressedContainerElevation: Dp = 2.dp
+        val ContainerElevation: Dp = 2.dp
     }
 }

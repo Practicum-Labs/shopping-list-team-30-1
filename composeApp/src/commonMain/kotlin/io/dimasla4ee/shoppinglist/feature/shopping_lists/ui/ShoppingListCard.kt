@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListItem
 import kotlinx.coroutines.launch
@@ -65,7 +66,7 @@ fun ShoppingListCard(
     val isStartToEnd = swipeState.dismissDirection == SwipeToDismissBoxValue.StartToEnd
     val backgroundColor = when (isStartToEnd) {
         true -> Color.Transparent
-        false -> MaterialTheme.colorScheme.errorContainer //0xFFFF6969
+        false -> MaterialTheme.colorScheme.errorContainer
     }
     val horizontalArrangement = when (isStartToEnd) {
         true -> Arrangement.spacedBy(8.dp)
@@ -179,11 +180,13 @@ private fun ShoppingListCardPreview(
     @PreviewParameter(ShoppingListItemProvider::class)
     listItem: ShoppingListItem
 ) {
-    Box(
-        modifier = Modifier.padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        ShoppingListCard(listItem, {})
+    ShoppingListTheme {
+        Box(
+            modifier = Modifier.padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            ShoppingListCard(listItem, {})
+        }
     }
 }
 
@@ -205,39 +208,45 @@ private fun ShoppingListCardListPreview() {
         )
     }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(
-            items = items,
-            key = { it.id }
-        ) { item ->
-            ShoppingListCard(
-                listItem = item,
-                onEvent = { event ->
-                    when (event) {
-                        is ShoppingListCardEvent.Copy -> {
-                            val newId = items.maxOfOrNull { it.id }?.let { it + 1 } ?: 1L
-                            val newItem = item.copy(
-                                id = newId,
-                                name = "${item.name} (копия)"
-                            )
-                            val index = items.indexOf(item)
-                            items = items.toMutableList().apply {
-                                add(index + 1, newItem)
+    ShoppingListTheme {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(
+                    items = items,
+                    key = { it.id }
+                ) { item ->
+                    ShoppingListCard(
+                        listItem = item,
+                        onEvent = { event ->
+                            when (event) {
+                                is ShoppingListCardEvent.Copy -> {
+                                    val newId = items.maxOfOrNull { it.id }?.let { it + 1 } ?: 1L
+                                    val newItem = item.copy(
+                                        id = newId,
+                                        name = "${item.name} (копия)"
+                                    )
+                                    val index = items.indexOf(item)
+                                    items = items.toMutableList().apply {
+                                        add(index + 1, newItem)
+                                    }
+                                }
+
+                                is ShoppingListCardEvent.Delete -> {
+                                    items = items.filter { it.id != item.id }
+                                }
+
+                                else -> {}
                             }
                         }
-
-                        is ShoppingListCardEvent.Delete -> {
-                            items = items.filter { it.id != item.id }
-                        }
-
-                        else -> {}
-                    }
+                    )
                 }
-            )
+            }
         }
     }
 }
