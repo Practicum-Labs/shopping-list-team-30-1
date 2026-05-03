@@ -50,12 +50,11 @@ fun WelcomeScreen(
             .safeContentPadding()
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.Top
     ) {
-
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 22.dp, bottom = 100.dp)
+            modifier = Modifier.padding(top = 22.dp)
         ) {
             Image(
                 painter = painterResource(Res.drawable.ic_list_24),
@@ -68,12 +67,13 @@ fun WelcomeScreen(
             Text(stringResource(Res.string.welcome_screen_title))
         }
 
+        Spacer(modifier = Modifier.height(100.dp))
+
         AnimatedVisibility(visible = showContent) {
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
                 Image(
@@ -81,15 +81,17 @@ fun WelcomeScreen(
                     contentDescription = null
                 )
 
+                Spacer(modifier = Modifier.height(48.dp))
+
                 Text(
-                    modifier = Modifier.padding(start = 44.dp, end = 44.dp, top = 48.dp),
+                    modifier = Modifier.padding(horizontal = 44.dp),
                     text = stringResource(Res.string.onboard_welcome_message)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    modifier = Modifier.padding(start = 44.dp, end = 44.dp),
+                    modifier = Modifier.padding(horizontal = 44.dp),
                     textAlign = TextAlign.Center,
                     text = stringResource(Res.string.onboard_instruction)
                 )
