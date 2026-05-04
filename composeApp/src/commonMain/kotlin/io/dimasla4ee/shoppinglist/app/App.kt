@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_add_circle_24
@@ -55,7 +56,7 @@ fun App() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Image(
-                        painter = painterResource(Res.drawable.img_main_screen),
+                        painter = painterResource(LocalAppPlaceholders.current.imgMainScreen),
                         contentDescription = null
                     )
                     Text("Compose: $greeting")
