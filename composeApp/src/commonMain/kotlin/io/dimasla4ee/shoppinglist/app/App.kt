@@ -18,25 +18,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
+import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_add_circle_24
 import shoppinglist.composeapp.generated.resources.ic_remove_circle_24
-import shoppinglist.composeapp.generated.resources.img_main_screen
 
 @Composable
-@Preview
+@PreviewLightDark
 fun App() {
-    MaterialTheme {
+    ShoppingListTheme {
         var showContent by remember { mutableStateOf(false) }
         val iconRes = remember(showContent) {
             if (showContent) Res.drawable.ic_add_circle_24 else Res.drawable.ic_remove_circle_24
         }
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
+                .background(MaterialTheme.colorScheme.background)
                 .safeContentPadding()
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,6 +46,7 @@ fun App() {
             ) {
                 Icon(
                     painter = painterResource(iconRes),
+                    tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = null
                 )
             }
