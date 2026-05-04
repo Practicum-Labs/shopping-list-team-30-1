@@ -41,29 +41,27 @@
     <string name="hint_units">Units</string>
 
     <!-- Units -->
-    <string-array name="list_units">
-        <item name="liter">l</item>
-        <item name="milliliter">ml</item>
-        <item name="packaging">pkg</item>
-        <item name="pack">pk</item>
-        <item name="piece">pc</item>
-        <item name="kilogram">kg</item>
-        <item name="gram">g</item>
-        <item name="milligrams">mg</item>
-        <item name="metre">m</item>
-        <item name="centimetre">cm</item>
-        <item name="millimetre">mm</item>
-        <item name="inch">in</item>
-        <item name="foot">ft</item>
-        <item name="yard">yd</item>
-        <item name="square_meter">m²</item>
-        <item name="square_centimetre">cm²</item>
-        <item name="square_millimetre">mm²</item>
-        <item name="cubic_meter">m³</item>
-        <item name="cubic_decimeter">dm³</item>
-        <item name="cubic_centimetre">cm³</item>
-        <item name="cubic_millimetre">mm³</item>
-    </string-array>
+    <string name="liter">l</string>
+    <string name="milliliter">ml</string>
+    <string name="packaging">pkg</string>
+    <string name="pack">pk</string>
+    <string name="piece">pc</string>
+    <string name="kilogram">kg</string>
+    <string name="gram">g</string>
+    <string name="milligrams">mg</string>
+    <string name="metre">m</string>
+    <string name="centimetre">cm</string>
+    <string name="millimetre">mm</string>
+    <string name="inch">in</string>
+    <string name="foot">ft</string>
+    <string name="yard">yd</string>
+    <string name="square_meter">m²</string>
+    <string name="square_centimetre">cm²</string>
+    <string name="square_millimetre">mm²</string>
+    <string name="cubic_meter">m³</string>
+    <string name="cubic_decimeter">dm³</string>
+    <string name="cubic_centimetre">cm³</string>
+    <string name="cubic_millimetre">mm³</string>
 
     <!-- Bottom menu -->
     <string name="btm_menu_sorting">Sort</string>
