@@ -3,7 +3,7 @@
 
     <!-- Экран приветствия -->
     <string name="onboard_welcome_message">Добро пожаловать в Список покупок!</string>
-    <string name="onboard_instruction">Создавайте списки, добавляйте товары,\n\n отмечайте, что уже куплено</string>
+    <string name="onboard_instruction">Создавайте списки, добавляйте товары, отмечайте, что уже куплено</string>
     <string name="welcome_screen_title">Список Покупок</string>
 
     <!-- Заголовок экрана -->
