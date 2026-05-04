@@ -2,6 +2,7 @@
     <!-- Screen welcome -->
     <string name="onboard_welcome_message">Welcome to the Shopping List!</string>
     <string name="onboard_instruction">Create lists, add items, mark what has already been purchased</string>
+    <string name="welcome_screen_title">Shopping List</string>
 
     <!-- Screen title -->
     <string name="screen_title">My Lists</string>
