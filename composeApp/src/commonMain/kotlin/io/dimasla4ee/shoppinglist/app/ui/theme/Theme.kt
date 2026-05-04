@@ -12,11 +12,17 @@ private val LightColorScheme = lightColorScheme(
     primary = Beige500,
     onPrimary = Brown500,
 
+    primaryContainer = Beige250,
+    onPrimaryContainer = Brown300,
+
     secondary = Brown300,
     onSecondary = Brown700,
 
     tertiary = Beige300,
     onTertiary = Brown400,
+
+    tertiaryContainer = Beige400,
+    onTertiaryContainer = Brown600,
 
     background = Beige100,
     onBackground = Brown700,
@@ -26,6 +32,8 @@ private val LightColorScheme = lightColorScheme(
 
     surfaceVariant = Beige300,
     onSurfaceVariant = Brown400,
+
+    surfaceContainerLow = Beige100,
 
     outline = Brown400,
     outlineVariant = Gray500,
@@ -39,11 +47,17 @@ private val DarkColorScheme = darkColorScheme(
     primary = Brown200,
     onPrimary = Black,
 
+    primaryContainer = Brown550,
+    onPrimaryContainer = Orange500,
+
     secondary = Brown100,
     onSecondary = White,
 
     tertiary = Brown550,
     onTertiary = Brown150,
+
+    tertiaryContainer = Brown250,
+    onTertiaryContainer = Black,
 
     background = Brown800,
     onBackground = White,
@@ -53,6 +67,8 @@ private val DarkColorScheme = darkColorScheme(
 
     surfaceVariant = Brown800,
     onSurfaceVariant = Gray300,
+
+    surfaceContainerLow = Brown550,
 
     outline = Gray300,
     outlineVariant = Gray400,

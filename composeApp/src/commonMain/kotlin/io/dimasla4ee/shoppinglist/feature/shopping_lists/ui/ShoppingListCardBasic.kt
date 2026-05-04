@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardElevation
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.SwipeToDismissBox
@@ -40,21 +39,18 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListItem
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.cd_change_shopping_list_icon
 import shoppinglist.composeapp.generated.resources.cd_copy_shopping_list
 import shoppinglist.composeapp.generated.resources.cd_delete_shopping_list
 import shoppinglist.composeapp.generated.resources.cd_edit_shopping_list
 import shoppinglist.composeapp.generated.resources.ic_copy_24
 import shoppinglist.composeapp.generated.resources.ic_delete_24
-import shoppinglist.composeapp.generated.resources.ic_docs_add_24
 import shoppinglist.composeapp.generated.resources.ic_edit_24
 import shoppinglist.composeapp.generated.resources.ic_shopping_cart_24
 
 @Composable
-fun ShoppingListCard(
+fun ShoppingListCardBasic(
     listItem: ShoppingListItem,
     onEvent: (ShoppingListCardEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -63,15 +59,6 @@ fun ShoppingListCard(
 ) {
     val scope = rememberCoroutineScope()
     val swipeState = rememberSwipeToDismissBoxState()
-    val isStartToEnd = swipeState.dismissDirection == SwipeToDismissBoxValue.StartToEnd
-    val backgroundColor = when (isStartToEnd) {
-        true -> Color.Transparent
-        false -> MaterialTheme.colorScheme.errorContainer
-    }
-    val horizontalArrangement = when (isStartToEnd) {
-        true -> Arrangement.spacedBy(8.dp)
-        false -> Arrangement.End
-    }
     val closeMenuAndFireEvent: (ShoppingListCardEvent) -> Unit = { event ->
         onEvent(event)
         scope.launch { swipeState.reset() }
@@ -79,41 +66,28 @@ fun ShoppingListCard(
 
     SwipeToDismissBox(
         state = swipeState,
-        onDismiss = { state ->
-            if (state == SwipeToDismissBoxValue.EndToStart) {
-                onEvent(ShoppingListCardEvent.Delete(listItem))
-            }
-        },
+        enableDismissFromStartToEnd = false,
         backgroundContent = {
             Surface(
                 modifier = modifier.wrapContentSize(),
                 shape = RoundedCornerShape(12.dp),
-                color = backgroundColor
+                color = Color.Transparent
             ) {
                 Row(
                     modifier = Modifier.fillMaxSize(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = horizontalArrangement
+                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
                 ) {
                     when (swipeState.dismissDirection) {
-                        SwipeToDismissBoxValue.StartToEnd -> Actions(
+                        SwipeToDismissBoxValue.EndToStart -> Actions(
                             onEdit = { closeMenuAndFireEvent(ShoppingListCardEvent.Edit(listItem)) },
                             onCopy = { closeMenuAndFireEvent(ShoppingListCardEvent.Copy(listItem)) },
-                            onIconChange = {
-                                closeMenuAndFireEvent(ShoppingListCardEvent.ChangeIcon(listItem))
-                            }
+                            onDelete = { closeMenuAndFireEvent(ShoppingListCardEvent.Delete(listItem)) }
                         )
 
-                        SwipeToDismissBoxValue.EndToStart -> {
-                            Icon(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                painter = painterResource(Res.drawable.ic_delete_24),
-                                contentDescription = stringResource(Res.string.cd_delete_shopping_list),
-                                tint = MaterialTheme.colorScheme.onErrorContainer
-                            )
+                        SwipeToDismissBoxValue.StartToEnd,
+                        SwipeToDismissBoxValue.Settled -> {
                         }
-
-                        SwipeToDismissBoxValue.Settled -> {}
                     }
                 }
             }
@@ -138,7 +112,7 @@ fun ShoppingListCard(
 private fun Actions(
     onEdit: () -> Unit,
     onCopy: () -> Unit,
-    onIconChange: () -> Unit
+    onDelete: () -> Unit
 ) {
     AppIconButton(
         iconRes = Res.drawable.ic_edit_24,
@@ -149,9 +123,9 @@ private fun Actions(
         contentDescription = stringResource(Res.string.cd_copy_shopping_list)
     ) { onCopy() }
     AppIconButton(
-        iconRes = Res.drawable.ic_docs_add_24,
-        contentDescription = stringResource(Res.string.cd_change_shopping_list_icon)
-    ) { onIconChange() }
+        iconRes = Res.drawable.ic_delete_24,
+        contentDescription = stringResource(Res.string.cd_delete_shopping_list)
+    ) { onDelete() }
 }
 
 @Composable
@@ -176,7 +150,7 @@ private fun ItemContent(
 @Preview
 @PreviewLightDark
 @Composable
-private fun ShoppingListCardPreview(
+private fun ShoppingListCardBasicPreview(
     @PreviewParameter(ShoppingListItemProvider::class)
     listItem: ShoppingListItem
 ) {
@@ -185,7 +159,7 @@ private fun ShoppingListCardPreview(
             modifier = Modifier.padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            ShoppingListCard(listItem, {})
+            ShoppingListCardBasic(listItem, {})
         }
     }
 }
@@ -193,7 +167,7 @@ private fun ShoppingListCardPreview(
 @Preview
 @PreviewLightDark
 @Composable
-private fun ShoppingListCardListPreview() {
+private fun ShoppingListCardBasicListPreview() {
     var items by remember {
         mutableStateOf(
             listOf(
@@ -221,7 +195,7 @@ private fun ShoppingListCardListPreview() {
                     items = items,
                     key = { it.id }
                 ) { item ->
-                    ShoppingListCard(
+                    ShoppingListCardBasic(
                         listItem = item,
                         onEvent = { event ->
                             when (event) {

@@ -1,17 +1,17 @@
 package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui
 
 import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-@Suppress("MagicNumber")
 object AppIconButtonDefaults {
     @Composable
-    fun iconActionColors(
-        containerColor: Color = Color(0xFFEEE0D5),
-        contentColor: Color = Color(0xFF845416),
-        disabledContainerColor: Color = Color(0xFFFEDDBD),
-        disabledContentColor: Color = Color(0xFF281805)
+    fun appIconButtonColors(
+        containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+        contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledContainerColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+        disabledContentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer
     ): IconButtonColors = IconButtonColors(
         containerColor = containerColor,
         contentColor = contentColor,
