@@ -37,6 +37,9 @@ import shoppinglist.composeapp.generated.resources.img_product_list
 fun ProductsScreen(
     modifier: Modifier = Modifier
 ) {
+    val fabContainerColor = Color(0xFFFFDCBB)
+    val fabIconTint = Color(0xFF2B1700)
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -62,11 +65,11 @@ fun ProductsScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { /* добавить товар */ },
-                containerColor = Color(0xFFFFDCBB)) {
+                containerColor = fabContainerColor) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_add_56),
                     contentDescription = "+",
-                    tint = Color(0xFF2B1700)
+                    tint = fabIconTint
                 )
             }
         }
