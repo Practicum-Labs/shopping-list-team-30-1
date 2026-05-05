@@ -75,9 +75,11 @@ kotlin {
             implementation(libs.lifecycle.viewmodel.navigation3)
 
             implementation(libs.kotlinx.coroutines)
+            implementation(libs.kotlinx.coroutines.test)
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.test.junit4)
             implementation(libs.koin.compose.viewmodel)
 
             implementation(libs.compose.components.resources)
