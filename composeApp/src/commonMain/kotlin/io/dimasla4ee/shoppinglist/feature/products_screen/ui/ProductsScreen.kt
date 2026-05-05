@@ -21,12 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
+import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.add_items_hint
 import shoppinglist.composeapp.generated.resources.empty_list_message
-import shoppinglist.composeapp.generated.resources.ic_fab_56
+import shoppinglist.composeapp.generated.resources.ic_add_56
+import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
+import shoppinglist.composeapp.generated.resources.ic_menu_24
 import shoppinglist.composeapp.generated.resources.img_product_list
 
 
@@ -39,7 +42,21 @@ fun ProductsScreen(
         topBar = {
             AppTopBar(
                 title = "Название списка",
-                onNavigationIcon = {}
+                navigationIcon = {
+                    IconButton(onClick = {/* назад */ }) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_arrow_back_24),
+                            contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = listOf(
+                    TopBarIcon(
+                        icon = Res.drawable.ic_menu_24,
+                        contentDescription = "Menu",
+                        onClick = {}
+                    )
+                )
             )
         },
         floatingActionButton = {
@@ -47,7 +64,7 @@ fun ProductsScreen(
                 onClick = { /* добавить товар */ },
                 containerColor = Color(0xFFFFDCBB)) {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_fab_56),
+                    painter = painterResource(Res.drawable.ic_add_56),
                     contentDescription = "+",
                     tint = Color(0xFF2B1700)
                 )
