@@ -60,7 +60,7 @@ private val DarkColorScheme = darkColorScheme(
     onTertiaryContainer = Black,
 
     background = Brown800,
-    onBackground = White,
+    onBackground = Beige50,
 
     surface = Brown700,
     onSurface = White,
@@ -84,9 +84,11 @@ fun ShoppingListTheme(
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
     val appColors = if (darkTheme) DarkAppColors else LightAppColors
+    val appPlaceholders = if (darkTheme) DarkAppPlaceholders else LightAppPlaceholders
 
     CompositionLocalProvider(
-        LocalAppColors provides appColors
+        LocalAppColors provides appColors,
+        LocalAppPlaceholders provides appPlaceholders
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
