@@ -24,7 +24,7 @@ import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.add_items_hint
 import shoppinglist.composeapp.generated.resources.empty_list_message
-import shoppinglist.composeapp.generated.resources.ic_add_circle_24
+import shoppinglist.composeapp.generated.resources.ic_fab_56
 import shoppinglist.composeapp.generated.resources.img_product_list
 
 
@@ -33,6 +33,7 @@ fun ProductsScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             AppTopBar(
                 title = "Название списка",
@@ -42,14 +43,14 @@ fun ProductsScreen(
         floatingActionButton = {
             IconButton(onClick = { /* добавить товар */ }) {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_add_circle_24),
+                    painter = painterResource(Res.drawable.ic_fab_56),
                     contentDescription = "+"
                 )
             }
         }
     ) { padding ->
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primaryContainer),
