@@ -10,10 +10,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,13 +24,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
+import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.ic_list_24
-import shoppinglist.composeapp.generated.resources.img_main_screen
+import shoppinglist.composeapp.generated.resources.ic_main_logo_78
 import shoppinglist.composeapp.generated.resources.onboard_instruction
 import shoppinglist.composeapp.generated.resources.onboard_welcome_message
 import shoppinglist.composeapp.generated.resources.welcome_screen_title
@@ -46,57 +51,67 @@ fun WelcomeScreen(
 
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .safeContentPadding()
-            .fillMaxSize(),
+            .background(MaterialTheme.colorScheme.background)
+            .statusBarsPadding()
+            .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 22.dp)
+            modifier = Modifier.padding(top = 16.dp)
         ) {
             Image(
-                painter = painterResource(Res.drawable.ic_list_24),
-                modifier = Modifier.size(78.dp),
+                painter = painterResource(Res.drawable.ic_main_logo_78),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                 contentDescription = null
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Text(stringResource(Res.string.welcome_screen_title))
+            Text(
+                stringResource(Res.string.welcome_screen_title),
+                fontSize = 36.sp,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         }
 
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(94.dp))
 
         AnimatedVisibility(visible = showContent) {
 
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 44.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 
                 Image(
-                    painter = painterResource(Res.drawable.img_main_screen),
-                    contentDescription = null
+                    painter = painterResource(LocalAppPlaceholders.current.imgMainScreen),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth(),
+                    contentScale = ContentScale.Crop
                 )
 
                 Spacer(modifier = Modifier.height(48.dp))
 
                 Text(
-                    modifier = Modifier.padding(horizontal = 44.dp),
-                    text = stringResource(Res.string.onboard_welcome_message)
+                    text = stringResource(Res.string.onboard_welcome_message),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = AppTypography.labelLarge
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    modifier = Modifier.padding(horizontal = 44.dp),
                     textAlign = TextAlign.Center,
-                    text = stringResource(Res.string.onboard_instruction)
+                    text = stringResource(Res.string.onboard_instruction),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = AppTypography.bodyMedium
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(
             onClick = {
@@ -109,16 +124,16 @@ fun WelcomeScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
         ) {
-            Text(
-                text = "За покупками")
+            Text(text = "За покупками")
         }
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
+@PreviewLightDark
 @Composable
 private fun WelcomeScreenPreview() {
-    MaterialTheme {
+    ShoppingListTheme {
         WelcomeScreen(
             onGoToShopping = {},
             modifier = Modifier.fillMaxSize()

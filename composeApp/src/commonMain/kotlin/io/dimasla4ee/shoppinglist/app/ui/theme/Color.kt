@@ -2,6 +2,7 @@ package io.dimasla4ee.shoppinglist.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val Beige50 = Color(0xFFFFFAF8)
 val Beige100 = Color(0xFFFFF8F4)
 val Beige200 = Color(0xFFFAEBE0)
 val Beige250 = Color(0xFFEEE0D5)
