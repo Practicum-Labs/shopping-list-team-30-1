@@ -1,15 +1,13 @@
 package io.dimasla4ee.shoppinglist.app
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,21 +15,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            ShoppingListTheme {
-                WelcomeScreen(
-                    onGoToShopping = {},
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
+            App()
         }
     }
 }
 
-@Preview
+@Preview("Light Theme", showSystemUi = true)
+@Preview("Dark Theme", showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun AppAndroidPreview() {
-    WelcomeScreen(
-        onGoToShopping = {},
-        modifier = Modifier.fillMaxSize()
-    )
+    ShoppingListTheme {
+        App()
+    }
 }

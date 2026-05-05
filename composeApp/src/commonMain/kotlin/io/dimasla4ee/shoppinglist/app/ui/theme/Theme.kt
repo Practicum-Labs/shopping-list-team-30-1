@@ -12,7 +12,7 @@ private val LightColorScheme = lightColorScheme(
     primary = Beige500,
     onPrimary = Brown500,
 
-    primaryContainer = Beige50,
+    primaryContainer = Beige250,
     onPrimaryContainer = Brown300,
 
     secondary = Brown300,

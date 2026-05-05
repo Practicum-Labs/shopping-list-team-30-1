@@ -1,68 +1,19 @@
 package io.dimasla4ee.shoppinglist.app
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import org.jetbrains.compose.resources.painterResource
-import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.ic_add_circle_24
-import shoppinglist.composeapp.generated.resources.ic_remove_circle_24
+import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
 
 @Composable
 @PreviewLightDark
 fun App() {
     ShoppingListTheme {
-        var showContent by remember { mutableStateOf(false) }
-        val iconRes = remember(showContent) {
-            if (showContent) Res.drawable.ic_add_circle_24 else Res.drawable.ic_remove_circle_24
-        }
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            IconButton(
-                onClick = { showContent = !showContent }
-            ) {
-                Icon(
-                    painter = painterResource(iconRes),
-                    tint = MaterialTheme.colorScheme.onBackground,
-                    contentDescription = null
-                )
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Image(
-                        painter = painterResource(LocalAppPlaceholders.current.imgMainScreen),
-                        contentDescription = null
-                    )
-                    Text("Compose: $greeting")
-                }
-            }
-        }
+        WelcomeScreen(
+            onGoToShopping = {},
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
