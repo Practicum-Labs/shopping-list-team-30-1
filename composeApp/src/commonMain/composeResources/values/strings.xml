@@ -16,6 +16,10 @@
     <string name="search_not_found">Мы не смогли найти то, что вы искали</string>
     <string name="search_hint">Попробуйте изменить запрос или проверить написание</string>
 
+    <!-- Content Description -->
+    <string name="content_menu">Меню</string>
+    <string name="content_back">Назад</string>
+
     <!-- Сообщение о пустом списке -->
     <string name="empty_list_message">В списке покупок пока пусто</string>
     <string name="add_items_hint">Нажмите на кнопку + ниже, чтобы добавить товары</string>
