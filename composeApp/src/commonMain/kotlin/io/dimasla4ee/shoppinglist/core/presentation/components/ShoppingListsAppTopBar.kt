@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.appTopBarColors
@@ -44,7 +43,7 @@ fun ShoppingListsScaffold(
         topBar = {
             TopAppBar(
                 colors = appTopBarColors(),
-                modifier = modifier.padding(end = AppDimensions.endPaddingTopBar),
+                modifier = Modifier.padding(end = AppDimensions.endPaddingTopBar),
                 title = {
                     Text(
                         text = title,
