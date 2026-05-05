@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,10 +43,13 @@ fun ProductsScreen(
             )
         },
         floatingActionButton = {
-            IconButton(onClick = { /* добавить товар */ }) {
+            FloatingActionButton(
+                onClick = { /* добавить товар */ },
+                containerColor = Color(0xFFFFDCBB)) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_fab_56),
-                    contentDescription = "+"
+                    contentDescription = "+",
+                    tint = Color(0xFF2B1700)
                 )
             }
         }
