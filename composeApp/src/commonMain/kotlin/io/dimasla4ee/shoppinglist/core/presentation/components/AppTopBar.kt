@@ -1,6 +1,5 @@
 package io.dimasla4ee.shoppinglist.core.presentation.components
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -12,15 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.ic_add_circle_24
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_16
+import shoppinglist.composeapp.generated.resources.ic_trailing_16
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(
-    modifier: Modifier = Modifier,
     title: String,
+    modifier: Modifier = Modifier,
     onNavigationIcon: (() -> Unit)? = null,
 ) {
     TopAppBar(
@@ -32,7 +31,7 @@ fun AppTopBar(
             if (onNavigationIcon != null) {
                 IconButton(onClick = onNavigationIcon) {
                     Icon(
-                        painter = painterResource(Res.drawable.ic_add_circle_24),
+                        painter = painterResource(Res.drawable.ic_arrow_back_16),
                         contentDescription = "Back"
                     )
                 }
@@ -41,7 +40,7 @@ fun AppTopBar(
         actions = {
             IconButton(onClick = { /* клик */ }) {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_add_circle_24),
+                    painter = painterResource(Res.drawable.ic_trailing_16),
                     contentDescription = "Много"
                 )
             }
