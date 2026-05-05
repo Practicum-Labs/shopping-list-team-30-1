@@ -4,5 +4,6 @@ data class ShoppingList(
     val id: Long,
     val name: String,
     val icon: ShoppingListIcon,
-    val products: List<ShoppingList>
+    //val products: List<ShoppingList>,
+    val products: List<Product>
 )
