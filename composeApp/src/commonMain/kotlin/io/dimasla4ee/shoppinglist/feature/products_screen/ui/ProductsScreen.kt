@@ -26,6 +26,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.add_items_hint
+import shoppinglist.composeapp.generated.resources.content_back
+import shoppinglist.composeapp.generated.resources.content_menu
 import shoppinglist.composeapp.generated.resources.empty_list_message
 import shoppinglist.composeapp.generated.resources.ic_add_56
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
@@ -35,7 +37,10 @@ import shoppinglist.composeapp.generated.resources.img_product_list
 
 @Composable
 fun ProductsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClick: (() -> Unit)? = null,
+    onAddClick: () -> Unit,
+    onMenuClick: () -> Unit
 ) {
     val fabContainerColor = Color(0xFFFFDCBB)
     val fabIconTint = Color(0xFF2B1700)
@@ -46,25 +51,27 @@ fun ProductsScreen(
             AppTopBar(
                 title = "Название списка",
                 navigationIcon = {
-                    IconButton(onClick = {/* назад */ }) {
-                        Icon(
-                            painter = painterResource(Res.drawable.ic_arrow_back_24),
-                            contentDescription = "Back"
-                        )
+                    if (onBackClick != null) {
+                        IconButton(onClick = onBackClick) {
+                            Icon(
+                                painter = painterResource(Res.drawable.ic_arrow_back_24),
+                                contentDescription = stringResource(Res.string.content_back)
+                            )
+                        }
                     }
                 },
                 actions = listOf(
                     TopBarIcon(
                         icon = Res.drawable.ic_menu_24,
-                        contentDescription = "Menu",
-                        onClick = {}
+                        contentDescription = stringResource(Res.string.content_menu),
+                        onClick = onMenuClick
                     )
                 )
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* добавить товар */ },
+                onClick = onAddClick,
                 containerColor = fabContainerColor) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_add_56),
@@ -114,7 +121,10 @@ fun ProductsScreen(
 private fun ProductsScreenPreview() {
     MaterialTheme {
         ProductsScreen(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            onAddClick = {},
+            onBackClick = {},
+            onMenuClick = {}
         )
     }
 }
