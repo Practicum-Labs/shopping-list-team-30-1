@@ -13,11 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
+import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.create_list_hint
-import shoppinglist.composeapp.generated.resources.img_shopping_lists
 import shoppinglist.composeapp.generated.resources.no_lists_message
 
 @Composable
@@ -32,7 +32,7 @@ fun ShoppingListsEmptyState(
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(Res.drawable.img_shopping_lists),
+            painter = painterResource(LocalAppPlaceholders.current.imgShoppingLists),
             contentDescription = null
         )
 
