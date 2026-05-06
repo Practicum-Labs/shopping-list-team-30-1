@@ -6,9 +6,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -30,7 +32,14 @@ fun AppTopBar(
 ) {
     TopAppBar(
         modifier = modifier,
-        title = { Text(title) },
+        title = {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground) },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
 
         navigationIcon = {
             navigationIcon?.invoke()
@@ -41,7 +50,8 @@ fun AppTopBar(
                 IconButton(onClick = action.onClick) {
                     Icon(
                         painter = painterResource(action.icon),
-                        contentDescription = action.contentDescription
+                        contentDescription = action.contentDescription,
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
@@ -52,14 +62,15 @@ fun AppTopBar(
 @Preview(showBackground = true)
 @Composable
 private fun AppTopBarPreview() {
-    MaterialTheme {
+    ShoppingListTheme {
         AppTopBar(
             title = "Название списка",
             navigationIcon = {
                 IconButton(onClick = {}) {
                     Icon(
                         painter = painterResource(Res.drawable.ic_arrow_back_24),
-                        contentDescription = "Back"
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             },
@@ -77,7 +88,7 @@ private fun AppTopBarPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun IvanTopBar() {
-    MaterialTheme {
+    ShoppingListTheme {
         AppTopBar(
             title = "Мои списки",
             actions = listOf(

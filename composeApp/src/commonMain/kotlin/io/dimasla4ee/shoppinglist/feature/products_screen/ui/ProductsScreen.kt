@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
 import org.jetbrains.compose.resources.painterResource
@@ -72,11 +73,12 @@ fun ProductsScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddClick,
-                containerColor = fabContainerColor) {
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_add_56),
                     contentDescription = "+",
-                    tint = fabIconTint
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
@@ -100,7 +102,9 @@ fun ProductsScreen(
 
             Text(
                 modifier = Modifier.padding(horizontal = 44.dp),
-                text = stringResource(Res.string.empty_list_message)
+                text = stringResource(Res.string.empty_list_message),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -108,7 +112,9 @@ fun ProductsScreen(
             Text(
                 modifier = Modifier.padding(horizontal = 44.dp),
                 textAlign = TextAlign.Center,
-                text = stringResource(Res.string.add_items_hint)
+                text = stringResource(Res.string.add_items_hint),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -119,7 +125,7 @@ fun ProductsScreen(
 @Preview
 @Composable
 private fun ProductsScreenPreview() {
-    MaterialTheme {
+    ShoppingListTheme {
         ProductsScreen(
             modifier = Modifier.fillMaxSize(),
             onAddClick = {},
