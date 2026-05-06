@@ -14,11 +14,13 @@ import shoppinglist.composeapp.generated.resources.screen_title
 
 @Composable
 fun ShoppingListsScreen(
+    modifier: Modifier = Modifier,
     viewModel: ShoppingListsViewModel = viewModel() // TODO после реализации навигации вынести туда?
 ) {
     val state = viewModel.state
 
     ShoppingListsScaffold(
+        modifier = modifier,
         title = stringResource(Res.string.screen_title),
 
         action1 = TopBarAction("Search") {},
