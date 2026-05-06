@@ -19,9 +19,11 @@ fun ShoppingListsScreenContent(
     onEvent: (ShoppingListCardEvent) -> Unit,
     onNameChange: (String) -> Unit,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     ShoppingListsScaffold(
+        modifier = modifier,
         title = "Мои списки",
 
         action1 = TopBarAction("Search") {},
@@ -56,7 +58,7 @@ fun ShoppingListsScreenContent(
 
 @PreviewLightDark
 @Composable
-fun ShoppingListsScreenPreview(
+private fun ShoppingListsScreenPreview(
     @PreviewParameter(ShoppingListsStateProvider::class)
     state: ShoppingListsState
 ) {
