@@ -27,6 +27,7 @@ object AppDimensions {
 
     object DialogAddition {
         val iconSize = DpSize(24.dp, 24.dp)
+        val spaceIconTextField = 24.dp
         val textFieldSize = DpSize(264.dp, 56.dp)
         val textFieldPadding = PaddingValues(
             top = paddingMedium,
