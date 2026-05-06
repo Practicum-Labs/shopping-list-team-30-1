@@ -3,6 +3,7 @@ package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
@@ -56,6 +57,7 @@ fun ShoppingListsScreenContent(
     }
 }
 
+@Preview
 @PreviewLightDark
 @Composable
 private fun ShoppingListsScreenPreview(
