@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,13 +37,12 @@ import shoppinglist.composeapp.generated.resources.img_product_list
 
 @Composable
 fun ProductsScreen(
+    onAddClick: () -> Unit,
+    onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null,
-    onAddClick: () -> Unit,
-    onMenuClick: () -> Unit
+
 ) {
-    val fabContainerColor = Color(0xFFFFDCBB)
-    val fabIconTint = Color(0xFF2B1700)
 
     Scaffold(
         modifier = modifier,

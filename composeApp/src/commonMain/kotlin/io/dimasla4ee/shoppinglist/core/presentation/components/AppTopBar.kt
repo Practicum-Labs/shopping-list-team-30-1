@@ -19,7 +19,6 @@ import shoppinglist.composeapp.generated.resources.ic_cancel_circle_24
 import shoppinglist.composeapp.generated.resources.ic_library_add_check_24
 import shoppinglist.composeapp.generated.resources.ic_menu_24
 import shoppinglist.composeapp.generated.resources.ic_remove_circle_24
-import shoppinglist.composeapp.generated.resources.ic_trailing_16
 
 
 @OptIn(ExperimentalMaterial3Api::class)
