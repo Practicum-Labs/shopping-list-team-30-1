@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
 
 object AppDimensions {
 
+    val paddingLarge = 44.dp
     val paddingVeryBig = 32.dp
     val paddingBig = 18.dp
     val paddingMedium = 16.dp
@@ -26,6 +27,7 @@ object AppDimensions {
 
     object DialogAddition {
         val iconSize = DpSize(24.dp, 24.dp)
+        val spaceIconTextField = 24.dp
         val textFieldSize = DpSize(264.dp, 56.dp)
         val textFieldPadding = PaddingValues(
             top = paddingMedium,
