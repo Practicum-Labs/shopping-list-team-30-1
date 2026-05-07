@@ -20,10 +20,11 @@ fun NavigationRoot(
     val entryProvider = remember(topLevelBackStack) { entryProvider(topLevelBackStack) }
 
     Scaffold(
+        modifier = modifier,
         contentWindowInsets = WindowInsets()
     ) { innerPaddings ->
         NavDisplay(
-            modifier = modifier.padding(innerPaddings),
+            modifier = Modifier.padding(innerPaddings),
             backStack = topLevelBackStack.backStack,
             entryDecorators = listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
