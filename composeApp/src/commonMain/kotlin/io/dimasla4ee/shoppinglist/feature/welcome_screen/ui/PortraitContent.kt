@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
@@ -53,13 +52,13 @@ fun PortraitContent(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
-            .navigationBarsPadding(),
+            .navigationBarsPadding()
+            .padding(vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 16.dp)
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(Res.drawable.ic_main_logo_78),
@@ -111,7 +110,7 @@ fun PortraitContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = {
@@ -122,7 +121,7 @@ fun PortraitContent(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 44.dp)
         ) {
             Text(text = "За покупками")
         }
@@ -130,7 +129,6 @@ fun PortraitContent(
 }
 
 @Preview(showSystemUi = true)
-@PreviewLightDark
 @Composable
 private fun PortraitContentPreview() {
     ShoppingListTheme {
