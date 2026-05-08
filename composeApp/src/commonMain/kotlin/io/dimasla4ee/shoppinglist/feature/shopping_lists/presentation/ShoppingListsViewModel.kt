@@ -46,7 +46,6 @@ class ShoppingListsViewModel : ViewModel() {
         )
     }
 
-    // события карточки
     fun onCardEvent(event: ShoppingListCardEvent) {
         when (event) {
 
@@ -74,12 +73,46 @@ class ShoppingListsViewModel : ViewModel() {
             }
 
             is ShoppingListCardEvent.ChangeIcon -> {
-                // TODO
+                onIconClick(event.item.id)
             }
 
             is ShoppingListCardEvent.Click -> {
                 // TODO
             }
         }
+    }
+
+    private fun onIconClick(listId: Long) {
+        state = state.copy(
+            isIconSheetVisible = true,
+            selectedListId = listId
+        )
+    }
+
+    fun onSheetDismiss() {
+        state = state.copy(
+            isIconSheetVisible = false,
+            selectedListId = null
+        )
+    }
+
+    fun onIconSelected(icon: ShoppingListIcon) {
+
+        val selectedId = state.selectedListId ?: return
+
+        val updatedLists = state.lists.map { list ->
+
+            if (list.id == selectedId) {
+                list.copy(icon = icon)
+            } else {
+                list
+            }
+        }
+
+        state = state.copy(
+            lists = updatedLists,
+            isIconSheetVisible = false,
+            selectedListId = null
+        )
     }
 }
