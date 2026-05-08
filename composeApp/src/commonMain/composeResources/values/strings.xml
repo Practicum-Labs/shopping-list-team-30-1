@@ -2,9 +2,10 @@
     <string name="app_name" translatable="false">ShoppingList</string>
 
     <!-- Экран приветствия -->
+    <string name="welcome_screen_title">Список Покупок</string>
     <string name="onboard_welcome_message">Добро пожаловать в Список покупок!</string>
     <string name="onboard_instruction">Создавайте списки, добавляйте товары, отмечайте, что уже куплено</string>
-    <string name="welcome_screen_title">Список Покупок</string>
+    <string name="shopping">За покупками</string>
 
     <!-- Экран авторизации -->
     <string name="authorization_email_hint">Введите Email</string>
