@@ -39,7 +39,11 @@ private val LightColorScheme = lightColorScheme(
     outlineVariant = Gray500,
 
     error = Brown300,
-    onError = White
+    onError = White,
+
+    surfaceContainerHigh = Beige150,
+    surfaceContainerHighest = Brown600
+
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -74,7 +78,10 @@ private val DarkColorScheme = darkColorScheme(
     outlineVariant = Gray400,
 
     error = Orange500,
-    onError = Brown900
+    onError = Brown900,
+
+    surfaceContainerHigh = Brown700,
+    surfaceContainerHighest = Brown600
 )
 
 @Composable
