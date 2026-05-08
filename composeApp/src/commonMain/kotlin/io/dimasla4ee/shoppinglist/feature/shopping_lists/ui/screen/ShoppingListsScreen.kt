@@ -58,7 +58,7 @@ fun ShoppingListsScreen(
             selectedIcon = state.lists
                 .find { it.id == state.selectedListId }
                 ?.icon,
-            onIconSelected = viewModel::onIconSelected,
+            onIconSelect = viewModel::onIconSelected,
             onDismiss = viewModel::onSheetDismiss
         )
     }
