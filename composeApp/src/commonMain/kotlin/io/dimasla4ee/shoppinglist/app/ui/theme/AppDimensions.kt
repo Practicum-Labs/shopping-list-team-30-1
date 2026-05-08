@@ -14,6 +14,10 @@ object AppDimensions {
     val paddingVerySmall = 6.dp
     val endPaddingTopBar = 4.dp
 
+    val spacerSmall = 8.dp
+    val spacerLarge = 48.dp
+    val spacerVeryLarge = 94.dp
+
     val fab = DpSize(56.dp, 56.dp)
     val topAppIconSize = DpSize(48.dp, 48.dp)
 

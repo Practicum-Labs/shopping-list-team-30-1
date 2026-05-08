@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
@@ -38,6 +39,7 @@ import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_main_logo_78
 import shoppinglist.composeapp.generated.resources.onboard_instruction
 import shoppinglist.composeapp.generated.resources.onboard_welcome_message
+import shoppinglist.composeapp.generated.resources.shopping
 import shoppinglist.composeapp.generated.resources.welcome_screen_title
 
 @Composable
@@ -53,7 +55,7 @@ fun LandscapeContent(
             .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(16.dp)
+            .padding(AppDimensions.paddingMedium)
     ) {
         Box(
             modifier = Modifier.weight(1F),
@@ -72,7 +74,7 @@ fun LandscapeContent(
             contentAlignment = Alignment.Center
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 44.dp)
+                modifier = Modifier.padding(horizontal = AppDimensions.paddingLarge)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -105,7 +107,7 @@ fun LandscapeContent(
                             style = AppTypography.labelLarge
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
 
                         Text(
                             textAlign = TextAlign.Center,
@@ -127,7 +129,7 @@ fun LandscapeContent(
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "За покупками")
+                    Text(text = stringResource(Res.string.shopping))
                 }
             }
         }
