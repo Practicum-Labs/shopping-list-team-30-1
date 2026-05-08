@@ -17,20 +17,20 @@ import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.screen_title
 
 fun entryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryProvider<NavKey> {
-    entry<Route.Onboard> {
+    entry<Route.Welcome> {
         WelcomeScreen(
-            onGoToShopping = { topLevelBackStack.add(Route.Main) },
+            onGoToShopping = { topLevelBackStack.add(Route.ShoppingLists) },
             modifier = Modifier.fillMaxSize()
         )
     }
 
-    entry<Route.Main> {
+    entry<Route.ShoppingLists> {
         // TODO(feature-team): интегрировать экран списков покупок и удалить ScreenPlaceholder
         ScreenPlaceholder(stringResource(Res.string.screen_title))
     }
 
-    entry<Route.Products> {
-        // TODO(feature-team): интегрировать экран списка покупок и удалить ScreenPlaceholder
+    entry<Route.ProductsList> {
+        // TODO(feature-team): интегрировать экран списка товаров и удалить ScreenPlaceholder
         ScreenPlaceholder("Products")
     }
 

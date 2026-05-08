@@ -16,7 +16,7 @@ import kotlin.collections.listOf
 fun NavigationRoot(
     modifier: Modifier = Modifier
 ) {
-    val topLevelBackStack = TopLevelBackStack<NavKey>(startKey = Route.Onboard)
+    val topLevelBackStack = TopLevelBackStack<NavKey>(startKey = Route.Welcome)
     val entryProvider = remember(topLevelBackStack) { entryProvider(topLevelBackStack) }
 
     Scaffold(
