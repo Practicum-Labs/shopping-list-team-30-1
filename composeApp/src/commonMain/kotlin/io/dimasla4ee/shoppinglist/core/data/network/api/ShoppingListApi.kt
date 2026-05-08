@@ -1,9 +1,14 @@
-package io.dimasla4ee.shoppinglist.core.data.network
+package io.dimasla4ee.shoppinglist.core.data.network.api
 
 import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Header
 import de.jensklingenberg.ktorfit.http.POST
+import io.dimasla4ee.shoppinglist.core.data.network.dto.CheckResponse
+import io.dimasla4ee.shoppinglist.core.data.network.dto.RefreshTokenResponse
+import io.dimasla4ee.shoppinglist.core.data.network.dto.RegisterResponse
+import io.dimasla4ee.shoppinglist.core.data.network.dto.Request
+import io.dimasla4ee.shoppinglist.core.data.network.dto.UserAuthResponse
 
 /**
  * API для работы с аутентификацией пользователя.
