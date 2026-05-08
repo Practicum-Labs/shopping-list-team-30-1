@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,11 +30,13 @@ import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.core.presentation.mappers.toDrawableResource
 import org.jetbrains.compose.resources.painterResource
 
+private const val ICON_PICKER_COLUMNS = 5
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IconPickerBottomSheet(
     selectedIcon: ShoppingListIcon?,
-    onIconSelected: (ShoppingListIcon) -> Unit,
+    onIconSelect: (ShoppingListIcon) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -59,13 +60,13 @@ fun IconPickerBottomSheet(
                 modifier = Modifier
                     .width(AppDimensions.IconBottomSheet.handler.width)
                     .height(AppDimensions.IconBottomSheet.handler.height),
-                shape = RoundedCornerShape(100),
+                shape = CircleShape,
                 color = MaterialTheme.colorScheme.outlineVariant
             ) {}
         }
 
         LazyVerticalGrid(
-            columns = GridCells.Fixed(5),
+            columns = GridCells.Fixed(ICON_PICKER_COLUMNS),
 
             modifier = Modifier
                 .fillMaxWidth()
@@ -103,7 +104,7 @@ fun IconPickerBottomSheet(
                     IconButton(
                         modifier = Modifier.size(AppDimensions.clickableAreaOfIcon),
                         onClick = {
-                            onIconSelected(icon)
+                            onIconSelect(icon)
                         }
                     ) {
                         Icon(
@@ -132,7 +133,7 @@ private fun IconPickerBottomSheetPreview() {
     ShoppingListTheme {
         IconPickerBottomSheet(
             selectedIcon = ShoppingListIcon.SHOPPING_CART,
-            onIconSelected = {},
+            onIconSelect = {},
             onDismiss = {}
         )
     }
