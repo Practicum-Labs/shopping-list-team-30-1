@@ -1,0 +1,139 @@
+package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.bottom_sheet
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
+import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
+import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
+import io.dimasla4ee.shoppinglist.core.presentation.mappers.toDrawableResource
+import org.jetbrains.compose.resources.painterResource
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun IconPickerBottomSheet(
+    selectedIcon: ShoppingListIcon?,
+    onIconSelected: (ShoppingListIcon) -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    val sheetState = rememberModalBottomSheetState()
+
+    ModalBottomSheet(
+        modifier = modifier,
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        dragHandle = null
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppDimensions.paddingMedium, bottom = AppDimensions.paddingBigger),
+            contentAlignment = Alignment.Center
+        ) {
+            Surface(
+                modifier = Modifier
+                    .width(AppDimensions.IconBottomSheet.handler.width)
+                    .height(AppDimensions.IconBottomSheet.handler.height),
+                shape = RoundedCornerShape(100),
+                color = MaterialTheme.colorScheme.outlineVariant
+            ) {}
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(5),
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = AppDimensions.paddingMedium,
+                    vertical = AppDimensions.paddingMedium
+                ),
+
+            horizontalArrangement = Arrangement.spacedBy(
+                space = AppDimensions.bottomSheetIconsSpaceBy,
+                alignment = Alignment.CenterHorizontally
+            ),
+
+            verticalArrangement = Arrangement.spacedBy(AppDimensions.bottomSheetIconsSpaceBy),
+            contentPadding = PaddingValues(horizontal = AppDimensions.bottomSheetIconsSpaceBy)
+        ) {
+
+            items(ShoppingListIcon.entries) { icon ->
+                val isSelected = icon == selectedIcon
+
+                Box(
+                    modifier = Modifier.size(AppDimensions.clickableAreaOfIcon),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Surface(
+                        modifier = Modifier.size(AppDimensions.areaOfIcon),
+                        shape = CircleShape,
+                        color = if (isSelected) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.tertiaryContainer
+                        }
+                    ) {}
+
+                    IconButton(
+                        modifier = Modifier.size(AppDimensions.clickableAreaOfIcon),
+                        onClick = {
+                            onIconSelected(icon)
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(
+                                icon.toDrawableResource()
+                            ),
+                            contentDescription = icon.name,
+                            tint = if (isSelected) {
+                                MaterialTheme.colorScheme.onPrimaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.surfaceContainerHighest
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@PreviewLightDark
+@Composable
+private fun IconPickerBottomSheetPreview() {
+
+    ShoppingListTheme {
+        IconPickerBottomSheet(
+            selectedIcon = ShoppingListIcon.SHOPPING_CART,
+            onIconSelected = {},
+            onDismiss = {}
+        )
+    }
+}
