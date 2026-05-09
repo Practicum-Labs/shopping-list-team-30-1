@@ -60,7 +60,7 @@ class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> 
                     products = emptyList()
                 )
             ),
-            isIconSheetVisible = true, //!!!
+            isIconSheetVisible = true,
             selectedListId = 1
         ),
 
@@ -74,6 +74,31 @@ class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> 
                 )
             ),
             isDeleteAllDialogVisible = true,
+        ),
+
+        ShoppingListsState(
+            lists = listOf(
+                ShoppingList(
+                    id = 1,
+                    name = "Продукты",
+                    icon = ShoppingListIcon.SHOPPING_CART,
+                    products = emptyList()
+                )
+            ),
+            isDeleteDialogVisible = true,
+        ),
+
+        ShoppingListsState(
+            lists = listOf(
+                ShoppingList(
+                    id = 1,
+                    name = "Продукты",
+                    icon = ShoppingListIcon.SHOPPING_CART,
+                    products = emptyList()
+                )
+            ),
+            isRenameDialogVisible = true,
+            renameValue = "Фрукты"
         ),
     )
 }

@@ -11,9 +11,11 @@ fun ShoppingListsScreen(
     viewModel: ShoppingListsViewModel = viewModel()
 ) {
     val state = viewModel.state
+    val visibleLists = viewModel.visibleLists
 
     ShoppingListsScreenContent(
         state = state,
+        visibleLists = visibleLists,
         onFabClick = viewModel::onFabClick,
         onEvent = viewModel::onCardEvent,
         onNameChange = viewModel::onNameChange,
@@ -24,6 +26,11 @@ fun ShoppingListsScreen(
         onDeleteAllClick = viewModel::onDeleteAllClick,
         onDeleteAllDismiss = viewModel::onDeleteAllDismiss,
         onDeleteAllConfirm = viewModel::onDeleteAllConfirm,
+        onDeleteDismiss = viewModel::onDeleteDismiss,
+        onDeleteConfirm = viewModel::onDeleteConfirm,
+        onRenameValueChange = viewModel::onRenameValueChange,
+        onRenameDismiss = viewModel::onRenameDismiss,
+        onRenameConfirm = viewModel::onRenameConfirm,
         modifier = modifier
     )
 }

@@ -7,6 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
+import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListsScaffold
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarAction
@@ -15,6 +16,8 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.bottom_sheet.IconPickerBottomSheet
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.CreateListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteAllListsDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteListDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.RenameListDialog
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.screen_title
@@ -22,6 +25,7 @@ import shoppinglist.composeapp.generated.resources.screen_title
 @Composable
 fun ShoppingListsScreenContent(
     state: ShoppingListsState,
+    visibleLists: List<ShoppingList>,
     onFabClick: () -> Unit,
     onEvent: (ShoppingListCardEvent) -> Unit,
     onNameChange: (String) -> Unit,
@@ -32,6 +36,11 @@ fun ShoppingListsScreenContent(
     onDeleteAllClick: () -> Unit,
     onDeleteAllDismiss: () -> Unit,
     onDeleteAllConfirm: () -> Unit,
+    onDeleteDismiss: () -> Unit,
+    onDeleteConfirm: () -> Unit,
+    onRenameValueChange: (String) -> Unit,
+    onRenameDismiss: () -> Unit,
+    onRenameConfirm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -45,13 +54,13 @@ fun ShoppingListsScreenContent(
         onFabClick = onFabClick
     ) { padding ->
 
-        if (state.lists.isEmpty()) {
+        if (visibleLists.isEmpty()) {
             ShoppingListsEmptyState(
                 modifier = Modifier.padding(padding)
             )
         } else {
             ShoppingListsContent(
-                lists = state.lists,
+                lists = visibleLists,
                 onEvent = onEvent,
                 modifier = Modifier.padding(padding)
             )
@@ -83,6 +92,27 @@ fun ShoppingListsScreenContent(
             onConfirm = onDeleteAllConfirm
         )
     }
+
+    val selectedList = state.lists.find {
+        it.id == state.selectedListId
+    }
+
+    if (state.isDeleteDialogVisible) {
+        DeleteListDialog(
+            listName = selectedList?.name.orEmpty(),
+            onDismiss = onDeleteDismiss,
+            onConfirm = onDeleteConfirm
+        )
+    }
+
+    if (state.isRenameDialogVisible) {
+        RenameListDialog(
+            newName = state.renameValue,
+            onRenameChange = onRenameValueChange,
+            onDismiss = onRenameDismiss,
+            onConfirm = onRenameConfirm
+        )
+    }
 }
 
 @Preview
@@ -95,6 +125,7 @@ private fun ShoppingListsScreenPreview(
     ShoppingListTheme {
         ShoppingListsScreenContent(
             state = state,
+            visibleLists = state.lists,
             onFabClick = {},
             onEvent = {},
             onNameChange = {},
@@ -104,7 +135,12 @@ private fun ShoppingListsScreenPreview(
             onSheetDismiss = {},
             onDeleteAllClick = {},
             onDeleteAllDismiss = {},
-            onDeleteAllConfirm ={}
+            onDeleteAllConfirm = {},
+            onDeleteConfirm = {},
+            onDeleteDismiss = {},
+            onRenameValueChange = {},
+            onRenameDismiss = {},
+            onRenameConfirm = {}
         )
     }
 }
