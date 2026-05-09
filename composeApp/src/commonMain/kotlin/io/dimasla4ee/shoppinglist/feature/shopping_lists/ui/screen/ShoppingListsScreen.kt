@@ -21,6 +21,9 @@ fun ShoppingListsScreen(
         onConfirm = viewModel::onCreateList,
         onIconSelect = viewModel::onIconSelected,
         onSheetDismiss = viewModel::onSheetDismiss,
+        onDeleteAllClick = viewModel::onDeleteAllClick,
+        onDeleteAllDismiss = viewModel::onDeleteAllDismiss,
+        onDeleteAllConfirm = viewModel::onDeleteAllConfirm,
         modifier = modifier
     )
 }

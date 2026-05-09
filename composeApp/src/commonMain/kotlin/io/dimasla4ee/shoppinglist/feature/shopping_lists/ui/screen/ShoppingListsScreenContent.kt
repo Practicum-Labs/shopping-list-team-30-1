@@ -14,6 +14,7 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsState
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.bottom_sheet.IconPickerBottomSheet
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.CreateListDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteAllListsDialog
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.screen_title
@@ -28,6 +29,9 @@ fun ShoppingListsScreenContent(
     onConfirm: () -> Unit,
     onIconSelect: (ShoppingListIcon) -> Unit,
     onSheetDismiss: () -> Unit,
+    onDeleteAllClick: () -> Unit,
+    onDeleteAllDismiss: () -> Unit,
+    onDeleteAllConfirm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -35,7 +39,8 @@ fun ShoppingListsScreenContent(
         modifier = modifier,
         title = stringResource(Res.string.screen_title),
         action1 = TopBarAction("Search") {},
-        action2 = TopBarAction("Delete") {},
+        action2 = TopBarAction("Delete",
+            onClick = onDeleteAllClick),
         action3 = TopBarAction("Theme") {},
         onFabClick = onFabClick
     ) { padding ->
@@ -71,6 +76,13 @@ fun ShoppingListsScreenContent(
             onDismiss = onSheetDismiss
         )
     }
+
+    if (state.isDeleteAllDialogVisible) {
+        DeleteAllListsDialog(
+            onDismiss = onDeleteAllDismiss,
+            onConfirm = onDeleteAllConfirm
+        )
+    }
 }
 
 @Preview
@@ -89,7 +101,10 @@ private fun ShoppingListsScreenPreview(
             onDismiss = {},
             onConfirm = {},
             onIconSelect = {},
-            onSheetDismiss = {}
+            onSheetDismiss = {},
+            onDeleteAllClick = {},
+            onDeleteAllDismiss = {},
+            onDeleteAllConfirm ={}
         )
     }
 }

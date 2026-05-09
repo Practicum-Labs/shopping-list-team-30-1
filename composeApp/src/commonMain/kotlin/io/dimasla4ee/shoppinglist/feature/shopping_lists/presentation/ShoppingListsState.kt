@@ -7,5 +7,6 @@ data class ShoppingListsState(
     val isDialogVisible: Boolean = false,
     val newListName: String = "",
     val isIconSheetVisible: Boolean = false,
-    val selectedListId: Long? = null
+    val selectedListId: Long? = null,
+    val isDeleteAllDialogVisible: Boolean = false
 )

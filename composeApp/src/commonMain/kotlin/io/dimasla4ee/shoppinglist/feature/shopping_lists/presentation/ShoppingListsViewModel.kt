@@ -12,7 +12,6 @@ class ShoppingListsViewModel : ViewModel() {
     var state by mutableStateOf(ShoppingListsState())
         private set
 
-    // FAB
     fun onFabClick() {
         state = state.copy(isDialogVisible = true)
     }
@@ -67,15 +66,12 @@ class ShoppingListsViewModel : ViewModel() {
                     lists = state.lists + newList
                 )
             }
-
             is ShoppingListCardEvent.Edit -> {
                 // TODO
             }
-
             is ShoppingListCardEvent.ChangeIcon -> {
                 onIconClick(event.item.id)
             }
-
             is ShoppingListCardEvent.Click -> {
                 // TODO
             }
@@ -113,6 +109,25 @@ class ShoppingListsViewModel : ViewModel() {
             lists = updatedLists,
             isIconSheetVisible = false,
             selectedListId = null
+        )
+    }
+
+    fun onDeleteAllClick() {
+        state = state.copy(
+            isDeleteAllDialogVisible = true
+        )
+    }
+
+    fun onDeleteAllDismiss() {
+        state = state.copy(
+            isDeleteAllDialogVisible = false
+        )
+    }
+
+    fun onDeleteAllConfirm() {
+        state = state.copy(
+            lists = emptyList(),
+            isDeleteAllDialogVisible = false
         )
     }
 }
