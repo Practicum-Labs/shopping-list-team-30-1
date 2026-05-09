@@ -62,6 +62,18 @@ class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> 
             ),
             isIconSheetVisible = true, //!!!
             selectedListId = 1
-        )
+        ),
+
+        ShoppingListsState(
+            lists = listOf(
+                ShoppingList(
+                    id = 1,
+                    name = "Продукты",
+                    icon = ShoppingListIcon.SHOPPING_CART,
+                    products = emptyList()
+                )
+            ),
+            isDeleteAllDialogVisible = true,
+        ),
     )
 }
