@@ -44,7 +44,8 @@ fun IconPickerBottomSheet(
     val sheetState = rememberModalBottomSheetState()
 
     ModalBottomSheet(
-        modifier = modifier,
+        modifier = modifier
+            .padding(horizontal = AppDimensions.paddingSmall),
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
