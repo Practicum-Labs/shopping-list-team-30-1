@@ -4,7 +4,6 @@ import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import org.koin.core.qualifier.named
 
 class ShoppingListsInteractorImpl(
     private val repository: ShoppingListsRepository
