@@ -60,7 +60,7 @@ class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> 
                     products = emptyList()
                 )
             ),
-            isIconSheetVisible = false, //!!!
+            isIconSheetVisible = true, //!!!
             selectedListId = 1
         )
     )
