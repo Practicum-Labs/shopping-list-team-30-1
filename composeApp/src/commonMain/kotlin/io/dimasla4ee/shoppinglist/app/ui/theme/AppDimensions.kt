@@ -1,6 +1,7 @@
 package io.dimasla4ee.shoppinglist.app.ui.theme
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 
@@ -8,16 +9,21 @@ object AppDimensions {
 
     val paddingLarge = 44.dp
     val paddingVeryBig = 32.dp
+    val paddingBigger = 24.dp
     val paddingBig = 18.dp
+    val bottomSheetIconsSpaceBy = 12.dp
     val paddingMedium = 16.dp
     val paddingSmall = 8.dp
     val paddingVerySmall = 6.dp
     val endPaddingTopBar = 4.dp
 
+    val clickableAreaOfIcon = 56.dp
+    val areaOfIcon = 40.dp
+
     val fab = DpSize(56.dp, 56.dp)
     val topAppIconSize = DpSize(48.dp, 48.dp)
 
-    object TopAppBar { // !
+    object TopAppBar {
         val paddings = PaddingValues(
             top = paddingBig,
             bottom = paddingBig,
@@ -114,5 +120,9 @@ object AppDimensions {
             bottom = paddingMedium,
             start = paddingMedium
         )
+    }
+
+    object IconBottomSheet {
+        val handler = DpSize(32.dp, 4.dp)
     }
 }

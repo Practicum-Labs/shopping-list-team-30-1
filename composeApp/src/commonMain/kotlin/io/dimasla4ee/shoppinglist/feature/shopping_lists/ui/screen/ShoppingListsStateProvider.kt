@@ -49,6 +49,19 @@ class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> 
             ),
             isDialogVisible = true,
             newListName = "Новый список"
+        ),
+
+        ShoppingListsState(
+            lists = listOf(
+                ShoppingList(
+                    id = 1,
+                    name = "Продукты",
+                    icon = ShoppingListIcon.SHOPPING_CART,
+                    products = emptyList()
+                )
+            ),
+            isIconSheetVisible = true, //!!!
+            selectedListId = 1
         )
     )
 }
