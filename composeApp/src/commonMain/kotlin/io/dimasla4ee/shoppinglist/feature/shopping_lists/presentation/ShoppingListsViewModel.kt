@@ -195,19 +195,23 @@ class ShoppingListsViewModel(
     }
 
     fun onRenameConfirm() {
-        val id = state.renameTargetId ?: return
+        val id = state.renameTargetId
         val name = state.renameValue.trim()
-        if (name.isEmpty()) return
-        val oldList = state.lists.find {
-            it.id == id
-        } ?: return
 
-        viewModelScope.launch {
-            interactor.updateShoppingList(
-                oldList.copy(name = name)
-            )
+        val oldList = state.lists.find { it.id == id }
+
+        if (
+            id != null &&
+            name.isNotEmpty() &&
+            oldList != null
+        ) {
+            viewModelScope.launch {
+                interactor.updateShoppingList(
+                    oldList.copy(name = name)
+                )
+            }
+            onRenameDismiss()
         }
-        onRenameDismiss()
     }
 
     fun onDeleteDismiss() {
