@@ -125,4 +125,12 @@ object AppDimensions {
     object IconBottomSheet {
         val handler = DpSize(32.dp, 4.dp)
     }
+
+    object RegisterDimensions {
+        val ContentSpacing = 16.dp
+        val ButtonHeight = 56.dp
+        val ButtonCornerRadius = 8.dp
+        val FooterTopPadding = 16.dp
+        val ScreenHorizontalPadding = 16.dp
+    }
 }
