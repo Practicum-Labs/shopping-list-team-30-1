@@ -1,17 +1,7 @@
 package io.dimasla4ee.shoppinglist.feature.authorization.presentation
 
-import shoppinglist.composeapp.generated.resources.authorization_button
-import shoppinglist.composeapp.generated.resources.authorization_email_hint
-import shoppinglist.composeapp.generated.resources.authorization_email_label
-import shoppinglist.composeapp.generated.resources.authorization_forgot_password
-import shoppinglist.composeapp.generated.resources.authorization_no_account
-import shoppinglist.composeapp.generated.resources.authorization_password_hint
-import shoppinglist.composeapp.generated.resources.authorization_password_label
-import shoppinglist.composeapp.generated.resources.authorization_sign_in
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,7 +9,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -34,13 +23,23 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
+import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions.SignInDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppOutlinedPasswordTextField
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppOutlinedTextField
+import io.dimasla4ee.shoppinglist.core.presentation.preview.CenterAlignedBoxWithSystemPaddings
 import io.dimasla4ee.shoppinglist.core.utils.appDefaultFormSize
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
-import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions.SignInDimensions
+import shoppinglist.composeapp.generated.resources.authorization_button
+import shoppinglist.composeapp.generated.resources.authorization_email_hint
+import shoppinglist.composeapp.generated.resources.authorization_email_label
+import shoppinglist.composeapp.generated.resources.authorization_forgot_password
+import shoppinglist.composeapp.generated.resources.authorization_no_account
+import shoppinglist.composeapp.generated.resources.authorization_password_hint
+import shoppinglist.composeapp.generated.resources.authorization_password_label
+import shoppinglist.composeapp.generated.resources.authorization_sign_in
 
 @Composable
 fun SignInContent(
@@ -123,30 +122,21 @@ fun SignInContent(
 @Composable
 private fun PreviewSignInContent(
     @PreviewParameter(SignInInfoProvider::class) state: SignInState
-) {
+) = ShoppingListTheme {
     var localState by remember { mutableStateOf(state) }
 
-    ShoppingListTheme {
-        Scaffold(Modifier.fillMaxSize()) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                SignInContent(
-                    state = localState,
-                    onSignIn = {},
-                    onRegistration = {},
-                    onForgotPassword = {},
-                    onShowPassword = {
-                        localState = localState.copy(
-                            isPasswordVisible = !localState.isPasswordVisible
-                        )
-                    },
-                    modifier = Modifier.padding(horizontal = SignInDimensions.ScreenHorizontalPadding)
+    CenterAlignedBoxWithSystemPaddings {
+        SignInContent(
+            state = localState,
+            onSignIn = {},
+            onRegistration = {},
+            onForgotPassword = {},
+            onShowPassword = {
+                localState = localState.copy(
+                    isPasswordVisible = !localState.isPasswordVisible
                 )
-            }
-        }
+            },
+            modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
+        )
     }
 }

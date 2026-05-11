@@ -1,9 +1,7 @@
 package io.dimasla4ee.shoppinglist.feature.authorization.presentation
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +9,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -26,10 +23,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions.RegisterDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppOutlinedPasswordTextField
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppOutlinedTextField
+import io.dimasla4ee.shoppinglist.core.presentation.preview.CenterAlignedBoxWithSystemPaddings
 import io.dimasla4ee.shoppinglist.core.utils.appDefaultFormSize
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -103,29 +102,20 @@ fun RegisterContent(
 @Composable
 private fun PreviewRegisterContent(
     @PreviewParameter(RegisterInfoProvider::class) state: RegisterState
-) {
+) = ShoppingListTheme {
     var localState by remember { mutableStateOf(state) }
 
-    ShoppingListTheme {
-        Scaffold(Modifier.fillMaxSize()) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                RegisterContent(
-                    state = localState,
-                    onRegister = {},
-                    onAuthorization = {},
-                    onShowPassword = {
-                        localState = localState.copy(
-                            isPasswordVisible = !localState.isPasswordVisible
-                        )
-                    },
-                    modifier = Modifier.padding(horizontal = RegisterDimensions.ScreenHorizontalPadding)
+    CenterAlignedBoxWithSystemPaddings {
+        RegisterContent(
+            state = localState,
+            onRegister = {},
+            onAuthorization = {},
+            onShowPassword = {
+                localState = localState.copy(
+                    isPasswordVisible = !localState.isPasswordVisible
                 )
-            }
-        }
+            },
+            modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
+        )
     }
 }
