@@ -133,4 +133,12 @@ object AppDimensions {
         val FooterTopPadding = 16.dp
         val ScreenHorizontalPadding = 16.dp
     }
+
+    object SignInDimensions {
+        val ContentSpacing = 16.dp
+        val ButtonHeight = 56.dp
+        val ButtonCornerRadius = 8.dp
+        val FooterTopPadding = 16.dp
+        val ScreenHorizontalPadding = 16.dp
+    }
 }
