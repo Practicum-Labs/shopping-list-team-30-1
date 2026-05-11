@@ -4,72 +4,71 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListsState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class ShoppingListsViewModel : ViewModel() {
+class ShoppingListsViewModel(
+    private val interactor: ShoppingListsInteractor
+) : ViewModel() {
 
     var state by mutableStateOf(ShoppingListsState())
         private set
 
-    // FAB
+    private var observeJob: Job? = null
+
+    fun observeLists() {
+        if (observeJob != null) return
+
+        observeJob = viewModelScope.launch {
+            interactor.getShoppingLists().collect { lists ->
+                state = state.copy(
+                    lists = lists
+                )
+            }
+        }
+    }
+
     fun onFabClick() {
-        state = state.copy(isDialogVisible = true)
+        state = state.copy(dialog = ShoppingListDialog.Create)
     }
 
-    fun onDialogDismiss() {
-        state = state.copy(
-            isDialogVisible = false,
-            newListName = ""
-        )
-    }
-
-    fun onNameChange(value: String) {
-        state = state.copy(newListName = value)
-    }
-
-    fun onCreateList() {
-        val name = state.newListName.trim()
-        if (name.isEmpty()) return
-
-        val newList = ShoppingList(
-            id = System.currentTimeMillis(),
-            name = name,
-            icon = ShoppingListIcon.SHOPPING_CART,
-            products = emptyList()
-        )
-
-        state = state.copy(
-            lists = state.lists + newList,
-            isDialogVisible = false,
-            newListName = ""
-        )
+    fun onDeleteAllClick() {
+        state = state.copy(dialog = ShoppingListDialog.DeleteAll)
     }
 
     fun onCardEvent(event: ShoppingListCardEvent) {
         when (event) {
-
             is ShoppingListCardEvent.Delete -> {
                 state = state.copy(
-                    lists = state.lists.filterNot { it.id == event.item.id }
+                    dialog = ShoppingListDialog.Delete(event.item.id),
+                    deleteTargetId = event.item.id
                 )
             }
 
             is ShoppingListCardEvent.Copy -> {
-                val original = state.lists.find { it.id == event.item.id } ?: return
+                val target = state.lists.find {
+                    it.id == event.item.id
+                } ?: return
 
-                val newList = original.copy(
-                    id = System.currentTimeMillis(),
-                    name = "${original.name} (копия)"
-                )
-
-                state = state.copy(
-                    lists = state.lists + newList
-                )
+                viewModelScope.launch {
+                    interactor.duplicateShoppingList(target)
+                }
             }
 
             is ShoppingListCardEvent.Edit -> {
-                // TODO
+                state = state.copy(
+                    dialog = ShoppingListDialog.Rename(
+                        id = event.item.id,
+                        value = event.item.name
+                    ),
+                    renameValue = event.item.name
+                )
             }
 
             is ShoppingListCardEvent.ChangeIcon -> {
@@ -83,10 +82,32 @@ class ShoppingListsViewModel : ViewModel() {
     }
 
     private fun onIconClick(listId: Long) {
+        state = state.copy(selectedListId = listId)
+    }
+
+    fun onDialogDismiss() {
         state = state.copy(
-            isIconSheetVisible = true,
-            selectedListId = listId
+            dialog = ShoppingListDialog.None,
+            newListName = "",
+            renameValue = "",
+            selectedListId = null
         )
+    }
+
+    fun onNameChange(value: String) {
+        state = state.copy(newListName = value)
+    }
+
+    fun onCreateList() {
+        val name = state.newListName.trim()
+        if (name.isEmpty()) return
+
+        viewModelScope.launch {
+            state = state.copy(
+                dialog = ShoppingListDialog.None,
+                newListName = ""
+            )
+        }
     }
 
     fun onSheetDismiss() {
@@ -100,19 +121,87 @@ class ShoppingListsViewModel : ViewModel() {
 
         val selectedId = state.selectedListId ?: return
 
-        val updatedLists = state.lists.map { list ->
+        val targetList = state.lists.find {
+            it.id == selectedId
+        } ?: return
 
-            if (list.id == selectedId) {
-                list.copy(icon = icon)
-            } else {
-                list
-            }
+        viewModelScope.launch {
+            interactor.updateShoppingList(
+                targetList.copy(icon = icon)
+            )
         }
 
         state = state.copy(
-            lists = updatedLists,
             isIconSheetVisible = false,
             selectedListId = null
         )
+    }
+
+    fun onDeleteAllConfirm() {
+        viewModelScope.launch {
+            interactor.deleteAllShoppingLists()
+            onDialogDismiss()
+        }
+    }
+
+    fun onSearchClick() {
+        state = state.copy(
+            isSearchMode = true
+        )
+    }
+
+    fun onSearchDismiss() {
+        state = state.copy(
+            isSearchMode = false,
+            searchQuery = ""
+        )
+    }
+
+    fun onSearchQueryChange(value: String) {
+        state = state.copy(
+            searchQuery = value
+        )
+    }
+
+    val visibleLists: List<ShoppingList>
+        get() {
+            val query = state.searchQuery.trim()
+            if (query.isEmpty()) {
+                return state.lists
+            }
+            return state.lists.filter { list ->
+                list.name.contains(query, ignoreCase = true)
+            }
+        }
+
+    fun onRenameValueChange(value: String) {
+        state = state.copy(renameValue = value)
+    }
+
+    fun onRenameConfirm() {
+        val dialog = state.dialog as? ShoppingListDialog.Rename ?: return
+        val name = state.renameValue.trim()
+
+        val oldList = state.lists.find { it.id == dialog.id } ?: return
+
+        if (name.isNotEmpty()) {
+            viewModelScope.launch {
+                interactor.updateShoppingList(
+                    oldList.copy(name = name)
+                )
+            }
+            onDialogDismiss()
+        }
+    }
+
+    fun onDeleteConfirm() {
+        val dialog = state.dialog as? ShoppingListDialog.Delete ?: return
+
+        val target = state.lists.find { it.id == dialog.id } ?: return
+
+        viewModelScope.launch {
+            interactor.deleteShoppingList(target)
+            onDialogDismiss()
+        }
     }
 }
