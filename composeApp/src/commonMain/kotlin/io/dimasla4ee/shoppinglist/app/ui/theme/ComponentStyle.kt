@@ -2,6 +2,7 @@
 
 package io.dimasla4ee.shoppinglist.app.ui.theme
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -62,3 +63,14 @@ fun appRadioButtonColors() = RadioButtonDefaults.colors(
     selectedColor = MaterialTheme.colorScheme.error,
     unselectedColor = MaterialTheme.colorScheme.onTertiary
 )
+
+object DialogStyle {
+
+    @Composable
+    fun shape(): RoundedCornerShape =
+        RoundedCornerShape(AppDimensions.DialogAddition.cornerRadius)
+
+    @Composable
+    fun containerColor(): Color =
+        MaterialTheme.colorScheme.tertiary
+}
