@@ -1,15 +1,18 @@
 package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListsScaffold
+import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListsScaffoldSearch
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarAction
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
@@ -28,7 +31,7 @@ fun ShoppingListsScreenContent(
     state: ShoppingListsState,
     visibleLists: List<ShoppingList>,
 
-    onFabClick: () -> Unit,
+    onFabClick: (() -> Unit)?,
     onEvent: (ShoppingListCardEvent) -> Unit,
 
     onNameChange: (String) -> Unit,
@@ -46,29 +49,77 @@ fun ShoppingListsScreenContent(
     onRenameValueChange: (String) -> Unit,
     onRenameConfirm: () -> Unit,
 
+    onSearchClick: () -> Unit,
+    onSearchQueryChange: (String) -> Unit,
+    onSearchDismiss: () -> Unit,
+
     modifier: Modifier = Modifier
 ) {
+    if (state.isSearchMode) {
+        ShoppingListsScaffoldSearch(
+            query = state.searchQuery,
+            onQueryChange = onSearchQueryChange,
+            onBack = onSearchDismiss,
+            onClear = { onSearchQueryChange("") }
+        ) { padding ->
 
-    ShoppingListsScaffold(
-        modifier = modifier,
-        title = stringResource(Res.string.screen_title),
-        action1 = TopBarAction("Search") {},
-        action2 = TopBarAction("Delete",
-            onClick = onDeleteAllClick),
-        action3 = TopBarAction("Theme") {},
-        onFabClick = onFabClick
-    ) { padding ->
+            when {
+                visibleLists.isEmpty() &&
+                        state.searchQuery.isNotEmpty() -> {
 
-        if (visibleLists.isEmpty()) {
-            ShoppingListsEmptyState(
-                modifier = Modifier.padding(padding)
-            )
-        } else {
-            ShoppingListsContent(
-                lists = visibleLists,
-                onEvent = onEvent,
-                modifier = Modifier.padding(padding)
-            )
+                    ShoppingListsSearchEmptyState(
+                        modifier = Modifier.padding(padding)
+                    )
+                }
+
+                visibleLists.isEmpty() -> {
+
+                    ShoppingListsEmptyState(
+                        modifier = Modifier.padding(padding)
+                    )
+                }
+
+                else -> {
+
+                    ShoppingListsContent(
+                        lists = visibleLists,
+                        onEvent = onEvent,
+                        modifier = Modifier.padding(padding)
+                    )
+                }
+            }
+        }
+
+
+    } else {
+
+        ShoppingListsScaffold(
+            modifier = modifier,
+            title = stringResource(Res.string.screen_title),
+            action1 = TopBarAction(
+                "Search",
+                onClick = onSearchClick
+            ),
+            action2 = TopBarAction(
+                "Delete",
+                onClick = onDeleteAllClick
+            ),
+            action3 = TopBarAction("Theme") {},
+
+            onFabClick = if (state.isFabVisible) onFabClick else null
+        ) { padding ->
+
+            if (visibleLists.isEmpty()) {
+                ShoppingListsEmptyState(
+                    modifier = Modifier.padding(padding)
+                )
+            } else {
+                ShoppingListsContent(
+                    lists = visibleLists,
+                    onEvent = onEvent,
+                    modifier = Modifier.padding(padding)
+                )
+            }
         }
     }
 
@@ -135,7 +186,13 @@ private fun ShoppingListsScreenPreview(
     ShoppingListTheme {
         ShoppingListsScreenContent(
             state = state,
-            visibleLists = state.lists,
+            visibleLists = when {
+                state.searchQuery.isBlank() -> state.lists
+
+                else -> state.lists.filter {
+                    it.name.contains(state.searchQuery, ignoreCase = true)
+                }
+            },
 
             onFabClick = {},
             onEvent = {},
@@ -153,7 +210,11 @@ private fun ShoppingListsScreenPreview(
             onDeleteConfirm = {},
 
             onRenameValueChange = {},
-            onRenameConfirm = {}
+            onRenameConfirm = {},
+
+            onSearchClick = {},
+            onSearchQueryChange = {},
+            onSearchDismiss = {}
         )
     }
 }
