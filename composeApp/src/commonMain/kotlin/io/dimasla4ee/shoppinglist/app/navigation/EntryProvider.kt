@@ -16,9 +16,6 @@ import androidx.navigation3.runtime.entryProvider
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
-import org.jetbrains.compose.resources.stringResource
-import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.screen_title
 
 fun entryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryProvider<NavKey> {
     entry<Route.Welcome> {
