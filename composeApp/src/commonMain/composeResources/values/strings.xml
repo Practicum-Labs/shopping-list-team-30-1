@@ -7,6 +7,15 @@
     <string name="onboard_instruction">Создавайте списки, добавляйте товары, отмечайте, что уже куплено</string>
     <string name="shopping">За покупками</string>
 
+    <!-- Экран авторизации -->
+    <string name="authorization_email_hint">Введите Email</string>
+    <string name="authorization_email_label">Email</string>
+    <string name="authorization_password_hint">Введите пароль</string>
+    <string name="authorization_password_label">Пароль</string>
+    <string name="authorization_button">Зарегистрироваться</string>
+    <string name="authorization_have_account">Уже есть аккаунт?</string>
+    <string name="authorization_sign_in">Войти</string>
+
     <!-- Заголовок экрана -->
     <string name="screen_title">Мои списки</string>
 
@@ -49,6 +58,10 @@
     <string name="cd_copy_shopping_list">Копировать список покупок</string>
     <string name="cd_change_shopping_list_icon">Изменить иконку списка покупок</string>
     <string name="cd_delete_shopping_list">Удалить список покупок</string>
+
+    <!-- Действия с паролем -->
+    <string name="cd_show_password">Показать пароль</string>
+    <string name="cd_hide_password">Скрыть пароль</string>
 
     <!-- Единицы -->
     <string name="liter">л</string>
