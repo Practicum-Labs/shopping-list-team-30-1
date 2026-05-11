@@ -11,8 +11,8 @@ fun DialogButton(
     text: String,
     onClick: () -> Unit,
     colors: ButtonColors,
-    enabled: Boolean = true,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     TextButton(
         onClick = onClick,
