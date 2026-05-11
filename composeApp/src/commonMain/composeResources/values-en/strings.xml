@@ -4,14 +4,14 @@
     <string name="onboard_instruction">Create lists, add items, mark what has already been purchased</string>
     <string name="welcome_screen_title">Shopping List</string>
 
-    <!-- Registration screen -->
-    <string name="register_email_hint">Enter Email</string>
-    <string name="register_email_label">Email</string>
-    <string name="register_password_hint">Enter password</string>
-    <string name="register_password_label">Password</string>
-    <string name="register_button">Sign Up</string>
-    <string name="register_have_account">Already have an account?</string>
-    <string name="register_sign_in">Sign In</string>
+    <!-- Authorization screen -->
+    <string name="authorization_email_hint">Enter Email</string>
+    <string name="authorization_email_label">Email</string>
+    <string name="authorization_password_hint">Enter password</string>
+    <string name="authorization_password_label">Password</string>
+    <string name="authorization_button">Sign Up</string>
+    <string name="authorization_have_account">Already have an account?</string>
+    <string name="authorization_sign_in">Sign In</string>
 
     <!-- Screen title -->
     <string name="screen_title">My Lists</string>

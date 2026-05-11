@@ -1,7 +1,6 @@
 package io.dimasla4ee.shoppinglist.app.ui.theme
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 
@@ -124,5 +123,13 @@ object AppDimensions {
 
     object IconBottomSheet {
         val handler = DpSize(32.dp, 4.dp)
+    }
+
+    object RegisterDimensions {
+        val ContentSpacing = 16.dp
+        val ButtonHeight = 56.dp
+        val ButtonCornerRadius = 8.dp
+        val FooterTopPadding = 16.dp
+        val ScreenHorizontalPadding = 16.dp
     }
 }
