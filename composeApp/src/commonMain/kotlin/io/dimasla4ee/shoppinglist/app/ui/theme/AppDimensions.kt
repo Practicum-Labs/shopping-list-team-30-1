@@ -1,6 +1,7 @@
 package io.dimasla4ee.shoppinglist.app.ui.theme
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 

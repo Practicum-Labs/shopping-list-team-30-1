@@ -101,7 +101,7 @@ fun RegisterContent(
 @Preview
 @PreviewLightDark
 @Composable
-fun PreviewRegisterContent(
+private fun PreviewRegisterContent(
     @PreviewParameter(RegisterInfoProvider::class) state: RegisterState
 ) {
     var localState by remember { mutableStateOf(state) }

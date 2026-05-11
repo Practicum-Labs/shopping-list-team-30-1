@@ -42,8 +42,8 @@ fun AppOutlinedPasswordTextField(
     isPasswordVisible: Boolean,
     placeholder: String,
     label: String,
-    modifier: Modifier = Modifier,
-    onShowPassword: () -> Unit
+    onShowPassword: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val iconRes =
         if (isPasswordVisible) Res.drawable.ic_visibility_off_24 else Res.drawable.ic_visibility_on_24
