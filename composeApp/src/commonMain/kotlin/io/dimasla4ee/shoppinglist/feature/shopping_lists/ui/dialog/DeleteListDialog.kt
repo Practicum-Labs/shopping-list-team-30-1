@@ -8,7 +8,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +19,7 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.app.ui.theme.deleteDialogButtonCancel
 import io.dimasla4ee.shoppinglist.app.ui.theme.deleteDialogButtonDelete
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.components.DialogButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -60,25 +60,18 @@ fun DeleteListDialog(
         },
 
         confirmButton = {
-            TextButton(
+            DialogButton(
+                text = stringResource(Res.string.button_delete),
                 onClick = onConfirm,
-                colors = deleteDialogButtonDelete(),
-            ) {
-                Text(
-                    text = stringResource(Res.string.button_delete),
-                )
-            }
+                colors = deleteDialogButtonDelete()
+            )
         },
-
         dismissButton = {
-            TextButton(
+            DialogButton(
+                text = stringResource(Res.string.button_cancel),
                 onClick = onDismiss,
                 colors = deleteDialogButtonCancel()
-            ) {
-                Text(
-                    text = stringResource(Res.string.button_cancel),
-                )
-            }
+            )
         },
     )
 }

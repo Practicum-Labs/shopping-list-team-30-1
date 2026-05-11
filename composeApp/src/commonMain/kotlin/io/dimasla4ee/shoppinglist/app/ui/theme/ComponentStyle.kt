@@ -30,6 +30,12 @@ fun deleteDialogButtonCancel() = ButtonDefaults.buttonColors(
 )
 
 @Composable
+fun defaultDialogButtonColors() = ButtonDefaults.buttonColors(
+    containerColor = MaterialTheme.colorScheme.tertiary,
+    contentColor = MaterialTheme.colorScheme.secondary
+)
+
+@Composable
 fun dialogTextFieldColors() = TextFieldDefaults.colors(
 
     // фон

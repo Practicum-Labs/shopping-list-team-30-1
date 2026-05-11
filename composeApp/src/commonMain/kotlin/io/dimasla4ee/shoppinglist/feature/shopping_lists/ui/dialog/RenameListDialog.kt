@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +20,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
+import io.dimasla4ee.shoppinglist.app.ui.theme.defaultDialogButtonColors
 import io.dimasla4ee.shoppinglist.app.ui.theme.dialogTextFieldColors
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.components.DialogButton
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.button_cancel
@@ -77,32 +77,19 @@ fun RenameListDialog(
         },
 
         confirmButton = {
-            TextButton(
+            DialogButton(
+                text = stringResource(Res.string.button_rename),
                 onClick = onConfirm,
                 enabled = newName.isNotBlank(),
-                colors = ButtonDefaults.textButtonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                )
-            ) {
-                Text(
-                    text = stringResource(Res.string.button_rename),
-                    color = MaterialTheme.colorScheme.secondary
-                )
-            }
+                colors = defaultDialogButtonColors()
+            )
         },
-
         dismissButton = {
-            TextButton(
+            DialogButton(
+                text = stringResource(Res.string.button_cancel),
                 onClick = onDismiss,
-                colors = ButtonDefaults.textButtonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                )
-            ) {
-                Text(
-                    text = stringResource(Res.string.button_cancel),
-                    color = MaterialTheme.colorScheme.secondary
-                )
-            }
+                colors = defaultDialogButtonColors()
+            )
         },
     )
 }

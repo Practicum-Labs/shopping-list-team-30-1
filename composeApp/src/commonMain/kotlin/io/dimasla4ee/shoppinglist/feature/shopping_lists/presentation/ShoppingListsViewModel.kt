@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListsState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ShoppingListsViewModel(
@@ -17,12 +20,12 @@ class ShoppingListsViewModel(
     var state by mutableStateOf(ShoppingListsState())
         private set
 
-    init {
-        observeLists()
-    }
+    private var observeJob: Job? = null
 
-    private fun observeLists() {
-        viewModelScope.launch {
+    fun observeLists() {
+        if (observeJob != null) return
+
+        observeJob = viewModelScope.launch {
             interactor.getShoppingLists().collect { lists ->
                 state = state.copy(
                     lists = lists
@@ -32,37 +35,18 @@ class ShoppingListsViewModel(
     }
 
     fun onFabClick() {
-        state = state.copy(isDialogVisible = true)
+        state = state.copy(dialog = ShoppingListDialog.Create)
     }
 
-    fun onDialogDismiss() {
-        state = state.copy(
-            isDialogVisible = false,
-            newListName = ""
-        )
-    }
-
-    fun onNameChange(value: String) {
-        state = state.copy(newListName = value)
-    }
-
-    fun onCreateList() {
-        val name = state.newListName.trim()
-        if (name.isEmpty()) return
-
-        viewModelScope.launch {
-            state = state.copy(
-                isDialogVisible = false,
-                newListName = ""
-            )
-        }
+    fun onDeleteAllClick() {
+        state = state.copy(dialog = ShoppingListDialog.DeleteAll)
     }
 
     fun onCardEvent(event: ShoppingListCardEvent) {
         when (event) {
             is ShoppingListCardEvent.Delete -> {
                 state = state.copy(
-                    isDeleteDialogVisible = true,
+                    dialog = ShoppingListDialog.Delete(event.item.id),
                     deleteTargetId = event.item.id
                 )
             }
@@ -79,9 +63,11 @@ class ShoppingListsViewModel(
 
             is ShoppingListCardEvent.Edit -> {
                 state = state.copy(
-                    isRenameDialogVisible = true,
-                    renameValue = event.item.name,
-                    renameTargetId = event.item.id
+                    dialog = ShoppingListDialog.Rename(
+                        id = event.item.id,
+                        value = event.item.name
+                    ),
+                    renameValue = event.item.name
                 )
             }
 
@@ -96,10 +82,32 @@ class ShoppingListsViewModel(
     }
 
     private fun onIconClick(listId: Long) {
+        state = state.copy(selectedListId = listId)
+    }
+
+    fun onDialogDismiss() {
         state = state.copy(
-            isIconSheetVisible = true,
-            selectedListId = listId
+            dialog = ShoppingListDialog.None,
+            newListName = "",
+            renameValue = "",
+            selectedListId = null
         )
+    }
+
+    fun onNameChange(value: String) {
+        state = state.copy(newListName = value)
+    }
+
+    fun onCreateList() {
+        val name = state.newListName.trim()
+        if (name.isEmpty()) return
+
+        viewModelScope.launch {
+            state = state.copy(
+                dialog = ShoppingListDialog.None,
+                newListName = ""
+            )
+        }
     }
 
     fun onSheetDismiss() {
@@ -129,24 +137,10 @@ class ShoppingListsViewModel(
         )
     }
 
-    fun onDeleteAllClick() {
-        state = state.copy(
-            isDeleteAllDialogVisible = true
-        )
-    }
-
-    fun onDeleteAllDismiss() {
-        state = state.copy(
-            isDeleteAllDialogVisible = false
-        )
-    }
-
     fun onDeleteAllConfirm() {
         viewModelScope.launch {
             interactor.deleteAllShoppingLists()
-            state = state.copy(
-                isDeleteAllDialogVisible = false
-            )
+            onDialogDismiss()
         }
     }
 
@@ -181,58 +175,33 @@ class ShoppingListsViewModel(
         }
 
     fun onRenameValueChange(value: String) {
-        state = state.copy(
-            renameValue = value
-        )
-    }
-
-    fun onRenameDismiss() {
-        state = state.copy(
-            isRenameDialogVisible = false,
-            renameValue = "",
-            renameTargetId = null
-        )
+        state = state.copy(renameValue = value)
     }
 
     fun onRenameConfirm() {
-        val id = state.renameTargetId
+        val dialog = state.dialog as? ShoppingListDialog.Rename ?: return
         val name = state.renameValue.trim()
 
-        val oldList = state.lists.find { it.id == id }
+        val oldList = state.lists.find { it.id == dialog.id } ?: return
 
-        if (
-            id != null &&
-            name.isNotEmpty() &&
-            oldList != null
-        ) {
+        if (name.isNotEmpty()) {
             viewModelScope.launch {
                 interactor.updateShoppingList(
                     oldList.copy(name = name)
                 )
             }
-            onRenameDismiss()
+            onDialogDismiss()
         }
     }
 
-    fun onDeleteDismiss() {
-        state = state.copy(
-            isDeleteDialogVisible = false,
-            deleteTargetId = null
-        )
-    }
-
     fun onDeleteConfirm() {
-        val targetId = state.deleteTargetId ?: return
-        val target = state.lists.find {
-            it.id == targetId
-        } ?: return
+        val dialog = state.dialog as? ShoppingListDialog.Delete ?: return
+
+        val target = state.lists.find { it.id == dialog.id } ?: return
 
         viewModelScope.launch {
             interactor.deleteShoppingList(target)
-            state = state.copy(
-                isDeleteDialogVisible = false,
-                deleteTargetId = null
-            )
+            onDialogDismiss()
         }
     }
 }

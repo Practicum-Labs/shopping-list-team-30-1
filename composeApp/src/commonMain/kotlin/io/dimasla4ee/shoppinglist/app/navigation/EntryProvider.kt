@@ -5,12 +5,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -25,8 +29,16 @@ fun entryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryProvider<
     }
 
     entry<Route.ShoppingLists> {
-        // TODO(feature-team): интегрировать экран списков покупок и удалить ScreenPlaceholder
-        ScreenPlaceholder(stringResource(Res.string.screen_title))
+        val viewModel: ShoppingListsViewModel = viewModel()
+
+        LaunchedEffect(Unit) {
+            viewModel.observeLists()
+        }
+
+        ShoppingListsScreen(
+            viewModel = viewModel,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 
     entry<Route.ProductsList> {

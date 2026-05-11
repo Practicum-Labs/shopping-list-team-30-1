@@ -3,7 +3,8 @@ package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
-import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsState
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListsState
 
 class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> {
     override val values = sequenceOf(
@@ -39,66 +40,45 @@ class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> 
         ),
 
         ShoppingListsState(
-            lists = listOf(
-                ShoppingList(
-                    id = 1,
-                    name = "Продукты",
-                    icon = ShoppingListIcon.SHOPPING_CART,
-                    products = emptyList()
-                )
-            ),
-            isDialogVisible = true,
+            lists = sampleLists(),
+            dialog = ShoppingListDialog.Create,
             newListName = "Новый список"
         ),
 
         ShoppingListsState(
-            lists = listOf(
-                ShoppingList(
-                    id = 1,
-                    name = "Продукты",
-                    icon = ShoppingListIcon.SHOPPING_CART,
-                    products = emptyList()
-                )
-            ),
+            lists = sampleLists(),
             isIconSheetVisible = true,
             selectedListId = 1
         ),
 
         ShoppingListsState(
-            lists = listOf(
-                ShoppingList(
-                    id = 1,
-                    name = "Продукты",
-                    icon = ShoppingListIcon.SHOPPING_CART,
-                    products = emptyList()
-                )
-            ),
-            isDeleteAllDialogVisible = true,
+            lists = sampleLists(),
+            dialog = ShoppingListDialog.DeleteAll
         ),
 
         ShoppingListsState(
-            lists = listOf(
-                ShoppingList(
-                    id = 1,
-                    name = "Продукты",
-                    icon = ShoppingListIcon.SHOPPING_CART,
-                    products = emptyList()
-                )
-            ),
-            isDeleteDialogVisible = true,
+            lists = sampleLists(),
+            dialog = ShoppingListDialog.Delete(
+                id = 1
+            )
         ),
 
         ShoppingListsState(
-            lists = listOf(
-                ShoppingList(
-                    id = 1,
-                    name = "Продукты",
-                    icon = ShoppingListIcon.SHOPPING_CART,
-                    products = emptyList()
-                )
+            lists = sampleLists(),
+            dialog = ShoppingListDialog.Rename(
+                id = 1,
+                value = "Фрукты"
             ),
-            isRenameDialogVisible = true,
             renameValue = "Фрукты"
         ),
+    )
+
+    private fun sampleLists() = listOf(
+        ShoppingList(
+            id = 1,
+            name = "Продукты",
+            icon = ShoppingListIcon.SHOPPING_CART,
+            products = emptyList()
+        )
     )
 }
