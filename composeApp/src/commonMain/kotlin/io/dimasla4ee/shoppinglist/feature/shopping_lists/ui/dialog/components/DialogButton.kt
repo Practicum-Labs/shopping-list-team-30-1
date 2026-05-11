@@ -4,18 +4,21 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 @Composable
 fun DialogButton(
     text: String,
     onClick: () -> Unit,
+    colors: ButtonColors,
     enabled: Boolean = true,
-    colors: ButtonColors
+    modifier: Modifier = Modifier
 ) {
     TextButton(
         onClick = onClick,
         enabled = enabled,
-        colors = colors
+        colors = colors,
+        modifier = modifier
     ) {
         Text(text = text)
     }
