@@ -2,6 +2,7 @@ package io.dimasla4ee.shoppinglist.feature.authorization.ui.register
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions.RegisterDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
@@ -35,6 +37,7 @@ import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.authorization_button
 import shoppinglist.composeapp.generated.resources.authorization_email_hint
+import shoppinglist.composeapp.generated.resources.authorization_email_label
 import shoppinglist.composeapp.generated.resources.authorization_have_account
 import shoppinglist.composeapp.generated.resources.authorization_password_hint
 import shoppinglist.composeapp.generated.resources.authorization_password_label
@@ -57,16 +60,23 @@ fun RegisterContent(
             state = state.email,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             placeholder = stringResource(Res.string.authorization_email_hint),
-            label = stringResource(Res.string.authorization_email_hint)
+            label = stringResource(Res.string.authorization_email_label)
         )
 
-        AppOutlinedPasswordTextField(
-            state = state.password,
-            label = stringResource(Res.string.authorization_password_label),
-            placeholder = stringResource(Res.string.authorization_password_hint),
-            isPasswordVisible = state.isPasswordVisible,
-            onShowPassword = onShowPassword
-        )
+        Column(modifier = Modifier.appDefaultFormSize()) {
+            AppOutlinedPasswordTextField(
+                state = state.password,
+                label = stringResource(Res.string.authorization_password_label),
+                placeholder = stringResource(Res.string.authorization_password_hint),
+                isPasswordVisible = state.isPasswordVisible,
+                onShowPassword = onShowPassword
+            )
+
+            PasswordStrengthMeter(
+                level = state.passwordStrength.level,
+                modifier = Modifier.fillMaxWidth().padding(top = 12.dp)
+            )
+        }
 
         Button(
             modifier = Modifier
@@ -120,3 +130,4 @@ private fun PreviewRegisterContent(
         )
     }
 }
+

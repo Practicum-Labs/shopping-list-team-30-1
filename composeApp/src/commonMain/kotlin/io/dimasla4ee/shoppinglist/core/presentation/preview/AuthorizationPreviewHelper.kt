@@ -9,9 +9,10 @@ object AuthorizationPreviewHelper {
 
     val passwords = listOf(
         "",
-        "qwerty",
-        "qwertyui",
-        "qwerty123",
-        "qwerty!23"
+        "123456",
+        "iloveyou12345",
+        "Spring_2024!",
+        "MySuperDog!99",
+        "correct-horse-battery-staple-24"
     )
 }
