@@ -40,7 +40,7 @@ fun ShoppingListsEmptyState(
 
         Text(
             text = stringResource(Res.string.no_lists_message),
-            style = AppTypography.bodyLarge
+            style = AppTypography.labelLarge
         )
 
         Spacer(modifier = Modifier.height(AppDimensions.paddingSmall))

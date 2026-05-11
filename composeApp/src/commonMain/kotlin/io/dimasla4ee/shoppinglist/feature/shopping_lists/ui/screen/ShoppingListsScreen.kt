@@ -33,6 +33,10 @@ fun ShoppingListsScreen(
         onRenameValueChange = viewModel::onRenameValueChange,
         onRenameConfirm = viewModel::onRenameConfirm,
 
+        onSearchClick = viewModel::onSearchClick,
+        onSearchQueryChange = viewModel::onSearchQueryChange,
+        onSearchDismiss = viewModel::onSearchDismiss,
+
         modifier = modifier
     )
 }

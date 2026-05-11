@@ -35,6 +35,8 @@ import shoppinglist.composeapp.generated.resources.ic_close_search_24
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingListsScaffoldSearch(
+
+    modifier: Modifier = Modifier,
     query: String,
     onQueryChange: (String) -> Unit,
 
@@ -42,7 +44,7 @@ fun ShoppingListsScaffoldSearch(
     onClear: () -> Unit,
     onSearch: () -> Unit = {},
 
-    modifier: Modifier = Modifier,
+
     content: @Composable (PaddingValues) -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
