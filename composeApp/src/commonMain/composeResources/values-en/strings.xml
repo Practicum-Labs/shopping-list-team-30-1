@@ -14,15 +14,6 @@
     <string name="authorization_have_account">Already have an account?</string>
     <string name="authorization_sign_in">Sign In</string>
 
-    <!-- Authorization screen -->
-    <string name="authorization_email_hint">Enter Email</string>
-    <string name="authorization_email_label">Email</string>
-    <string name="authorization_password_hint">Enter password</string>
-    <string name="authorization_password_label">Password</string>
-    <string name="authorization_button">Sign Up</string>
-    <string name="authorization_have_account">Already have an account?</string>
-    <string name="authorization_sign_in">Sign In</string>
-
     <!-- Screen title -->
     <string name="screen_title">My Lists</string>
 
