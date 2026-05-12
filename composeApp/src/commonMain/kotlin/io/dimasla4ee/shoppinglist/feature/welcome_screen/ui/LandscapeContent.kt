@@ -115,7 +115,8 @@ fun LandscapeContent(
 
                     Text(
                         stringResource(Res.string.welcome_screen_title),
-                        fontSize = 36.sp,
+//                        fontSize = 36.sp,
+                        style = AppTypography.headlineLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(end = AppDimensions.paddingMedium)
                     )
