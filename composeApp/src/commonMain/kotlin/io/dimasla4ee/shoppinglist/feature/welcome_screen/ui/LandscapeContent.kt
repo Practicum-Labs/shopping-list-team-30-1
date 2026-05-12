@@ -3,6 +3,7 @@ package io.dimasla4ee.shoppinglist.feature.welcome_screen.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,6 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +53,8 @@ fun LandscapeContent(
 ) {
     var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }
+    val density = LocalDensity.current
+    var columnHeight by remember { mutableStateOf(0.dp) }
 
     Row(
         modifier = modifier
@@ -69,67 +75,76 @@ fun LandscapeContent(
             )
         }
 
-        Box(
-            modifier = Modifier.weight(1F),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier
+                .weight(1F)
+                .fillMaxSize()
+                .padding(horizontal = AppDimensions.paddingLarge)
+                .onGloballyPositioned { coordinates ->
+                    columnHeight = with(density) {
+                        coordinates.size.height.toDp()
+                    }
+                },
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier.padding(horizontal = AppDimensions.paddingLarge)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1F)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                Image(
+                    painter = painterResource(Res.drawable.ic_main_logo_78),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                    contentDescription = null
+                )
+
+                Text(
+                    stringResource(Res.string.welcome_screen_title),
+                    fontSize = 36.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+            AnimatedVisibility(
+                visible = showContent,
+                modifier = Modifier.weight(1F)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Image(
-                        painter = painterResource(Res.drawable.ic_main_logo_78),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-                        contentDescription = null
+                    Text(
+                        text = stringResource(Res.string.onboard_welcome_message),
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = AppTypography.labelLarge
                     )
+
+                    Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
 
                     Text(
-                        stringResource(Res.string.welcome_screen_title),
-                        fontSize = 36.sp,
-                        color = MaterialTheme.colorScheme.onBackground
+                        text = stringResource(Res.string.onboard_instruction),
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = AppTypography.bodyMedium
                     )
-                }
 
-                Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
 
-                AnimatedVisibility(visible = showContent) {
-
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    Button(
+                        onClick = {
+                            if (!clicked) {
+                                clicked = true
+                                onGoToShopping()
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .widthIn(max = columnHeight)
                     ) {
-                        Text(
-                            text = stringResource(Res.string.onboard_welcome_message),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = AppTypography.labelLarge
-                        )
-
-                        Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
-
-                        Text(
-                            textAlign = TextAlign.Center,
-                            text = stringResource(Res.string.onboard_instruction),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = AppTypography.bodyMedium
-                        )
+                        Text(text = stringResource(Res.string.shopping))
                     }
-                }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Button(
-                    onClick = {
-                        if (!clicked) {
-                            clicked = true
-                            onGoToShopping()
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = stringResource(Res.string.shopping))
                 }
             }
         }
