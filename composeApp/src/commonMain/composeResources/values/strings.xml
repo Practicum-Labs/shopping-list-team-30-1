@@ -15,15 +15,6 @@
     <string name="authorization_button">Зарегистрироваться</string>
     <string name="authorization_have_account">Уже есть аккаунт?</string>
     <string name="authorization_sign_in">Войти</string>
-
-    <!-- Экран авторизации -->
-    <string name="authorization_email_hint">Введите Email</string>
-    <string name="authorization_email_label">Email</string>
-    <string name="authorization_password_hint">Введите пароль</string>
-    <string name="authorization_password_label">Пароль</string>
-    <string name="authorization_button">Зарегистрироваться</string>
-    <string name="authorization_have_account">Уже есть аккаунт?</string>
-    <string name="authorization_sign_in">Войти</string>
     <string name="authorization_forgot_password">Забыли пароль?</string>
     <string name="authorization_no_account">Нет аккаунта?</string>
 
