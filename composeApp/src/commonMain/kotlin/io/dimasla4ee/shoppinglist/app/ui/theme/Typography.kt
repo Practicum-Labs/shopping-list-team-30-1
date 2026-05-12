@@ -2,6 +2,7 @@ package io.dimasla4ee.shoppinglist.app.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -18,6 +19,17 @@ import androidx.compose.ui.unit.sp
  * labelMedium - Medium / 14
  */
 val AppTypography = Typography(
+
+    // Логотип
+
+    headlineLarge = TextStyle(
+        fontFamily = AppFontFamily,
+        fontWeight = FontWeight.Light,
+        fontStyle = FontStyle.Normal,
+        fontSize = 52.sp,
+        lineHeight = 12.sp,
+        letterSpacing = 0.sp
+    ),
 
     // Заголовки
 
@@ -79,4 +91,3 @@ val AppTypography = Typography(
         letterSpacing = 0.1.sp
     )
 )
-
