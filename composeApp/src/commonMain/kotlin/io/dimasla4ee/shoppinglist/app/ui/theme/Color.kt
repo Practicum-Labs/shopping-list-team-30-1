@@ -36,3 +36,8 @@ val Black = Color(0xFF000000)
 
 val Green500 = Color(0xFF34C759)
 val Orange500 = Color(0xFFFFBE77)
+val Red500 = Color(0xFFE53935)
+val Pink500 = Color(0xFFD81B60)
+val Purple500 = Color(0xFF8E24AA)
+val Indigo500 = Color(0xFF3949AB)
+val Blue500 = Color(0xFF1E88E5)
