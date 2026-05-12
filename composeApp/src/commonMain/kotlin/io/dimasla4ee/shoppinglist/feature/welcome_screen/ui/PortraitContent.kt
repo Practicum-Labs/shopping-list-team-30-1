@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,8 +26,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
@@ -48,6 +52,8 @@ fun PortraitContent(
 ) {
     var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }
+    val density = LocalDensity.current
+    var logoWidth by remember { mutableStateOf(0.dp) }
 
     Column(
         modifier = modifier
@@ -59,7 +65,13 @@ fun PortraitContent(
         verticalArrangement = Arrangement.Top
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .onGloballyPositioned { coordinates ->
+                    logoWidth = with(density) {
+                        coordinates.size.width.toDp()
+                    }
+                }
         ) {
             Image(
                 painter = painterResource(Res.drawable.ic_main_logo_78),
@@ -71,7 +83,8 @@ fun PortraitContent(
                 stringResource(Res.string.welcome_screen_title),
                 textAlign = TextAlign.Center,
                 fontSize = 36.sp,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(end = AppDimensions.paddingMedium)
             )
         }
 
@@ -85,7 +98,6 @@ fun PortraitContent(
                     .padding(horizontal = AppDimensions.paddingLarge),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-
                 Image(
                     painter = painterResource(LocalAppPlaceholders.current.imgMainScreen),
                     contentDescription = null,
@@ -113,7 +125,7 @@ fun PortraitContent(
             }
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
 
         Button(
             onClick = {
@@ -123,8 +135,8 @@ fun PortraitContent(
                 }
             },
             modifier = Modifier
+                .widthIn(max = logoWidth)
                 .fillMaxWidth()
-                .padding(horizontal = AppDimensions.paddingLarge)
         ) {
             Text(text = stringResource(Res.string.shopping))
         }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -54,7 +55,8 @@ fun LandscapeContent(
     var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }
     val density = LocalDensity.current
-    var columnHeight by remember { mutableStateOf(0.dp) }
+    var logoWidth by remember { mutableStateOf(0.dp) }
+    var imgWidth by remember { mutableStateOf(0.dp) }
 
     Row(
         modifier = modifier
@@ -64,86 +66,104 @@ fun LandscapeContent(
             .padding(AppDimensions.paddingMedium)
     ) {
         Box(
-            modifier = Modifier.weight(1F),
+            modifier = Modifier
+                .weight(1F)
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painterResource(LocalAppPlaceholders.current.imgMainScreen),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .onGloballyPositioned { coordinates ->
+                        imgWidth = with(density) {
+                            coordinates.size.width.toDp()
+                        }
+                    },
                 contentScale = ContentScale.Fit
             )
         }
 
-        Column(
+        Box(
             modifier = Modifier
                 .weight(1F)
-                .fillMaxSize()
-                .padding(horizontal = AppDimensions.paddingLarge)
-                .onGloballyPositioned { coordinates ->
-                    columnHeight = with(density) {
-                        coordinates.size.height.toDp()
-                    }
-                },
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(1F)
+            Column(
+                modifier = Modifier
+                    .heightIn(max = imgWidth)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(Res.drawable.ic_main_logo_78),
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-                    contentDescription = null
-                )
-
-                Text(
-                    stringResource(Res.string.welcome_screen_title),
-                    fontSize = 36.sp,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
-
-            AnimatedVisibility(
-                visible = showContent,
-                modifier = Modifier.weight(1F)
-            ) {
-                Column(
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = stringResource(Res.string.onboard_welcome_message),
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = AppTypography.labelLarge
-                    )
-
-                    Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
-
-                    Text(
-                        text = stringResource(Res.string.onboard_instruction),
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = AppTypography.bodyMedium
-                    )
-
-                    Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
-
-                    Button(
-                        onClick = {
-                            if (!clicked) {
-                                clicked = true
-                                onGoToShopping()
+                        .weight(1F)
+                        .onGloballyPositioned { coordinates ->
+                            logoWidth = with(density) {
+                                coordinates.size.width.toDp()
                             }
-                        },
+                        }
+                ) {
+                    Image(
+                        painter = painterResource(Res.drawable.ic_main_logo_78),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                        contentDescription = null
+                    )
+
+                    Text(
+                        stringResource(Res.string.welcome_screen_title),
+                        fontSize = 36.sp,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(end = AppDimensions.paddingMedium)
+                    )
+                }
+
+                AnimatedVisibility(
+                    visible = showContent,
+                    modifier = Modifier
+                        .weight(1F)
+                        .padding(horizontal = AppDimensions.paddingLarge)
+                ) {
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .widthIn(max = columnHeight)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Text(text = stringResource(Res.string.shopping))
+                        Text(
+                            text = stringResource(Res.string.onboard_welcome_message),
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = AppTypography.labelLarge
+                        )
+
+                        Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
+
+                        Text(
+                            text = stringResource(Res.string.onboard_instruction),
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = AppTypography.bodyMedium
+                        )
+
+                        Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
+
+                        Button(
+                            onClick = {
+                                if (!clicked) {
+                                    clicked = true
+                                    onGoToShopping()
+                                }
+                            },
+                            modifier = Modifier
+                                .widthIn(max = logoWidth)
+                                .fillMaxWidth()
+                        ) {
+                            Text(text = stringResource(Res.string.shopping))
+                        }
                     }
                 }
             }
@@ -153,8 +173,8 @@ fun LandscapeContent(
 
 @Preview(
     showSystemUi = true,
-    device = "spec:width=891dp,height=411dp,dpi=420,orientation=landscape",
-    name = "WelcomeScreen_Landscape"
+    name = "WelcomeScreen_Landscape",
+    device = "spec:width=891dp,height=411dp,dpi=420,orientation=landscape"
 )
 @Composable
 private fun LandscapeContentPreview() {
