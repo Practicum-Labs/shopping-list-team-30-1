@@ -1,7 +1,6 @@
 package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,17 +10,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.create_list_hint
-import shoppinglist.composeapp.generated.resources.no_lists_message
+import shoppinglist.composeapp.generated.resources.search_hint
+import shoppinglist.composeapp.generated.resources.search_not_found
 
 @Composable
-fun ShoppingListsEmptyState(
+fun ShoppingListsSearchEmptyState(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -29,25 +29,28 @@ fun ShoppingListsEmptyState(
             .fillMaxSize()
             .padding(AppDimensions.paddingLarge),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
+        Spacer(modifier = Modifier.height(AppDimensions.paddingVeryBig))
+
         Image(
-            painter = painterResource(LocalAppPlaceholders.current.imgShoppingLists),
+            painter = painterResource(LocalAppPlaceholders.current.imgSearchScreen),
             contentDescription = null
         )
 
-        Spacer(modifier = Modifier.height(AppDimensions.paddingLarge))
+        Spacer(modifier = Modifier.height(AppDimensions.paddingVeryBig))
 
         Text(
-            text = stringResource(Res.string.no_lists_message),
-            style = AppTypography.labelLarge
+            text = stringResource(Res.string.search_not_found),
+            style = AppTypography.labelLarge,
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(AppDimensions.paddingSmall))
 
         Text(
-            text = stringResource(Res.string.create_list_hint),
-            style = AppTypography.bodyMedium
+            text = stringResource(Res.string.search_hint),
+            style = AppTypography.bodyMedium,
+            textAlign = TextAlign.Center
         )
     }
 }

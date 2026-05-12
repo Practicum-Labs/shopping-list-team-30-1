@@ -71,6 +71,19 @@ class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> 
             ),
             renameValue = "Фрукты"
         ),
+
+        ShoppingListsState(
+            lists = sampleLists(),
+            isSearchMode = true,
+            searchQuery = "Про"
+        ),
+
+        // Search mode empty
+        ShoppingListsState(
+            lists = sampleLists(),
+            isSearchMode = true,
+            searchQuery = "zzz"
+        ),
     )
 
     private fun sampleLists() = listOf(
@@ -78,6 +91,18 @@ class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> 
             id = 1,
             name = "Продукты",
             icon = ShoppingListIcon.SHOPPING_CART,
+            products = emptyList()
+        ),
+        ShoppingList(
+            id = 2,
+            name = "Аптека",
+            icon = ShoppingListIcon.MEDICATION,
+            products = emptyList()
+        ),
+        ShoppingList(
+            id = 3,
+            name = "Подарки",
+            icon = ShoppingListIcon.PRESENT,
             products = emptyList()
         )
     )
