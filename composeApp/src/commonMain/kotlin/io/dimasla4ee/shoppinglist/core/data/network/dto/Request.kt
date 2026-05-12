@@ -20,4 +20,14 @@ sealed interface Request {
     /** Используется в `/auth/login` эндпоинте. */
     @Serializable
     data class UserAuthRequest(val email: String, val password: String) : Request
+
+    /** Используется в `/auth/recovery` эндпоинте. */
+    @Serializable
+    data object RecoverPasswordRequest : Request
+
+    /**
+     * Используется в `/auth/check` эндпоинте.
+     */
+    @Serializable
+    data class CheckUserRequest(val authorization: String) : Request
 }

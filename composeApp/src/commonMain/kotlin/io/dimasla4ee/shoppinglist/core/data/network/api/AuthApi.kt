@@ -4,11 +4,8 @@ import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Header
 import de.jensklingenberg.ktorfit.http.POST
-import io.dimasla4ee.shoppinglist.core.data.network.dto.CheckResponse
-import io.dimasla4ee.shoppinglist.core.data.network.dto.RefreshTokenResponse
-import io.dimasla4ee.shoppinglist.core.data.network.dto.RegisterResponse
 import io.dimasla4ee.shoppinglist.core.data.network.dto.Request
-import io.dimasla4ee.shoppinglist.core.data.network.dto.UserAuthResponse
+import io.dimasla4ee.shoppinglist.core.data.network.dto.Response
 
 /**
  * API для работы с аутентификацией пользователя.
@@ -41,7 +38,7 @@ interface AuthApi {
     @POST("$AUTH/registration")
     suspend fun registerUser(
         @Body request: Request.RegisterRequest
-    ): RegisterResponse
+    ): Response.RegisterResponse
 
     /**
      * Обновляет access token по refresh token.
@@ -54,7 +51,7 @@ interface AuthApi {
     @POST("$AUTH/refresh")
     suspend fun refresh(
         @Body request: Request.RefreshTokenRequest
-    ): RefreshTokenResponse
+    ): Response.RefreshTokenResponse
 
     /**
      * Запускает процесс восстановления пароля.
@@ -64,7 +61,7 @@ interface AuthApi {
      * @return текстовое сообщение от сервера о результате запуска восстановления.
      */
     @POST("$AUTH/recovery")
-    suspend fun recoverPassword(): String
+    suspend fun recoverPassword(): Response.RecoverPasswordResponse
 
     /**
      * Выполняет авторизацию пользователя по email и password.
@@ -78,7 +75,7 @@ interface AuthApi {
     @POST("$AUTH/login")
     suspend fun login(
         @Body request: Request.UserAuthRequest
-    ): UserAuthResponse
+    ): Response.UserAuthResponse
 
     /**
      * Проверяет валидность access token.
@@ -93,5 +90,5 @@ interface AuthApi {
     @GET("$AUTH/check")
     suspend fun checkUser(
         @Header("Authorization") authorization: String
-    ): CheckResponse
+    ): Response.CheckResponse
 }
