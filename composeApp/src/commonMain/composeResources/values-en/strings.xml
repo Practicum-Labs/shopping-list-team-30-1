@@ -98,6 +98,10 @@
     <string name="btm_menu_delete_all">Delete all</string>
     <string name="btm_menu_clear_purchased_items">Clear purchased items</string>
 
+    <!-- Content description для SearchTopBar -->
+    <string name="clear_icon_search_top_bar">Clear</string>
+    <string name="back_icon_search_top_bar">Back</string>
+
     <!-- Sorting options -->
     <string-array name="sorting_options">
         <item>Alphabetical</item>
