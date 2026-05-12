@@ -33,7 +33,7 @@ fun ShoppingListsScaffold(
     action2: TopBarAction,
     action3: TopBarAction,
 
-    onFabClick: () -> Unit,
+    onFabClick: (() -> Unit)?,
 
     modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit
@@ -78,22 +78,25 @@ fun ShoppingListsScaffold(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                modifier = Modifier.offset(y = (-AppDimensions.paddingMedium)),
-                shape = RoundedCornerShape(AppDimensions.paddingMedium),
-                onClick = onFabClick,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_fab_24),
-                    contentDescription = null,
-                )
+            if (onFabClick != null) {
+                FloatingActionButton(
+                    modifier = Modifier.offset(y = (-AppDimensions.paddingMedium)),
+                    shape = RoundedCornerShape(AppDimensions.paddingMedium),
+                    onClick = onFabClick,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_fab_24),
+                        contentDescription = null,
+                    )
+                }
             }
         },
         content = content
     )
 }
+
 
 data class TopBarAction(
     val contentDescription: String? = null,

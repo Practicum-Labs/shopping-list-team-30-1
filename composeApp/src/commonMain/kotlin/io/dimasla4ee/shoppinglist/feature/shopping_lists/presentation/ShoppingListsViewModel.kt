@@ -146,13 +146,15 @@ class ShoppingListsViewModel(
 
     fun onSearchClick() {
         state = state.copy(
-            isSearchMode = true
+            isSearchMode = true,
+            isFabVisible = false
         )
     }
 
     fun onSearchDismiss() {
         state = state.copy(
             isSearchMode = false,
+            isFabVisible = true,
             searchQuery = ""
         )
     }

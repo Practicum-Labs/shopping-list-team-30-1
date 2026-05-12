@@ -18,5 +18,7 @@ data class ShoppingListsState(
     val renameValue: String = "",
     val renameTargetId: Long? = null,
 
-    val deleteTargetId: Long? = null
+    val deleteTargetId: Long? = null,
+
+    val isFabVisible: Boolean = true
 )

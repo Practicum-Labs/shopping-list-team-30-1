@@ -36,6 +36,10 @@ fun ShoppingListsScreen(
 
         onThemeToggle = onThemeToggle,
 
+        onSearchClick = viewModel::onSearchClick,
+        onSearchQueryChange = viewModel::onSearchQueryChange,
+        onSearchDismiss = viewModel::onSearchDismiss,
+
         modifier = modifier
     )
 }

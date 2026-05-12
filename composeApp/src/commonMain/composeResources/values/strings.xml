@@ -14,6 +14,15 @@
     <string name="authorization_button">Зарегистрироваться</string>
     <string name="authorization_have_account">Уже есть аккаунт?</string>
     <string name="authorization_sign_in">Войти</string>
+    <string name="authorization_forgot_password">Забыли пароль?</string>
+    <string name="authorization_no_account">Нет аккаунта?</string>
+
+    <!-- Сложность пароля -->
+    <string name="password_strength_very_weak">Очень слабый</string>
+    <string name="password_strength_weak">Слабый</string>
+    <string name="password_strength_medium">Нормальный</string>
+    <string name="password_strength_good">Хороший</string>
+    <string name="password_strength_strong">Надёжный</string>
 
     <!-- Заголовок экрана -->
     <string name="screen_title">Мои списки</string>
@@ -89,6 +98,11 @@
     <string name="btm_menu_sorting">Сортировка</string>
     <string name="btm_menu_delete_all">Удалить все</string>
     <string name="btm_menu_clear_purchased_items">Очистить купленные</string>
+
+    <!-- Content description для SearchTopBar -->
+    <string name="clear_icon_search_top_bar">Очистить</string>
+    <string name="back_icon_search_top_bar">Назад</string>
+
 
     <!-- Опции сортировки -->
     <string-array name="sorting_options">

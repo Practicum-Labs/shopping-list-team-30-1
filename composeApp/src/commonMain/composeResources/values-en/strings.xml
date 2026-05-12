@@ -12,6 +12,15 @@
     <string name="authorization_button">Sign Up</string>
     <string name="authorization_have_account">Already have an account?</string>
     <string name="authorization_sign_in">Sign In</string>
+    <string name="authorization_forgot_password">Forgot password?</string>
+    <string name="authorization_no_account">No account?</string>
+
+    <!-- Password strength -->
+    <string name="password_strength_very_weak">Very weak</string>
+    <string name="password_strength_weak">Weak</string>
+    <string name="password_strength_medium">Medium</string>
+    <string name="password_strength_good">Good</string>
+    <string name="password_strength_strong">Strong</string>
 
     <!-- Screen title -->
     <string name="screen_title">My Lists</string>
@@ -87,6 +96,10 @@
     <string name="btm_menu_sorting">Sort</string>
     <string name="btm_menu_delete_all">Delete all</string>
     <string name="btm_menu_clear_purchased_items">Clear purchased items</string>
+
+    <!-- Content description для SearchTopBar -->
+    <string name="clear_icon_search_top_bar">Clear</string>
+    <string name="back_icon_search_top_bar">Back</string>
 
     <!-- Sorting options -->
     <string-array name="sorting_options">
