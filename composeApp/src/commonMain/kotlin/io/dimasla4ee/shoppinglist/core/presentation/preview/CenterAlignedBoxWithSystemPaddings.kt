@@ -11,9 +11,10 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun CenterAlignedBoxWithSystemPaddings(
+    modifier: Modifier = Modifier,
     content: @Composable (BoxScope.() -> Unit)
 ) {
-    Scaffold(Modifier.fillMaxSize()) { innerPadding ->
+    Scaffold(modifier.fillMaxSize()) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
