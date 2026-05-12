@@ -56,6 +56,8 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
 
             implementation(libs.koin.android)
+
+            implementation("me.gosimple:nbvcxz:1.5.1")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -94,6 +96,8 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
+
+            implementation("me.gosimple:nbvcxz:1.5.1")
         }
     }
 }

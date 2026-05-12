@@ -29,7 +29,13 @@ data class AppColors(
     val addDialogBackground: Color,
     val dropdownBackground: Color,
 
-    val accent: Color
+    val accent: Color,
+
+    val passwordMeterVeryWeak: Color = Red500,
+    val passwordMeterWeak: Color = Pink500,
+    val passwordMeterMedium: Color = Purple500,
+    val passwordMeterGood: Color = Indigo500,
+    val passwordMeterStrong: Color = Blue500
 )
 
 @Suppress("CompositionLocalAllowlist")

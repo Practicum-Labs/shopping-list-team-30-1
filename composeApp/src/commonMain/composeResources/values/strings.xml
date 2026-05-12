@@ -24,6 +24,15 @@
     <string name="authorization_button">Зарегистрироваться</string>
     <string name="authorization_have_account">Уже есть аккаунт?</string>
     <string name="authorization_sign_in">Войти</string>
+    <string name="authorization_forgot_password">Забыли пароль?</string>
+    <string name="authorization_no_account">Нет аккаунта?</string>
+
+    <!-- Сложность пароля -->
+    <string name="password_strength_very_weak">Очень слабый</string>
+    <string name="password_strength_weak">Слабый</string>
+    <string name="password_strength_medium">Нормальный</string>
+    <string name="password_strength_good">Хороший</string>
+    <string name="password_strength_strong">Надёжный</string>
 
     <!-- Заголовок экрана -->
     <string name="screen_title">Мои списки</string>
