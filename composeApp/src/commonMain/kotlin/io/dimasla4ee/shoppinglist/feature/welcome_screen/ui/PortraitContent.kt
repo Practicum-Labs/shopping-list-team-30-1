@@ -69,6 +69,7 @@ fun PortraitContent(
 
             Text(
                 stringResource(Res.string.welcome_screen_title),
+                textAlign = TextAlign.Center,
                 fontSize = 36.sp,
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -96,6 +97,7 @@ fun PortraitContent(
 
                 Text(
                     text = stringResource(Res.string.onboard_welcome_message),
+                    textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onBackground,
                     style = AppTypography.labelLarge
                 )
@@ -103,8 +105,8 @@ fun PortraitContent(
                 Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
 
                 Text(
-                    textAlign = TextAlign.Center,
                     text = stringResource(Res.string.onboard_instruction),
+                    textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onBackground,
                     style = AppTypography.bodyMedium
                 )
