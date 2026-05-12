@@ -14,10 +14,11 @@ import kotlin.collections.listOf
 
 @Composable
 fun NavigationRoot(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onThemeToggle: () -> Unit
 ) {
     val topLevelBackStack = TopLevelBackStack<NavKey>(startKey = Route.Welcome)
-    val entryProvider = remember(topLevelBackStack) { entryProvider(topLevelBackStack) }
+    val entryProvider = remember(topLevelBackStack) { entryProvider(topLevelBackStack, onThemeToggle) }
 
     Scaffold(
         modifier = modifier,
