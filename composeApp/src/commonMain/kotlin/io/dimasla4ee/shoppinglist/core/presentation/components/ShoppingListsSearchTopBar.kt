@@ -28,6 +28,8 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.appTopBarColors
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.back_icon_search_top_bar
+import shoppinglist.composeapp.generated.resources.clear_icon_search_top_bar
 import shoppinglist.composeapp.generated.resources.hint_search_list
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
 import shoppinglist.composeapp.generated.resources.ic_close_search_24
@@ -75,7 +77,7 @@ fun ShoppingListsScaffoldSearch(
                     ) {
                         Icon(
                             painter = painterResource(Res.drawable.ic_arrow_back_24),
-                            contentDescription = "Back",
+                            contentDescription = stringResource(Res.string.back_icon_search_top_bar),
                             tint = MaterialTheme.colorScheme.onTertiary
                         )
                     }
@@ -117,7 +119,7 @@ fun ShoppingListsScaffoldSearch(
                                 ) {
                                     Icon(
                                         painter = painterResource(Res.drawable.ic_close_search_24),
-                                        contentDescription = "Clear",
+                                        contentDescription = stringResource(Res.string.clear_icon_search_top_bar),
                                         tint = MaterialTheme.colorScheme.onTertiary
                                     )
                                 }
@@ -138,7 +140,6 @@ fun ShoppingListsScaffoldSearch(
                 }
             )
         },
-
         content = content
     )
 }
