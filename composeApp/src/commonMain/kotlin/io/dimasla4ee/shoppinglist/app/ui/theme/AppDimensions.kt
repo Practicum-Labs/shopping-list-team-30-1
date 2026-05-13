@@ -3,6 +3,7 @@ package io.dimasla4ee.shoppinglist.app.ui.theme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 object AppDimensions {
 
@@ -14,6 +15,9 @@ object AppDimensions {
     val paddingMedium = 16.dp
     val paddingSmall = 8.dp
     val paddingVerySmall = 4.dp
+
+    val logoSize = 78.sp
+    val logoOffset = 2.dp
 
     val spacerSmall = 8.dp
     val spacerLarge = 48.dp
