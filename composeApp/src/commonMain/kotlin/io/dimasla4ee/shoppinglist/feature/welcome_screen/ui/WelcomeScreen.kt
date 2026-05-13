@@ -1,23 +1,77 @@
 package io.dimasla4ee.shoppinglist.feature.welcome_screen.ui
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.dimasla4ee.shoppinglist.utils.OrientationProvider
 import io.dimasla4ee.shoppinglist.utils.ScreenOrientation
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.ic_main_logo_78
+import shoppinglist.composeapp.generated.resources.welcome_screen_title
 
 @Composable
 fun WelcomeScreen(
     onGoToShopping: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val annotatedString = buildAnnotatedString {
+        appendInlineContent(id = "imageId")
+        append(stringResource(Res.string.welcome_screen_title))
+    }
+    val inlineContentMap = mapOf(
+        "imageId" to InlineTextContent(
+            Placeholder(
+                width = 78.sp,
+                height = 78.sp,
+                placeholderVerticalAlign = PlaceholderVerticalAlign.Bottom
+            )
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .offset(y = 4.dp) // картинка смещается вниз на 8 dp, текст оказывается выше
+            ) {
+                Image(
+                    painter = painterResource(Res.drawable.ic_main_logo_78),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                    contentDescription = null
+                )
+            }
+        }
+    )
+
     OrientationProvider { orientation ->
         when (orientation) {
-            ScreenOrientation.PORTRAIT -> PortraitContent(onGoToShopping, modifier)
-            ScreenOrientation.LANDSCAPE -> LandscapeContent(onGoToShopping)
+            ScreenOrientation.PORTRAIT -> PortraitContent(
+                onGoToShopping,
+                modifier,
+                annotatedString,
+                inlineContentMap
+            )
+
+            ScreenOrientation.LANDSCAPE -> LandscapeContent(
+                onGoToShopping,
+                modifier,
+                annotatedString,
+                inlineContentMap
+            )
         }
     }
 }
