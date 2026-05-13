@@ -16,8 +16,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.utils.OrientationProvider
 import io.dimasla4ee.shoppinglist.utils.ScreenOrientation
 import org.jetbrains.compose.resources.painterResource
@@ -62,13 +61,13 @@ fun createWelcomeLogo(): Pair<AnnotatedString, Map<String, InlineTextContent>> {
     val inlineContentMap = mapOf(
         "imageId" to InlineTextContent(
             Placeholder(
-                width = 78.sp,
-                height = 78.sp,
+                width = AppDimensions.logoSize,
+                height = AppDimensions.logoSize,
                 placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
             )
         ) {
             Image(
-                modifier = Modifier.offset(y = 2.dp),
+                modifier = Modifier.offset(y = AppDimensions.logoOffset),
                 painter = painterResource(Res.drawable.ic_main_logo_78),
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
                 contentDescription = null
