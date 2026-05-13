@@ -1,7 +1,6 @@
 package io.dimasla4ee.shoppinglist.feature.welcome_screen.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.text.InlineTextContent
@@ -10,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
@@ -31,31 +31,7 @@ fun WelcomeScreen(
     onGoToShopping: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val annotatedString = buildAnnotatedString {
-        appendInlineContent(id = "imageId")
-        append(stringResource(Res.string.welcome_screen_title))
-    }
-    val inlineContentMap = mapOf(
-        "imageId" to InlineTextContent(
-            Placeholder(
-                width = 78.sp,
-                height = 78.sp,
-                placeholderVerticalAlign = PlaceholderVerticalAlign.Bottom
-            )
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .offset(y = 4.dp) // картинка смещается вниз на 8 dp, текст оказывается выше
-            ) {
-                Image(
-                    painter = painterResource(Res.drawable.ic_main_logo_78),
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-                    contentDescription = null
-                )
-            }
-        }
-    )
+    val (annotatedString, inlineContentMap) = createWelcomeLogo()
 
     OrientationProvider { orientation ->
         when (orientation) {
@@ -74,6 +50,33 @@ fun WelcomeScreen(
             )
         }
     }
+}
+
+@Composable
+fun createWelcomeLogo(): Pair<AnnotatedString, Map<String, InlineTextContent>> {
+    val annotatedString = buildAnnotatedString {
+        appendInlineContent(id = "imageId")
+        append(stringResource(Res.string.welcome_screen_title))
+    }
+
+    val inlineContentMap = mapOf(
+        "imageId" to InlineTextContent(
+            Placeholder(
+                width = 78.sp,
+                height = 78.sp,
+                placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+            )
+        ) {
+            Image(
+                modifier = Modifier.offset(y = 2.dp),
+                painter = painterResource(Res.drawable.ic_main_logo_78),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                contentDescription = null
+            )
+        }
+    )
+
+    return annotatedString to inlineContentMap
 }
 
 @Preview(showSystemUi = true)
