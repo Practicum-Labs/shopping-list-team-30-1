@@ -8,7 +8,8 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 fun ShoppingListsScreen(
     modifier: Modifier = Modifier,
     viewModel: ShoppingListsViewModel,
-    onThemeToggle: () -> Unit
+    onThemeToggle: () -> Unit,
+    isDarkTheme: Boolean
 ) {
     val state = viewModel.state
     val visibleLists = viewModel.visibleLists
@@ -35,6 +36,8 @@ fun ShoppingListsScreen(
         onRenameConfirm = viewModel::onRenameConfirm,
 
         onThemeToggle = onThemeToggle,
+
+        isDarkTheme = isDarkTheme,
 
         onSearchClick = viewModel::onSearchClick,
         onSearchQueryChange = viewModel::onSearchQueryChange,
