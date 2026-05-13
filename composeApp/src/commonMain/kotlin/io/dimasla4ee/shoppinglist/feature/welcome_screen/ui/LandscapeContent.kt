@@ -33,7 +33,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
@@ -114,11 +113,9 @@ fun LandscapeContent(
                     )
 
                     Text(
-                        stringResource(Res.string.welcome_screen_title),
-//                        fontSize = 36.sp,
+                        text = stringResource(Res.string.welcome_screen_title),
                         style = AppTypography.headlineLarge,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.padding(end = AppDimensions.paddingMedium)
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
 

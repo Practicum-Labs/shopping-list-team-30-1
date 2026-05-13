@@ -79,12 +79,10 @@ fun PortraitContent(
             )
 
             Text(
-                stringResource(Res.string.welcome_screen_title),
+                text = stringResource(Res.string.welcome_screen_title),
                 textAlign = TextAlign.Center,
-//                fontSize = 36.sp,
                 style = AppTypography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(end = AppDimensions.paddingMedium)
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
