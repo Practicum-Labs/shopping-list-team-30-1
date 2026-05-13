@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.InlineTextContent
-import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,18 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.PlaceholderVerticalAlign
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
@@ -47,11 +41,9 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.ic_main_logo_78
 import shoppinglist.composeapp.generated.resources.onboard_instruction
 import shoppinglist.composeapp.generated.resources.onboard_welcome_message
 import shoppinglist.composeapp.generated.resources.shopping
-import shoppinglist.composeapp.generated.resources.welcome_screen_title
 
 @Composable
 fun LandscapeContent(
@@ -118,7 +110,6 @@ fun LandscapeContent(
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .padding(end = AppDimensions.paddingMedium)
-                            .padding(bottom = AppDimensions.paddingVerySmall)
                             .onGloballyPositioned { coordinates ->
                                 logoWidth = with(density) {
                                     coordinates.size.width.toDp()
@@ -185,28 +176,12 @@ fun LandscapeContent(
 @Composable
 private fun LandscapeContentPreview() {
     ShoppingListTheme {
+        val (annotatedString, inlineContentMap) = createWelcomeLogo()
         LandscapeContent(
             onGoToShopping = {},
             modifier = Modifier.fillMaxSize(),
-            buildAnnotatedString {
-                appendInlineContent(id = "imageId") // заполнитель для изображения
-                append(stringResource(Res.string.welcome_screen_title))
-            },
-            mapOf(
-                "imageId" to InlineTextContent(
-                    Placeholder(
-                        width = 78.sp,
-                        height = 78.sp,
-                        placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                    )
-                ) {
-                    Image(
-                        painter = painterResource(Res.drawable.ic_main_logo_78),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-                        contentDescription = null
-                    )
-                }
-            )
+            annotatedString = annotatedString,
+            inlineContentMap = inlineContentMap
         )
     }
 }
