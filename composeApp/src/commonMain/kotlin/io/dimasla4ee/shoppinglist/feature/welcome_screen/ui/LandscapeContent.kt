@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,9 +32,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
@@ -49,7 +56,9 @@ import shoppinglist.composeapp.generated.resources.welcome_screen_title
 @Composable
 fun LandscapeContent(
     onGoToShopping: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    annotatedString: AnnotatedString,
+    inlineContentMap: Map<String, InlineTextContent>
 ) {
     var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }
@@ -94,28 +103,27 @@ fun LandscapeContent(
                 modifier = Modifier
                     .heightIn(max = imgWidth)
                     .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .weight(1F)
-                        .onGloballyPositioned { coordinates ->
-                            logoWidth = with(density) {
-                                coordinates.size.width.toDp()
-                            }
-                        }
+                Box(
+                    modifier = Modifier.weight(1F),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        painter = painterResource(Res.drawable.ic_main_logo_78),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-                        contentDescription = null
-                    )
-
                     Text(
-                        text = stringResource(Res.string.welcome_screen_title),
+                        inlineContent = inlineContentMap,
+                        text = annotatedString,
                         style = AppTypography.headlineLarge,
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onBackground,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(end = AppDimensions.paddingMedium)
+                            .padding(bottom = AppDimensions.paddingVerySmall)
+                            .onGloballyPositioned { coordinates ->
+                                logoWidth = with(density) {
+                                    coordinates.size.width.toDp()
+                                }
+                            },
                     )
                 }
 
@@ -171,15 +179,34 @@ fun LandscapeContent(
 
 @Preview(
     showSystemUi = true,
-    name = "WelcomeScreen_Landscape",
-    device = "spec:width=891dp,height=411dp,dpi=420,orientation=landscape"
+    device = "spec:width=891dp,height=411dp,dpi=420,orientation=landscape",
+    name = "WelcomeScreen_Landscape"
 )
 @Composable
 private fun LandscapeContentPreview() {
     ShoppingListTheme {
         LandscapeContent(
             onGoToShopping = {},
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            buildAnnotatedString {
+                appendInlineContent(id = "imageId") // заполнитель для изображения
+                append(stringResource(Res.string.welcome_screen_title))
+            },
+            mapOf(
+                "imageId" to InlineTextContent(
+                    Placeholder(
+                        width = 78.sp,
+                        height = 78.sp,
+                        placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                    )
+                ) {
+                    Image(
+                        painter = painterResource(Res.drawable.ic_main_logo_78),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                        contentDescription = null
+                    )
+                }
+            )
         )
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,9 +31,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
@@ -47,7 +55,9 @@ import shoppinglist.composeapp.generated.resources.welcome_screen_title
 @Composable
 fun PortraitContent(
     onGoToShopping: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    annotatedString: AnnotatedString,
+    inlineContentMap: Map<String, InlineTextContent>
 ) {
     var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }
@@ -59,30 +69,52 @@ fun PortraitContent(
             .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(vertical = AppDimensions.paddingMedium),
+            .padding(vertical = AppDimensions.bottomSheetIconsSpaceBy),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .onGloballyPositioned { coordinates ->
-                    logoWidth = with(density) {
-                        coordinates.size.width.toDp()
-                    }
-                }
+//        Row(
+//            verticalAlignment = Alignment.CenterVertically,
+//            modifier = Modifier
+//                .onGloballyPositioned { coordinates ->
+//                    logoWidth = with(density) {
+//                        coordinates.size.width.toDp()
+//                    }
+//                }
+//        ) {
+//            Image(
+//                painter = painterResource(Res.drawable.ic_main_logo_78),
+//                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+//                contentDescription = null
+//            )
+//
+//            Text(
+//                text = stringResource(Res.string.welcome_screen_title),
+//                textAlign = TextAlign.Center,
+//                style = AppTypography.headlineLarge,
+//                color = MaterialTheme.colorScheme.onBackground,
+//                modifier = Modifier
+//                    .padding(end = AppDimensions.paddingMedium)
+//                    .padding(bottom = AppDimensions.paddingVerySmall)
+//            )
+//        }
+        Box(
+            contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(Res.drawable.ic_main_logo_78),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-                contentDescription = null
-            )
-
             Text(
-                text = stringResource(Res.string.welcome_screen_title),
-                textAlign = TextAlign.Center,
+                inlineContent = inlineContentMap,
+                text = annotatedString,
                 style = AppTypography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(end = AppDimensions.paddingMedium)
+                    .padding(bottom = AppDimensions.paddingVerySmall)
+                    .onGloballyPositioned { coordinates ->
+                        logoWidth = with(density) {
+                            coordinates.size.width.toDp()
+                        }
+                    },
             )
         }
 
@@ -147,7 +179,26 @@ private fun PortraitContentPreview() {
     ShoppingListTheme {
         PortraitContent(
             onGoToShopping = {},
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            buildAnnotatedString {
+                appendInlineContent(id = "imageId") // заполнитель для изображения
+                append(stringResource(Res.string.welcome_screen_title))
+            },
+            mapOf(
+                "imageId" to InlineTextContent(
+                    Placeholder(
+                        width = 78.sp,
+                        height = 78.sp,
+                        placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                    )
+                ) {
+                    Image(
+                        painter = painterResource(Res.drawable.ic_main_logo_78),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                        contentDescription = null
+                    )
+                }
+            )
         )
     }
 }
