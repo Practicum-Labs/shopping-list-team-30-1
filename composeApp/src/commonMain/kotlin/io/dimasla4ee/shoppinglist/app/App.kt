@@ -26,11 +26,11 @@ fun App() {
     ) {
 
         NavigationRoot(
-            modifier = Modifier.fillMaxSize(),
-            isDarkTheme = isDarkTheme,
             onThemeToggle = {
                 viewModel.toggleTheme(isDarkTheme)
-            }
+            },
+            isDarkTheme = isDarkTheme,
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
