@@ -108,7 +108,6 @@
     <string name="clear_icon_search_top_bar">Очистить</string>
     <string name="back_icon_search_top_bar">Назад</string>
 
-
     <!-- Опции сортировки -->
     <string-array name="sorting_options">
         <item>По алфавиту</item>

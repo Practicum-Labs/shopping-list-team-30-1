@@ -16,15 +16,15 @@ object AppDimensions {
     val paddingSmall = 8.dp
     val paddingVerySmall = 4.dp
 
-    val clickableAreaOfIcon = 56.dp
-    val areaOfIcon = 40.dp
-
     val logoSize = 78.sp
     val logoOffset = 2.dp
 
     val spacerSmall = 8.dp
     val spacerLarge = 48.dp
     val spacerVeryLarge = 94.dp
+
+    val clickableAreaOfIcon = 56.dp
+    val areaOfIcon = 40.dp
 
     val fab = DpSize(56.dp, 56.dp)
     val topAppIconSize = DpSize(48.dp, 48.dp)
