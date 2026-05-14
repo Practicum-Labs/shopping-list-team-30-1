@@ -51,9 +51,9 @@ import shoppinglist.composeapp.generated.resources.shopping
 @Composable
 fun LandscapeContent(
     onGoToShopping: () -> Unit,
-    modifier: Modifier = Modifier,
     annotatedString: AnnotatedString,
-    inlineContentMap: Map<String, InlineTextContent>
+    inlineContentMap: Map<String, InlineTextContent>,
+    modifier: Modifier = Modifier
 ) {
     var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }

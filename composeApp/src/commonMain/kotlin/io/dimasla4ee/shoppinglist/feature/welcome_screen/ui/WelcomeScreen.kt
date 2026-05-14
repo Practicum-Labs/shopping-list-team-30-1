@@ -36,16 +36,16 @@ fun WelcomeScreen(
         when (orientation) {
             ScreenOrientation.PORTRAIT -> PortraitContent(
                 onGoToShopping,
-                modifier,
                 annotatedString,
-                inlineContentMap
+                inlineContentMap,
+                modifier
             )
 
             ScreenOrientation.LANDSCAPE -> LandscapeContent(
                 onGoToShopping,
-                modifier,
                 annotatedString,
-                inlineContentMap
+                inlineContentMap,
+                modifier
             )
         }
     }
