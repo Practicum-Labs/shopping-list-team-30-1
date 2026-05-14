@@ -10,12 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
+import org.koin.compose.viewmodel.koinViewModel
 
 fun entryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>,
@@ -30,16 +30,32 @@ fun entryProvider(
     }
 
     entry<Route.ShoppingLists> {
-        val viewModel: ShoppingListsViewModel = viewModel()
+        val viewModel: ShoppingListsViewModel = koinViewModel()
 
         LaunchedEffect(Unit) {
             viewModel.observeLists()
         }
 
         ShoppingListsScreen(
-            viewModel = viewModel,
+            state = viewModel.state,
+            visibleLists = viewModel.visibleLists,
+            onFabClick = viewModel::onFabClick,
+            onEvent = viewModel::onCardEvent,
+            onNameChange = viewModel::onNameChange,
+            onDismiss = viewModel::onDialogDismiss,
+            onConfirm = viewModel::onCreateList,
+            onIconSelect = viewModel::onIconSelected,
+            onSheetDismiss = viewModel::onSheetDismiss,
+            onDeleteAllClick = viewModel::onDeleteAllClick,
+            onDeleteAllConfirm = viewModel::onDeleteAllConfirm,
+            onDeleteConfirm = viewModel::onDeleteConfirm,
+            onRenameValueChange = viewModel::onRenameValueChange,
+            onRenameConfirm = viewModel::onRenameConfirm,
             onThemeToggle = onThemeToggle,
             isDarkTheme = isDarkTheme,
+            onSearchClick = viewModel::onSearchClick,
+            onSearchQueryChange = viewModel::onSearchQueryChange,
+            onSearchDismiss = viewModel::onSearchDismiss,
             modifier = Modifier.fillMaxSize()
         )
     }
