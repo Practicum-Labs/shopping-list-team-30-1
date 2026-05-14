@@ -20,6 +20,10 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.CreateListDia
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteAllListsDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.RenameListDialog
+import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreenLandscape
+import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreenPortrait
+import io.dimasla4ee.shoppinglist.utils.OrientationProvider
+import io.dimasla4ee.shoppinglist.utils.ScreenOrientation
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.screen_title
@@ -74,7 +78,7 @@ fun ShoppingListsScreen(
 
                 visibleLists.isEmpty() -> {
 
-                    ShoppingListsEmptyState(
+                    ShoppingListsEmptyPortrait(
                         modifier = Modifier.padding(padding)
                     )
                 }
@@ -103,17 +107,27 @@ fun ShoppingListsScreen(
                 "Delete",
                 onClick = onDeleteAllClick
             ),
-            action3 = TopBarAction("Theme",
-                onClick = onThemeToggle),
+            action3 = TopBarAction(
+                "Theme",
+                onClick = onThemeToggle
+            ),
 
             //isDarkTheme = isDarkTheme,
             onFabClick = if (state.isFabVisible) onFabClick else null
         ) { padding ->
 
             if (visibleLists.isEmpty()) {
-                ShoppingListsEmptyState(
-                    modifier = Modifier.padding(padding)
-                )
+                OrientationProvider { orientation ->
+                    when (orientation) {
+                        ScreenOrientation.PORTRAIT -> ShoppingListsEmptyPortrait(
+                            modifier = Modifier.padding(padding)
+                        )
+
+                        ScreenOrientation.LANDSCAPE -> ShoppingListsEmptyLandscape(
+                            modifier = Modifier.padding(padding)
+                        )
+                    }
+                }
             } else {
                 ShoppingListsContent(
                     lists = visibleLists,

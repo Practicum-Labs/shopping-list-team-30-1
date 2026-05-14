@@ -34,14 +34,14 @@ fun WelcomeScreen(
 
     OrientationProvider { orientation ->
         when (orientation) {
-            ScreenOrientation.PORTRAIT -> PortraitContent(
+            ScreenOrientation.PORTRAIT -> WelcomeScreenPortrait(
                 onGoToShopping,
                 annotatedString,
                 inlineContentMap,
                 modifier
             )
 
-            ScreenOrientation.LANDSCAPE -> LandscapeContent(
+            ScreenOrientation.LANDSCAPE -> WelcomeScreenLandscape(
                 onGoToShopping,
                 annotatedString,
                 inlineContentMap,
