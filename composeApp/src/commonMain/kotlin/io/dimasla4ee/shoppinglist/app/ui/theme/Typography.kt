@@ -1,9 +1,15 @@
 package io.dimasla4ee.shoppinglist.app.ui.theme
 
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.Font
+import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.noteworthy_light_0
 
 /**
  * Typography mapping (Figma):
@@ -44,7 +50,7 @@ val AppTypography = Typography(
     // 16 / 24 / 0.5
     bodyLarge = TextStyle(
         fontFamily = AppFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Thin,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
@@ -80,3 +86,22 @@ val AppTypography = Typography(
     )
 )
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun noteworthyTypography(): Typography {
+    val noteworthyLightFont = FontFamily(
+        Font(Res.font.noteworthy_light_0)
+    )
+
+    return with(AppTypography) {
+        copy(
+            titleLargeEmphasized = TextStyle(
+                fontFamily = noteworthyLightFont,
+                fontWeight = FontWeight.Light,
+                fontSize = 40.sp,
+                lineHeight = 32.sp,
+                letterSpacing = 0.sp
+            )
+        )
+    }
+}
