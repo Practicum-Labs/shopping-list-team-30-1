@@ -37,9 +37,25 @@ fun entryProvider(
         }
 
         ShoppingListsScreen(
-            viewModel = viewModel,
+            state = viewModel.state,
+            visibleLists = viewModel.visibleLists,
+            onFabClick = viewModel::onFabClick,
+            onEvent = viewModel::onCardEvent,
+            onNameChange = viewModel::onNameChange,
+            onDismiss = viewModel::onDialogDismiss,
+            onConfirm = viewModel::onCreateList,
+            onIconSelect = viewModel::onIconSelected,
+            onSheetDismiss = viewModel::onSheetDismiss,
+            onDeleteAllClick = viewModel::onDeleteAllClick,
+            onDeleteAllConfirm = viewModel::onDeleteAllConfirm,
+            onDeleteConfirm = viewModel::onDeleteConfirm,
+            onRenameValueChange = viewModel::onRenameValueChange,
+            onRenameConfirm = viewModel::onRenameConfirm,
             onThemeToggle = onThemeToggle,
             isDarkTheme = isDarkTheme,
+            onSearchClick = viewModel::onSearchClick,
+            onSearchQueryChange = viewModel::onSearchQueryChange,
+            onSearchDismiss = viewModel::onSearchDismiss,
             modifier = Modifier.fillMaxSize()
         )
     }
