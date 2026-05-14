@@ -83,6 +83,7 @@ fun RegisterContent(
                 .appDefaultFormSize()
                 .height(RegisterDimensions.ButtonHeight),
             onClick = onRegister,
+            enabled = state.isRegisterAllowed,
             shape = RoundedCornerShape(RegisterDimensions.ButtonCornerRadius)
         ) {
             Text(stringResource(Res.string.authorization_button))

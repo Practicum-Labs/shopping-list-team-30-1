@@ -14,6 +14,10 @@
     <string name="authorization_sign_in">Sign In</string>
     <string name="authorization_forgot_password">Forgot password?</string>
     <string name="authorization_no_account">No account?</string>
+    <string name="authorization_recover_password_title">Password recovery</string>
+    <string name="authorization_recover_password_description">Enter the email you used during registration. We will send you password recovery instructions.</string>
+    <string name="authorization_recover_password_button">Recover password</string>
+    <string name="authorization_recover_password_cancel">Cancel</string>
 
     <!-- Password strength -->
     <string name="password_strength_very_weak">Very weak</string>
