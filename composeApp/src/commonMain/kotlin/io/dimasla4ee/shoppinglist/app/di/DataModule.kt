@@ -4,6 +4,8 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.dimasla4ee.shoppinglist.core.data.network.api.AuthApi
+import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
+import io.dimasla4ee.shoppinglist.core.data.repository.AuthRepositoryImpl
 import io.dimasla4ee.shoppinglist.core.data.network.client.KtorfitNetworkClient
 import io.dimasla4ee.shoppinglist.core.data.network.client.NetworkClient
 import io.dimasla4ee.shoppinglist.core.database.db.ShoppingListDatabase
@@ -59,6 +61,10 @@ val dataModule = module {
 
     single<NetworkClient> {
         KtorfitNetworkClient(api = get())
+    }
+
+    single<AuthRepository> {
+        AuthRepositoryImpl(networkClient = get())
     }
 }
 

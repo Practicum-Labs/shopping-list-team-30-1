@@ -1,7 +1,7 @@
 package io.dimasla4ee.shoppinglist.core.data.network.api
 
 import io.dimasla4ee.shoppinglist.core.data.network.dto.Request
-import io.dimasla4ee.shoppinglist.core.data.network.dto.Response
+import io.dimasla4ee.shoppinglist.core.domain.model.Response
 
 /**
  * Фейковая реализация [AuthApi] для unit-тестов.

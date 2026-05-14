@@ -2,7 +2,7 @@ package io.dimasla4ee.shoppinglist.core.data.network.client
 
 import io.dimasla4ee.shoppinglist.core.data.network.api.FakeAuthApi
 import io.dimasla4ee.shoppinglist.core.data.network.dto.Request
-import io.dimasla4ee.shoppinglist.core.data.network.dto.Response
+import io.dimasla4ee.shoppinglist.core.domain.model.Response
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
