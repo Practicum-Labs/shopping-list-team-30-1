@@ -47,7 +47,7 @@ import shoppinglist.composeapp.generated.resources.shopping
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun PortraitContent(
+fun WelcomeScreenPortrait(
     onGoToShopping: () -> Unit,
     annotatedString: AnnotatedString,
     inlineContentMap: Map<String, InlineTextContent>,
@@ -60,7 +60,6 @@ fun PortraitContent(
 
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .navigationBarsPadding()
             .padding(vertical = AppDimensions.paddingMedium),
@@ -86,7 +85,7 @@ fun PortraitContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(AppDimensions.spacerVeryLarge))
+        Spacer(modifier = Modifier.height(AppDimensions.spacerVeryBig))
 
         AnimatedVisibility(visible = showContent) {
 
@@ -103,7 +102,7 @@ fun PortraitContent(
                     contentScale = ContentScale.Crop
                 )
 
-                Spacer(modifier = Modifier.height(AppDimensions.spacerLarge))
+                Spacer(modifier = Modifier.height(AppDimensions.spacerBig))
 
                 Text(
                     text = stringResource(Res.string.onboard_welcome_message),
@@ -143,10 +142,10 @@ fun PortraitContent(
 
 @Preview(showSystemUi = true)
 @Composable
-private fun PortraitContentPreview() {
+private fun WelcomeScreenPortraitPreview() {
     ShoppingListTheme {
         val (annotatedString, inlineContentMap) = createWelcomeLogo()
-        PortraitContent(
+        WelcomeScreenPortrait(
             onGoToShopping = {},
             modifier = Modifier.fillMaxSize(),
             annotatedString = annotatedString,

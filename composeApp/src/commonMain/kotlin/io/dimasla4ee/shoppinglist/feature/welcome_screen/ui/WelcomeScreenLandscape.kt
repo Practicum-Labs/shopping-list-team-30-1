@@ -49,7 +49,7 @@ import shoppinglist.composeapp.generated.resources.shopping
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun LandscapeContent(
+fun WelcomeScreenLandscape(
     onGoToShopping: () -> Unit,
     annotatedString: AnnotatedString,
     inlineContentMap: Map<String, InlineTextContent>,
@@ -63,7 +63,6 @@ fun LandscapeContent(
 
     Row(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .navigationBarsPadding()
             .padding(AppDimensions.paddingMedium)
@@ -177,10 +176,10 @@ fun LandscapeContent(
     name = "WelcomeScreen_Landscape"
 )
 @Composable
-private fun LandscapeContentPreview() {
+private fun WelcomeScreenLandscapePreview() {
     ShoppingListTheme {
         val (annotatedString, inlineContentMap) = createWelcomeLogo()
-        LandscapeContent(
+        WelcomeScreenLandscape(
             onGoToShopping = {},
             modifier = Modifier.fillMaxSize(),
             annotatedString = annotatedString,
