@@ -7,5 +7,5 @@ import io.dimasla4ee.shoppinglist.R
 
 actual val AppFontFamily: FontFamily = FontFamily(
     Font(R.font.roboto_regular, weight = FontWeight.Normal),
-    Font(R.font.roboto_medium, weight = FontWeight.Medium)
+    Font(R.font.roboto_medium, weight = FontWeight.Medium),
 )
