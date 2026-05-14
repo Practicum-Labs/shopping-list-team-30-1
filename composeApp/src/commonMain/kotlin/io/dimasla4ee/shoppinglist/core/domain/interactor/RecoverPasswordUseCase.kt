@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.core.data.repository
+package io.dimasla4ee.shoppinglist.core.domain.interactor
 
 import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
