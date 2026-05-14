@@ -8,7 +8,10 @@ import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
 import io.dimasla4ee.shoppinglist.core.data.repository.AuthRepositoryImpl
 import io.dimasla4ee.shoppinglist.core.data.network.client.KtorfitNetworkClient
 import io.dimasla4ee.shoppinglist.core.data.network.client.NetworkClient
+import io.dimasla4ee.shoppinglist.core.database.dao.ShoppingListDao
 import io.dimasla4ee.shoppinglist.core.database.db.ShoppingListDatabase
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.data.ShoppingListsRepositoryImpl
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
@@ -30,6 +33,16 @@ val dataModule = module {
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()
+    }
+
+    single<ShoppingListDao> {
+        get<ShoppingListDatabase>().shoppingListDao()
+    }
+
+    single<ShoppingListsRepository> {
+        ShoppingListsRepositoryImpl(
+            dao = get()
+        )
     }
 
     single<Json> {
@@ -69,6 +82,6 @@ val dataModule = module {
 }
 
 /**
- * Модуль Koin, отвечающий за платформенно-специфичные зависимости data-слоя.
+ * Модуль Koin, отвечающий за платформенно-специфичные зависимости Repository и Data sources.
  */
 expect val platformDataModule: Module
