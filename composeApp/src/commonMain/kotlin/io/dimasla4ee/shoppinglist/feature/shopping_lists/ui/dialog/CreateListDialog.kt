@@ -78,7 +78,7 @@ fun CreateListDialog(
                     )
                 },
 
-                colors = dialogTextFieldColors(),
+                colors = dialogTextFieldColors()
             )
         },
 
