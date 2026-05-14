@@ -32,6 +32,10 @@ val dataModule = module {
             .build()
     }
 
+    single<ShoppingListDao> {
+        get<ShoppingListDatabase>().shoppingListDao()
+    }
+
     single<ShoppingListsRepository> {
         ShoppingListsRepositoryImpl(
             dao = get()
