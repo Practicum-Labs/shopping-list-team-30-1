@@ -16,6 +16,10 @@
     <string name="authorization_sign_in">Войти</string>
     <string name="authorization_forgot_password">Забыли пароль?</string>
     <string name="authorization_no_account">Нет аккаунта?</string>
+    <string name="authorization_recover_password_title">Восстановление пароля</string>
+    <string name="authorization_recover_password_description">Введите email, указанный при регистрации. Мы отправим инструкции по восстановлению пароля.</string>
+    <string name="authorization_recover_password_button">Восстановить пароль</string>
+    <string name="authorization_recover_password_cancel">Отмена</string>
 
     <!-- Сложность пароля -->
     <string name="password_strength_very_weak">Очень слабый</string>

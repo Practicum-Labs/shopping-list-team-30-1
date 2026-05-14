@@ -2,6 +2,7 @@ package io.dimasla4ee.shoppinglist.feature.authorization.presentation
 
 import androidx.compose.foundation.text.input.TextFieldState
 import io.dimasla4ee.shoppinglist.core.mvi.MviState
+import io.dimasla4ee.shoppinglist.core.utils.isValidEmail
 import io.dimasla4ee.shoppinglist.feature.authorization.domain.password_strength_meter.PasswordStrengthLevel
 import io.dimasla4ee.shoppinglist.feature.authorization.domain.password_strength_meter.PasswordStrengthResult
 
@@ -16,5 +17,5 @@ data class RegisterState(
     )
 ) : MviState {
     val isRegisterAllowed: Boolean
-        get() = passwordStrength.isAcceptable && email.text.isNotBlank()
+        get() = passwordStrength.isAcceptable && email.text.isValidEmail()
 }

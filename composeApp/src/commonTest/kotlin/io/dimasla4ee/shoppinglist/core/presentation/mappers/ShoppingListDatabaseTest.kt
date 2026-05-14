@@ -26,7 +26,7 @@ class ShoppingListDatabaseTest : KoinTest {
     private lateinit var database: ShoppingListDatabase
     private lateinit var dao: ShoppingListDao
 
-
+    // Падает при android тестировании. Тестировать через JVM
     private val testPlatformDataModule = module {
         factory<RoomDatabase.Builder<ShoppingListDatabase>> {
             Room.inMemoryDatabaseBuilder<ShoppingListDatabase>()
