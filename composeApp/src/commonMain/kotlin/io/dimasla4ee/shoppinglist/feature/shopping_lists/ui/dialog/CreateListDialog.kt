@@ -66,6 +66,7 @@ fun CreateListDialog(
 
         text = {
             OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
                 value = name,
                 onValueChange = onNameChange,
                 singleLine = true,
@@ -77,7 +78,7 @@ fun CreateListDialog(
                     )
                 },
 
-                colors = dialogTextFieldColors()
+                colors = dialogTextFieldColors(),
             )
         },
 
