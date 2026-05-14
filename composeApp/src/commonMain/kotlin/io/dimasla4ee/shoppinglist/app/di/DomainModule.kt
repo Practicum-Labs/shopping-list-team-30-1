@@ -2,6 +2,8 @@ package io.dimasla4ee.shoppinglist.app.di
 
 import io.dimasla4ee.shoppinglist.core.domain.interactor.GetThemeInteractor
 import io.dimasla4ee.shoppinglist.core.domain.interactor.ToggleThemeInteractor
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractorImpl
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -16,6 +18,12 @@ val domainModule = module {
 
     factory {
         ToggleThemeInteractor(get())
+    }
+
+    single<ShoppingListsInteractor> {
+        ShoppingListsInteractorImpl(
+            repository = get()
+        )
     }
 }
 
