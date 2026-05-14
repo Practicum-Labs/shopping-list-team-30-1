@@ -103,6 +103,7 @@ class ShoppingListsViewModel(
         if (name.isEmpty()) return
 
         viewModelScope.launch {
+            interactor.addShoppingList(name)
             state = state.copy(
                 dialog = ShoppingListDialog.None,
                 newListName = ""
