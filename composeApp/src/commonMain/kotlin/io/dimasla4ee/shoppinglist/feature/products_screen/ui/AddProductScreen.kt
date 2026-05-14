@@ -56,13 +56,41 @@ import shoppinglist.composeapp.generated.resources.img_product_list
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductsScreen(
+fun AddProductScreen(
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null,
     viewModel: ProductsViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    // VM → Sheet
+    LaunchedEffect(state.isBottomSheetOpen) {
+        scope.launch {
+            if (state.isBottomSheetOpen) {
+                sheetState.show()
+            } else {
+                sheetState.hide()
+            }
+        }
+    }
+
+    // Sheet → VM
+    LaunchedEffect(sheetState) {
+        snapshotFlow { sheetState.currentValue }
+            .distinctUntilChanged()
+            .collectLatest { value ->
+                val isOpen = value == SheetValue.Expanded
+                if (state.isBottomSheetOpen != isOpen) {
+                    viewModel.onIntent(ProductsIntent.ToggleBottomSheet)
+                }
+            }
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
 

@@ -9,6 +9,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import org.jetbrains.compose.resources.DrawableResource
@@ -27,7 +28,10 @@ fun AppTopBar(
     title: String,
     modifier: Modifier = Modifier,
     navigationIcon: (@Composable (() -> Unit))? = null,
-    actions: List<TopBarIcon> = emptyList()
+    actions: List<TopBarIcon> = emptyList(),
+
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
     TopAppBar(
         modifier = modifier,
@@ -35,9 +39,9 @@ fun AppTopBar(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground) },
+                color = contentColor) },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = containerColor
         ),
 
         navigationIcon = {
