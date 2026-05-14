@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +37,7 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
+import io.dimasla4ee.shoppinglist.app.ui.theme.noteworthyTypography
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -43,6 +45,7 @@ import shoppinglist.composeapp.generated.resources.onboard_instruction
 import shoppinglist.composeapp.generated.resources.onboard_welcome_message
 import shoppinglist.composeapp.generated.resources.shopping
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PortraitContent(
     onGoToShopping: () -> Unit,
@@ -70,7 +73,7 @@ fun PortraitContent(
             Text(
                 inlineContent = inlineContentMap,
                 text = annotatedString,
-                style = AppTypography.headlineLarge,
+                style = noteworthyTypography().titleLargeEmphasized,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
