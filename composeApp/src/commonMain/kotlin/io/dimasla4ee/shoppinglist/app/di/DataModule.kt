@@ -6,6 +6,7 @@ import de.jensklingenberg.ktorfit.Ktorfit
 import io.dimasla4ee.shoppinglist.core.data.network.api.AuthApi
 import io.dimasla4ee.shoppinglist.core.data.network.client.KtorfitNetworkClient
 import io.dimasla4ee.shoppinglist.core.data.network.client.NetworkClient
+import io.dimasla4ee.shoppinglist.core.database.dao.ShoppingListDao
 import io.dimasla4ee.shoppinglist.core.database.db.ShoppingListDatabase
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.data.ShoppingListsRepositoryImpl
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsRepository
