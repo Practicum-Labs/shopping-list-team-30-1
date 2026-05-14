@@ -23,6 +23,7 @@ import shoppinglist.composeapp.generated.resources.ic_delete_list_24
 import shoppinglist.composeapp.generated.resources.ic_fab_24
 import shoppinglist.composeapp.generated.resources.ic_search_24
 import shoppinglist.composeapp.generated.resources.ic_theme_24
+import shoppinglist.composeapp.generated.resources.ic_theme_light_24
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +35,8 @@ fun ShoppingListsScaffold(
     action3: TopBarAction,
 
     onFabClick: (() -> Unit)?,
+
+    isDarkTheme: Boolean,
 
     modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit
@@ -69,7 +72,13 @@ fun ShoppingListsScaffold(
 
                     IconButton(onClick = action3.onClick) {
                         Icon(
-                            painter = painterResource(Res.drawable.ic_theme_24),
+                            painter = painterResource(
+                                if (isDarkTheme) {
+                                    Res.drawable.ic_theme_light_24
+                                } else {
+                                    Res.drawable.ic_theme_24
+                                }
+                            ),
                             contentDescription = action1.contentDescription,
                             tint = MaterialTheme.colorScheme.onTertiary
                         )
