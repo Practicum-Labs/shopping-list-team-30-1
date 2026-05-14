@@ -47,9 +47,13 @@ fun ShoppingListsScreenContent(
     onRenameValueChange: (String) -> Unit,
     onRenameConfirm: () -> Unit,
 
+    onThemeToggle: () -> Unit,
+
     onSearchClick: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
     onSearchDismiss: () -> Unit,
+
+    isDarkTheme: Boolean,
 
     modifier: Modifier = Modifier
 ) {
@@ -102,8 +106,10 @@ fun ShoppingListsScreenContent(
                 "Delete",
                 onClick = onDeleteAllClick
             ),
-            action3 = TopBarAction("Theme") {},
+            action3 = TopBarAction("Theme",
+                onClick = onThemeToggle),
 
+            isDarkTheme = isDarkTheme,
             onFabClick = if (state.isFabVisible) onFabClick else null
         ) { padding ->
 
@@ -210,9 +216,13 @@ private fun ShoppingListsScreenPreview(
             onRenameValueChange = {},
             onRenameConfirm = {},
 
+            onThemeToggle = {},
+
             onSearchClick = {},
             onSearchQueryChange = {},
-            onSearchDismiss = {}
+            onSearchDismiss = {},
+
+            isDarkTheme = false
         )
     }
 }

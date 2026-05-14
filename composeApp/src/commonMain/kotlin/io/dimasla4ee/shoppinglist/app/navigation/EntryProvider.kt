@@ -17,7 +17,11 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
 
-fun entryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryProvider<NavKey> {
+fun entryProvider(
+    topLevelBackStack: TopLevelBackStack<NavKey>,
+    onThemeToggle: () -> Unit,
+    isDarkTheme: Boolean
+) = entryProvider<NavKey> {
     entry<Route.Welcome> {
         WelcomeScreen(
             onGoToShopping = { topLevelBackStack.add(Route.ShoppingLists) },
@@ -34,6 +38,8 @@ fun entryProvider(topLevelBackStack: TopLevelBackStack<NavKey>) = entryProvider<
 
         ShoppingListsScreen(
             viewModel = viewModel,
+            onThemeToggle = onThemeToggle,
+            isDarkTheme = isDarkTheme,
             modifier = Modifier.fillMaxSize()
         )
     }
