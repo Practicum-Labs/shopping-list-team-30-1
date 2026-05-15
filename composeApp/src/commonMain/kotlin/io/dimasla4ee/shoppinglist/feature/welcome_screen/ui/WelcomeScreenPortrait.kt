@@ -2,7 +2,6 @@ package io.dimasla4ee.shoppinglist.feature.welcome_screen.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -85,7 +84,7 @@ fun WelcomeScreenPortrait(
             )
         }
 
-        Spacer(modifier = Modifier.height(AppDimensions.spacerVeryBig))
+        Spacer(modifier = Modifier.height(AppDimensions.spacerLarge))
 
         AnimatedVisibility(visible = showContent) {
 
@@ -102,7 +101,7 @@ fun WelcomeScreenPortrait(
                     contentScale = ContentScale.Crop
                 )
 
-                Spacer(modifier = Modifier.height(AppDimensions.spacerBig))
+                Spacer(modifier = Modifier.height(AppDimensions.spacerVeryBig))
 
                 Text(
                     text = stringResource(Res.string.onboard_welcome_message),
