@@ -10,6 +10,7 @@ import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListsState
+import io.dimasla4ee.shoppinglist.utils.AppLog
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -72,8 +73,14 @@ class ShoppingListsViewModel(
             }
 
             is ShoppingListCardEvent.ChangeIcon -> {
+                AppLog.d(
+                    tag = "ShoppingListsVM",
+                    message = "AAAAAAAA CHANGE ICON CLICK"
+                )
+
                 onIconClick(event.item.id)
             }
+
 
             is ShoppingListCardEvent.Click -> {
                 // TODO
@@ -82,7 +89,10 @@ class ShoppingListsViewModel(
     }
 
     private fun onIconClick(listId: Long) {
-        state = state.copy(selectedListId = listId)
+        state = state.copy(
+            isIconSheetVisible = true,
+            selectedListId = listId
+        )
     }
 
     fun onDialogDismiss() {

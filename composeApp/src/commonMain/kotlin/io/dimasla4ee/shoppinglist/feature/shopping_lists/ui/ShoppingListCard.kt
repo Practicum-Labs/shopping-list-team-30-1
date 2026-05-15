@@ -129,7 +129,14 @@ fun ShoppingListCard(
             elevation = elevation,
             onClick = { onEvent(ShoppingListCardEvent.Click(listItem)) }
         ) {
-            ItemContent(listItem)
+            ItemContent(
+                listItem,
+                onIconClick = {
+                    onEvent(
+                        ShoppingListCardEvent.ChangeIcon(listItem)
+                    )
+                }
+            )
         }
     }
 }
@@ -156,7 +163,8 @@ private fun Actions(
 
 @Composable
 private fun ItemContent(
-    listItem: ShoppingListItem
+    listItem: ShoppingListItem,
+    onIconClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -167,7 +175,8 @@ private fun ItemContent(
     ) {
         AppIconButton(
             iconRes = listItem.iconRes,
-            contentDescription = null
+            contentDescription = null,
+            onClick = onIconClick,
         )
         Text(listItem.name)
     }
