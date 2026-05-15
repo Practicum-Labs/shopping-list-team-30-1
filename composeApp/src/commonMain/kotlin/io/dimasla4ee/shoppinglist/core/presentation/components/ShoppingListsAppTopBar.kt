@@ -16,9 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
+import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
+import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.app.ui.theme.appTopBarColors
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.ic_construction_24
 import shoppinglist.composeapp.generated.resources.ic_delete_list_24
 import shoppinglist.composeapp.generated.resources.ic_fab_24
 import shoppinglist.composeapp.generated.resources.ic_search_24
@@ -36,11 +39,21 @@ fun ShoppingListsScaffold(
 
     onFabClick: (() -> Unit)?,
 
-    isDarkTheme: Boolean,
 
     modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit
 ) {
+    val themeMode = LocalThemeMode.current
+
+    val themeIcon = when (themeMode) {
+
+        ThemeMode.SYSTEM -> Res.drawable.ic_construction_24
+
+        ThemeMode.LIGHT -> Res.drawable.ic_theme_24
+
+        ThemeMode.DARK -> Res.drawable.ic_theme_light_24
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -72,13 +85,7 @@ fun ShoppingListsScaffold(
 
                     IconButton(onClick = action3.onClick) {
                         Icon(
-                            painter = painterResource(
-                                if (isDarkTheme) {
-                                    Res.drawable.ic_theme_light_24
-                                } else {
-                                    Res.drawable.ic_theme_24
-                                }
-                            ),
+                            painter = painterResource(themeIcon),
                             contentDescription = action1.contentDescription,
                             tint = MaterialTheme.colorScheme.onTertiary
                         )
@@ -105,7 +112,6 @@ fun ShoppingListsScaffold(
         content = content
     )
 }
-
 
 data class TopBarAction(
     val contentDescription: String? = null,

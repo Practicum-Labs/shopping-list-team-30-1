@@ -6,6 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
 
 private val LightColorScheme = lightColorScheme(
 
@@ -84,9 +85,17 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = Brown600
 )
 
+val LocalIsDarkTheme = staticCompositionLocalOf { false }
+
+val LocalThemeMode =
+    staticCompositionLocalOf<ThemeMode> {
+        ThemeMode.SYSTEM
+    }
+
 @Composable
 fun ShoppingListTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    themeMode: ThemeMode = ThemeMode.SYSTEM,
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
@@ -95,7 +104,9 @@ fun ShoppingListTheme(
 
     CompositionLocalProvider(
         LocalAppColors provides appColors,
-        LocalAppPlaceholders provides appPlaceholders
+        LocalAppPlaceholders provides appPlaceholders,
+        LocalIsDarkTheme provides darkTheme,
+        LocalThemeMode provides themeMode
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

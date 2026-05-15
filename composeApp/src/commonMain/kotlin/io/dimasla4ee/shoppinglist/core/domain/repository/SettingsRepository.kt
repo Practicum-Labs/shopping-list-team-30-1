@@ -1,10 +1,11 @@
 package io.dimasla4ee.shoppinglist.core.domain.repository
 
+import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
 
-    val isDarkTheme: Flow<Boolean>
+    val themeMode: Flow<ThemeMode>
 
-    suspend fun setDarkTheme(enabled: Boolean)
+    suspend fun setThemeMode(mode: ThemeMode)
 }

@@ -53,8 +53,6 @@ fun ShoppingListsScreen(
     onSearchQueryChange: (String) -> Unit,
     onSearchDismiss: () -> Unit,
 
-    isDarkTheme: Boolean,
-
     modifier: Modifier = Modifier
 ) {
     if (state.isSearchMode) {
@@ -92,7 +90,6 @@ fun ShoppingListsScreen(
             }
         }
 
-
     } else {
 
         ShoppingListsScaffold(
@@ -109,7 +106,7 @@ fun ShoppingListsScreen(
             action3 = TopBarAction("Theme",
                 onClick = onThemeToggle),
 
-            isDarkTheme = isDarkTheme,
+            //isDarkTheme = isDarkTheme,
             onFabClick = if (state.isFabVisible) onFabClick else null
         ) { padding ->
 
@@ -221,8 +218,6 @@ private fun ShoppingListsScreenPreview(
             onSearchClick = {},
             onSearchQueryChange = {},
             onSearchDismiss = {},
-
-            isDarkTheme = false
         )
     }
 }

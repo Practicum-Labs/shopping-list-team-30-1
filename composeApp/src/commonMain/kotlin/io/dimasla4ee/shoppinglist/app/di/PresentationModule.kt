@@ -6,7 +6,6 @@ import io.dimasla4ee.shoppinglist.core.presentation.settings.SettingsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import org.koin.plugin.module.dsl.viewModel
 
 /**
  * Модуль Koin, отвечающий за зависимости UI и ViewModel.

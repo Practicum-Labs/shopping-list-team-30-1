@@ -2,6 +2,7 @@ package io.dimasla4ee.shoppinglist.core.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.core.domain.interactor.GetThemeInteractor
 import io.dimasla4ee.shoppinglist.core.domain.interactor.ToggleThemeInteractor
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,17 +14,17 @@ class SettingsViewModel(
     private val toggleThemeUseCase: ToggleThemeInteractor
 ) : ViewModel() {
 
-    val isDarkTheme = getThemeUseCase()
+    val themeMode = getThemeUseCase()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = false
+            initialValue = ThemeMode.SYSTEM
         )
 
-    fun toggleTheme(current: Boolean) {
+    fun toggleTheme() {
 
         viewModelScope.launch {
-            toggleThemeUseCase(current)
+            toggleThemeUseCase(themeMode.value)
         }
     }
 }
