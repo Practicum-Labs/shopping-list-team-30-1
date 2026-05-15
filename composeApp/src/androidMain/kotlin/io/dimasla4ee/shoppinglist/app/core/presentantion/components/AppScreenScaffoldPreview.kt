@@ -39,8 +39,6 @@ private fun PreviewContainer(
 
             onFabClick = {},
 
-            isDarkTheme = false,
-
             content = content
         )
     }

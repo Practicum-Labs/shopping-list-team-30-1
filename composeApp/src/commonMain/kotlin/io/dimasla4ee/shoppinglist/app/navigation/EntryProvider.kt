@@ -20,7 +20,6 @@ import org.koin.compose.viewmodel.koinViewModel
 fun entryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>,
     onThemeToggle: () -> Unit,
-    isDarkTheme: Boolean
 ) = entryProvider<NavKey> {
     entry<Route.Welcome> {
         WelcomeScreen(
@@ -52,7 +51,6 @@ fun entryProvider(
             onRenameValueChange = viewModel::onRenameValueChange,
             onRenameConfirm = viewModel::onRenameConfirm,
             onThemeToggle = onThemeToggle,
-            isDarkTheme = isDarkTheme,
             onSearchClick = viewModel::onSearchClick,
             onSearchQueryChange = viewModel::onSearchQueryChange,
             onSearchDismiss = viewModel::onSearchDismiss,

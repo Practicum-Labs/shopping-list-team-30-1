@@ -15,20 +15,17 @@ import kotlin.collections.listOf
 @Composable
 fun NavigationRoot(
     onThemeToggle: () -> Unit,
-    isDarkTheme: Boolean,
     modifier: Modifier = Modifier,
     viewModel: NavigationViewModel = koinViewModel()
 ) {
     val topLevelBackStack = viewModel.backStack
     val entryProvider = remember(
         topLevelBackStack,
-        onThemeToggle,
-        isDarkTheme
+        onThemeToggle
     ) {
         entryProvider(
             topLevelBackStack = topLevelBackStack,
-            onThemeToggle = onThemeToggle,
-            isDarkTheme = isDarkTheme
+            onThemeToggle = onThemeToggle
         )
     }
 
