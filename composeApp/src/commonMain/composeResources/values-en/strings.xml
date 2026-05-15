@@ -1,8 +1,31 @@
 <resources>
     <!-- Screen welcome -->
+    <string name="welcome_screen_title">Shopping List</string>
     <string name="onboard_welcome_message">Welcome to the Shopping List!</string>
     <string name="onboard_instruction">Create lists, add items, mark what has already been purchased</string>
-    <string name="welcome_screen_title">Shopping List</string>
+    <string name="shopping">Shopping</string>
+
+    <!-- Authorization screen -->
+    <string name="authorization_email_hint">Enter Email</string>
+    <string name="authorization_email_label">Email</string>
+    <string name="authorization_password_hint">Enter password</string>
+    <string name="authorization_password_label">Password</string>
+    <string name="authorization_button">Sign Up</string>
+    <string name="authorization_have_account">Already have an account?</string>
+    <string name="authorization_sign_in">Sign In</string>
+    <string name="authorization_forgot_password">Forgot password?</string>
+    <string name="authorization_no_account">No account?</string>
+    <string name="authorization_recover_password_title">Password recovery</string>
+    <string name="authorization_recover_password_description">Enter the email you used during registration. We will send you password recovery instructions.</string>
+    <string name="authorization_recover_password_button">Recover password</string>
+    <string name="authorization_recover_password_cancel">Cancel</string>
+
+    <!-- Password strength -->
+    <string name="password_strength_very_weak">Very weak</string>
+    <string name="password_strength_weak">Weak</string>
+    <string name="password_strength_medium">Medium</string>
+    <string name="password_strength_good">Good</string>
+    <string name="password_strength_strong">Strong</string>
 
     <!-- Screen title -->
     <string name="screen_title">My Lists</string>
@@ -54,6 +77,10 @@
     <string name="cd_change_shopping_list_icon">Change shopping list icon</string>
     <string name="cd_delete_shopping_list">Delete shopping list</string>
 
+    <!-- Password actions -->
+    <string name="cd_show_password">Show password</string>
+    <string name="cd_hide_password">Hide password</string>
+
     <!-- Units -->
     <string name="liter">l</string>
     <string name="milliliter">ml</string>
@@ -81,6 +108,10 @@
     <string name="btm_menu_sorting">Sort</string>
     <string name="btm_menu_delete_all">Delete all</string>
     <string name="btm_menu_clear_purchased_items">Clear purchased items</string>
+
+    <!-- Content description для SearchTopBar -->
+    <string name="clear_icon_search_top_bar">Clear</string>
+    <string name="back_icon_search_top_bar">Back</string>
 
     <!-- Sorting options -->
     <string-array name="sorting_options">

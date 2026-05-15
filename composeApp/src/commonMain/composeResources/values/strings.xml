@@ -2,9 +2,32 @@
     <string name="app_name" translatable="false">ShoppingList</string>
 
     <!-- Экран приветствия -->
+    <string name="welcome_screen_title">Список Покупок</string>
     <string name="onboard_welcome_message">Добро пожаловать в Список покупок!</string>
     <string name="onboard_instruction">Создавайте списки, добавляйте товары, отмечайте, что уже куплено</string>
-    <string name="welcome_screen_title">Список Покупок</string>
+    <string name="shopping">За покупками</string>
+
+    <!-- Экран авторизации -->
+    <string name="authorization_email_hint">Введите Email</string>
+    <string name="authorization_email_label">Email</string>
+    <string name="authorization_password_hint">Введите пароль</string>
+    <string name="authorization_password_label">Пароль</string>
+    <string name="authorization_button">Зарегистрироваться</string>
+    <string name="authorization_have_account">Уже есть аккаунт?</string>
+    <string name="authorization_sign_in">Войти</string>
+    <string name="authorization_forgot_password">Забыли пароль?</string>
+    <string name="authorization_no_account">Нет аккаунта?</string>
+    <string name="authorization_recover_password_title">Восстановление пароля</string>
+    <string name="authorization_recover_password_description">Введите email, указанный при регистрации. Мы отправим инструкции по восстановлению пароля.</string>
+    <string name="authorization_recover_password_button">Восстановить пароль</string>
+    <string name="authorization_recover_password_cancel">Отмена</string>
+
+    <!-- Сложность пароля -->
+    <string name="password_strength_very_weak">Очень слабый</string>
+    <string name="password_strength_weak">Слабый</string>
+    <string name="password_strength_medium">Нормальный</string>
+    <string name="password_strength_good">Хороший</string>
+    <string name="password_strength_strong">Надёжный</string>
 
     <!-- Заголовок экрана -->
     <string name="screen_title">Мои списки</string>
@@ -56,6 +79,10 @@
     <string name="cd_change_shopping_list_icon">Изменить иконку списка покупок</string>
     <string name="cd_delete_shopping_list">Удалить список покупок</string>
 
+    <!-- Действия с паролем -->
+    <string name="cd_show_password">Показать пароль</string>
+    <string name="cd_hide_password">Скрыть пароль</string>
+
     <!-- Единицы -->
     <string name="liter">л</string>
     <string name="milliliter">мл</string>
@@ -83,6 +110,10 @@
     <string name="btm_menu_sorting">Сортировка</string>
     <string name="btm_menu_delete_all">Удалить все</string>
     <string name="btm_menu_clear_purchased_items">Очистить купленные</string>
+
+    <!-- Content description для SearchTopBar -->
+    <string name="clear_icon_search_top_bar">Очистить</string>
+    <string name="back_icon_search_top_bar">Назад</string>
 
     <!-- Опции сортировки -->
     <string-array name="sorting_options">
