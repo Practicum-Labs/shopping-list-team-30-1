@@ -27,7 +27,7 @@ fun ItemListPlaceholder(
 ) {
     // Основной контент экрана
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primaryContainer),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -38,25 +38,25 @@ fun ItemListPlaceholder(
             contentDescription = null
         )
 
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = modifier.height(48.dp))
 
         Text(
-            modifier = Modifier.padding(horizontal = 44.dp),
+            modifier = modifier.padding(horizontal = 44.dp),
             text = stringResource(Res.string.empty_list_message),
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = modifier.height(8.dp))
 
         Text(
-            modifier = Modifier.padding(horizontal = 44.dp),
+            modifier = modifier.padding(horizontal = 44.dp),
             textAlign = TextAlign.Center,
             text = stringResource(Res.string.add_items_hint),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = modifier.weight(1f))
     }
 }

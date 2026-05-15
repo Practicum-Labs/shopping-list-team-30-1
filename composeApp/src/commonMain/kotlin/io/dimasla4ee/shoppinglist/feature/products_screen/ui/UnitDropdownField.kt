@@ -24,7 +24,7 @@ import shoppinglist.composeapp.generated.resources.hint_units
 @Composable
 fun UnitDropdownField(
     selectedUnit: UnitType,
-    onUnitSelected: (UnitType) -> Unit,
+    onUnitSelect: (UnitType) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -64,7 +64,7 @@ fun UnitDropdownField(
                     },
 
                     onClick = {
-                        onUnitSelected(currentUnit)
+                        onUnitSelect(currentUnit)
                         expanded = false
                     }
                 )
@@ -79,7 +79,7 @@ private fun UnitDropdownFieldPreview() {
     ShoppingListTheme {
         UnitDropdownField(
             selectedUnit = UnitType.LITER,
-            onUnitSelected = {}
+            onUnitSelect = {}
         )
     }
 }

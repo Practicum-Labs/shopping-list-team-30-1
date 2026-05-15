@@ -15,6 +15,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun CounterIconButton(
+    modifier: Modifier = Modifier,
     icon: DrawableResource,
     contentDescription: String,
     onClick: () -> Unit,
@@ -31,7 +32,7 @@ fun CounterIconButton(
             MaterialTheme.colorScheme.surfaceVariant
         },
 
-        modifier = Modifier.size(40.dp)
+        modifier = modifier.size(40.dp)
     ) {
         Box(
             contentAlignment = Alignment.Center

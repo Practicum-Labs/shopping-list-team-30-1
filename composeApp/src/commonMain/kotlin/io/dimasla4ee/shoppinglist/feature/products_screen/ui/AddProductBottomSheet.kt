@@ -29,8 +29,11 @@ import shoppinglist.composeapp.generated.resources.ic_minus_24
 import shoppinglist.composeapp.generated.resources.ic_plus_24
 
 
+private const val HALF_WEIGHT = 0.5f
+
 @Composable
 fun AddProductBottomSheet(
+    modifier: Modifier = Modifier,
     name: String,
     unit: UnitType,
     count: String,
@@ -42,7 +45,7 @@ fun AddProductBottomSheet(
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
@@ -85,7 +88,7 @@ fun AddProductBottomSheet(
                         overflow = TextOverflow.Ellipsis
                     )
                 },
-                modifier = Modifier.weight(0.5f)
+                modifier = Modifier.weight(HALF_WEIGHT)
             )
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -94,7 +97,7 @@ fun AddProductBottomSheet(
             UnitDropdownField(
                 selectedUnit = unit,
                 onUnitSelected = onUnitChange,
-                modifier = Modifier.weight(0.5f),
+                modifier = Modifier.weight(HALF_WEIGHT),
             )
 
             Spacer(modifier = Modifier.width(8.dp))

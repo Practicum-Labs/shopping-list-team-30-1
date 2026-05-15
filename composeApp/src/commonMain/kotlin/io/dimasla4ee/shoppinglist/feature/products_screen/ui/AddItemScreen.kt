@@ -191,6 +191,7 @@ fun AddItemScreen(
                         try {
                             IntOffset(x = 0, y = sheetState.requireOffset().toInt() - 2400)
                         } catch (e: IllegalStateException) {
+                            e.printStackTrace()
                             IntOffset.Zero
                         }
                     } else {
