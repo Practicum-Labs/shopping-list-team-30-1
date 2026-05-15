@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.core.data.network.dto
+package io.dimasla4ee.shoppinglist.core.domain.model
 
 import kotlinx.serialization.Serializable
 

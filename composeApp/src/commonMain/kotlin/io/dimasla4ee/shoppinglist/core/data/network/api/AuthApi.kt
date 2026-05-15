@@ -5,7 +5,7 @@ import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Header
 import de.jensklingenberg.ktorfit.http.POST
 import io.dimasla4ee.shoppinglist.core.data.network.dto.Request
-import io.dimasla4ee.shoppinglist.core.data.network.dto.Response
+import io.dimasla4ee.shoppinglist.core.domain.model.Response
 
 /**
  * API для работы с аутентификацией пользователя.

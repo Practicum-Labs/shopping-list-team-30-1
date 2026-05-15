@@ -1,5 +1,6 @@
 package io.dimasla4ee.shoppinglist.core.data.network.dto
 
+import io.dimasla4ee.shoppinglist.core.domain.model.Response
 import kotlinx.serialization.json.Json
 import org.junit.Test
 import kotlin.test.assertEquals
