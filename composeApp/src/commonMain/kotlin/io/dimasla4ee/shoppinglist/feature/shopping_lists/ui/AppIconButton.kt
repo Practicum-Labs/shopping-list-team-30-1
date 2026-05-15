@@ -36,7 +36,7 @@ fun AppIconButton(
     ) {
         Icon(
             painter = painterResource(iconRes),
-            contentDescription = contentDescription,
+            contentDescription = contentDescription
         )
     }
 }

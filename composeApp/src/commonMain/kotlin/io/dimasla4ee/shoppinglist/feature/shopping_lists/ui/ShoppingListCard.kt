@@ -176,7 +176,7 @@ private fun ItemContent(
         AppIconButton(
             iconRes = listItem.iconRes,
             contentDescription = null,
-            onClick = onIconClick,
+            onClick = onIconClick
         )
         Text(listItem.name)
     }
