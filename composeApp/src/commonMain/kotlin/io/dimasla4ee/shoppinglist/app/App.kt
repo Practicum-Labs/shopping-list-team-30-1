@@ -36,7 +36,6 @@ fun App() {
 
         NavigationRoot(
             onThemeToggle = viewModel::toggleTheme,
-            isDarkTheme = isDarkTheme,
             modifier = Modifier.fillMaxSize()
         )
     }
