@@ -118,7 +118,6 @@ fun ShoppingListsScreen(
                     onClick = onThemeToggle
                 ),
 
-            //isDarkTheme = isDarkTheme,
             onFabClick = if (state.isFabVisible) onFabClick else null
         ) { padding ->
 
