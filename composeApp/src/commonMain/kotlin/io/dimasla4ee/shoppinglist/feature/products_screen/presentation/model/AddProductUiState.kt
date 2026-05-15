@@ -6,6 +6,7 @@ data class AddProductUiState(
     val name: String = "",
     val count: String = "",
     val unit: UnitType = UnitType.PIECE,
+    val items: List<String> = emptyList(),
 
     val isBottomSheetOpen: Boolean = false
 )

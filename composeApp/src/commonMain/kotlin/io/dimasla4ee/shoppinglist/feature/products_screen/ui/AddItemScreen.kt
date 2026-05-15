@@ -1,15 +1,14 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -27,8 +26,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,19 +42,16 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.add_items_hint
 import shoppinglist.composeapp.generated.resources.content_back
 import shoppinglist.composeapp.generated.resources.content_menu
-import shoppinglist.composeapp.generated.resources.empty_list_message
 import shoppinglist.composeapp.generated.resources.ic_add_56
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
 import shoppinglist.composeapp.generated.resources.ic_fab_check_56
 import shoppinglist.composeapp.generated.resources.ic_menu_24
-import shoppinglist.composeapp.generated.resources.img_product_list
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddProductScreen(
+fun AddItemScreen(
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null,
@@ -93,7 +88,6 @@ fun AddProductScreen(
     }
 
     Box(modifier = modifier.fillMaxSize()) {
-
         // Основной контент экрана
         Column(
             modifier = Modifier
@@ -122,33 +116,29 @@ fun AddProductScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.weight(1f))
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
 
-            Image(
-                painter = painterResource(Res.drawable.img_product_list),
-                contentDescription = null
-            )
+                if (state.items.isEmpty() && !state.isBottomSheetOpen) {
 
-            Spacer(modifier = Modifier.height(48.dp))
-
-            Text(
-                modifier = Modifier.padding(horizontal = 44.dp),
-                text = stringResource(Res.string.empty_list_message),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                modifier = Modifier.padding(horizontal = 44.dp),
-                textAlign = TextAlign.Center,
-                text = stringResource(Res.string.add_items_hint),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
+                    ItemListPlaceholder(modifier = Modifier.fillMaxSize())
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(state.items) { product ->
+                            Text(
+                                modifier = Modifier.padding(16.dp),
+                                text = product,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+                    }
+                }
+            }
         }
 
         // Modal Bottom Sheet
@@ -195,7 +185,8 @@ fun AddProductScreen(
                 .offset {
                     // Безопасная проверка
                     if (state.isBottomSheetOpen &&
-                        sheetState.currentValue == SheetValue.Expanded) {
+                        sheetState.currentValue == SheetValue.Expanded
+                    ) {
                         try {
                             IntOffset(x = 0, y = sheetState.requireOffset().toInt() - 2400)
                         } catch (e: IllegalStateException) {
@@ -219,11 +210,11 @@ fun AddProductScreen(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
-private fun ProductsScreenPreview() {
+private fun AddItemScreenPreview() {
     ShoppingListTheme {
-        ProductsScreen(
+        AddItemScreen(
             modifier = Modifier.fillMaxSize(),
             onBackClick = {},
             onMenuClick = {}
