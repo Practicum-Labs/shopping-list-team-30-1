@@ -56,6 +56,7 @@ fun RenameListDialog(
 
         text = {
             OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
                 value = newName,
                 onValueChange = onRenameChange,
                 singleLine = true,
