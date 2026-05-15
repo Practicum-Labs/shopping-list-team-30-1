@@ -85,8 +85,10 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = Brown600
 )
 
+@Suppress("CompositionLocalAllowlist")
 val LocalIsDarkTheme = staticCompositionLocalOf { false }
 
+@Suppress("CompositionLocalAllowlist")
 val LocalThemeMode =
     staticCompositionLocalOf<ThemeMode> {
         ThemeMode.SYSTEM
