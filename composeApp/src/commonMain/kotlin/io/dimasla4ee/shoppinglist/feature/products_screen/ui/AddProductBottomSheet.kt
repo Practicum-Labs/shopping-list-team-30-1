@@ -33,7 +33,6 @@ private const val HALF_WEIGHT = 0.5f
 
 @Composable
 fun AddProductBottomSheet(
-    modifier: Modifier = Modifier,
     name: String,
     unit: UnitType,
     count: String,
@@ -42,6 +41,7 @@ fun AddProductBottomSheet(
     onUnitChange: (UnitType) -> Unit,
     onIncreaseClick: () -> Unit,
     onDecreaseClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     Column(

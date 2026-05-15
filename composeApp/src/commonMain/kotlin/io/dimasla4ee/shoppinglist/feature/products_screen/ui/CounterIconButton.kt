@@ -15,10 +15,10 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun CounterIconButton(
-    modifier: Modifier = Modifier,
     icon: DrawableResource,
     contentDescription: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
     Surface(
