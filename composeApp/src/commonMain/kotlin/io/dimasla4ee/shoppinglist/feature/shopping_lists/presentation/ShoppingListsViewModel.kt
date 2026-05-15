@@ -82,7 +82,10 @@ class ShoppingListsViewModel(
     }
 
     private fun onIconClick(listId: Long) {
-        state = state.copy(selectedListId = listId)
+        state = state.copy(
+            isIconSheetVisible = true,
+            selectedListId = listId
+        )
     }
 
     fun onDialogDismiss() {
