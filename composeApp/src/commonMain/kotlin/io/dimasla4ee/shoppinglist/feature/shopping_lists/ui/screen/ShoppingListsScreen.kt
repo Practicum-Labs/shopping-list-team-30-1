@@ -235,7 +235,7 @@ private fun ShoppingListsScreenPreview(
 
             onSearchClick = {},
             onSearchQueryChange = {},
-            onSearchDismiss = {},
+            onSearchDismiss = {}
         )
     }
 }
