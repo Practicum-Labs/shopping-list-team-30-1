@@ -96,7 +96,7 @@ fun AddProductBottomSheet(
             // Единицы
             UnitDropdownField(
                 selectedUnit = unit,
-                onUnitSelected = onUnitChange,
+                onUnitSelect = onUnitChange,
                 modifier = Modifier.weight(HALF_WEIGHT),
             )
 
