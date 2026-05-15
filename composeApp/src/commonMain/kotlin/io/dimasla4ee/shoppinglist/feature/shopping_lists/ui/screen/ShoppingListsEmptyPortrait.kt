@@ -34,7 +34,7 @@ fun ShoppingListsEmptyPortrait(
             .padding(horizontal = AppDimensions.paddingLarge),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(AppDimensions.spacerLarge))
+        Spacer(modifier = Modifier.height(AppDimensions.spacerVeryLarge))
 
         Image(
             painter = painterResource(LocalAppPlaceholders.current.imgShoppingLists),
@@ -43,7 +43,7 @@ fun ShoppingListsEmptyPortrait(
             contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.height(AppDimensions.spacerBig))
+        Spacer(modifier = Modifier.height(AppDimensions.spacerVeryBig))
 
         Text(
             text = stringResource(Res.string.no_lists_message),

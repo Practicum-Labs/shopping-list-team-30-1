@@ -54,7 +54,7 @@ fun IconPickerBottomSheet(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = AppDimensions.paddingMedium, bottom = AppDimensions.paddingBigger),
+                .padding(top = AppDimensions.paddingMedium, bottom = AppDimensions.paddingVeryBig),
             contentAlignment = Alignment.Center
         ) {
             Surface(
