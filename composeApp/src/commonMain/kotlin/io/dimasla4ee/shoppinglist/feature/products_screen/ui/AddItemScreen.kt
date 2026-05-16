@@ -1,11 +1,20 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,20 +24,18 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,9 +44,6 @@ import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -50,6 +54,9 @@ import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
 import shoppinglist.composeapp.generated.resources.ic_fab_check_56
 import shoppinglist.composeapp.generated.resources.ic_menu_24
 
+private val FabBottomPaddingClosed = 16.dp
+private val FabBottomPaddingOpened = 260.dp
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddItemScreen(
@@ -58,60 +65,58 @@ fun AddItemScreen(
     onBackClick: (() -> Unit)? = null,
     viewModel: ProductsViewModel = viewModel()
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
 
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    var sheetHeight by remember { mutableStateOf(0) }
+
+    val density = LocalDensity.current
+
+    val fabBottomPadding by animateDpAsState(
+        targetValue = if (state.isBottomSheetOpen && sheetHeight > 0) {
+            with(density) { sheetHeight.toDp() } + 16.dp
+        } else {
+            16.dp
+        }
     )
 
-    // VM → Sheet
-    LaunchedEffect(state.isBottomSheetOpen) {
-        scope.launch {
-            if (state.isBottomSheetOpen) {
-                sheetState.show()
-            } else {
-                sheetState.hide()
-            }
-        }
-    }
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
 
-    // Sheet → VM
-    LaunchedEffect(sheetState) {
-        snapshotFlow { sheetState.currentValue }
-            .distinctUntilChanged()
-            .collectLatest { value ->
-                val isOpen = value == SheetValue.Expanded
-                if (state.isBottomSheetOpen != isOpen) {
-                    viewModel.onIntent(ProductsIntent.ToggleBottomSheet)
-                }
-            }
-    }
-
-    Box(modifier = modifier.fillMaxSize()) {
-        // Основной контент экрана
+        // Основной контент
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primaryContainer),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             AppTopBar(
                 title = "Название списка",
+
                 navigationIcon = {
                     if (onBackClick != null) {
-                        IconButton(onClick = onBackClick) {
+                        IconButton(
+                            onClick = onBackClick
+                        ) {
                             Icon(
-                                painter = painterResource(Res.drawable.ic_arrow_back_24),
-                                contentDescription = stringResource(Res.string.content_back)
+                                painter = painterResource(
+                                    Res.drawable.ic_arrow_back_24
+                                ),
+                                contentDescription = stringResource(
+                                    Res.string.content_back
+                                )
                             )
                         }
                     }
                 },
+
                 actions = listOf(
                     TopBarIcon(
                         icon = Res.drawable.ic_menu_24,
-                        contentDescription = stringResource(Res.string.content_menu),
+                        contentDescription = stringResource(
+                            Res.string.content_menu
+                        ),
                         onClick = onMenuClick
                     )
                 )
@@ -125,16 +130,29 @@ fun AddItemScreen(
 
                 if (state.items.isEmpty() && !state.isBottomSheetOpen) {
 
-                    ItemListPlaceholder(modifier = Modifier.fillMaxSize())
+                    ItemListPlaceholder(
+                        modifier = Modifier.fillMaxSize()
+                    )
+
                 } else {
+
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        items(state.items) { product ->
-                            Text(
-                                modifier = Modifier.padding(16.dp),
-                                text = product,
-                                style = MaterialTheme.typography.bodyLarge
+
+                        items(
+                            items = state.items,
+                            key = { item -> item.id }
+                        ) { item ->
+
+                            ShoppingListItem(
+                                item = item,
+
+                                onCheckedChange = {
+                                    viewModel.onIntent(
+                                        ProductsIntent.ToggleItemChecked(item.id)
+                                    )
+                                }
                             )
                         }
                     }
@@ -142,68 +160,128 @@ fun AddItemScreen(
             }
         }
 
-        // Modal Bottom Sheet
-        if (state.isBottomSheetOpen || sheetState.currentValue != SheetValue.Hidden) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    viewModel.onIntent(ProductsIntent.ToggleBottomSheet)
-                },
-                sheetState = sheetState,
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                shape = MaterialTheme.shapes.extraLarge.copy(
-                    bottomStart = CornerSize(16.dp),
-                    bottomEnd = CornerSize(16.dp)
-                ),
-                modifier = Modifier.padding(horizontal = 6.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 6.dp)
-                ) {
-                    AddProductBottomSheet(
-                        name = state.name,
-                        count = state.count,
-                        unit = state.unit,
-                        onNameChange = { viewModel.onIntent(ProductsIntent.ChangeName(it)) },
-                        onCountChange = { viewModel.onIntent(ProductsIntent.ChangeCount(it)) },
-                        onUnitChange = { viewModel.onIntent(ProductsIntent.ChangeUnit(it)) },
-                        onIncreaseClick = { viewModel.onIntent(ProductsIntent.IncreaseCount) },
-                        onDecreaseClick = { viewModel.onIntent(ProductsIntent.DecreaseCount) }
+        // Затемнение
+        AnimatedVisibility(
+            visible = state.isBottomSheetOpen,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        MaterialTheme.colorScheme.scrim.copy(
+                            alpha = 0.32f
+                        )
                     )
-                }
+                    .clickable {
+                        viewModel.onIntent(
+                            ProductsIntent.ToggleBottomSheet
+                        )
+                    }
+            )
+        }
+
+        // Bottom Sheet
+        AnimatedVisibility(
+            visible = state.isBottomSheetOpen,
+            modifier = Modifier.align(Alignment.BottomCenter),
+
+            enter = slideInVertically(
+                initialOffsetY = { it }
+            ),
+
+            exit = slideOutVertically(
+                targetOffsetY = { it }
+            )
+        ) {
+
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.5f)
+                    .padding(horizontal = 6.dp)
+                    .imePadding()
+                    .navigationBarsPadding()
+                    .onGloballyPositioned { coordinates ->
+                        sheetHeight = coordinates.size.height
+                    },
+
+                shape = MaterialTheme.shapes.extraLarge.copy(
+                    bottomStart = CornerSize(0.dp),
+                    bottomEnd = CornerSize(0.dp)
+                ),
+
+                color = MaterialTheme.colorScheme.primaryContainer
+            ) {
+
+                AddProductBottomSheet(
+                    name = state.name,
+                    count = state.count,
+                    unit = state.unit,
+
+                    onNameChange = {
+                        viewModel.onIntent(
+                            ProductsIntent.ChangeName(it)
+                        )
+                    },
+
+                    onCountChange = {
+                        viewModel.onIntent(
+                            ProductsIntent.ChangeCount(it)
+                        )
+                    },
+
+                    onUnitChange = {
+                        viewModel.onIntent(
+                            ProductsIntent.ChangeUnit(it)
+                        )
+                    },
+
+                    onIncreaseClick = {
+                        viewModel.onIntent(
+                            ProductsIntent.IncreaseCount
+                        )
+                    },
+
+                    onDecreaseClick = {
+                        viewModel.onIntent(
+                            ProductsIntent.DecreaseCount
+                        )
+                    }
+                )
             }
         }
 
         // FAB
         FloatingActionButton(
             onClick = {
-                viewModel.onIntent(ProductsIntent.ToggleBottomSheet)
+                if (state.isBottomSheetOpen) {
+                    viewModel.onIntent(ProductsIntent.AddItem)
+                } else {
+                    viewModel.onIntent(ProductsIntent.ToggleBottomSheet)
+                }
             },
+
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(16.dp)
-                .offset {
-                    // Безопасная проверка
-                    if (state.isBottomSheetOpen &&
-                        sheetState.currentValue == SheetValue.Expanded
-                    ) {
-                        try {
-                            IntOffset(x = 0, y = sheetState.requireOffset().toInt() - 2400)
-                        } catch (e: IllegalStateException) {
-                            e.printStackTrace()
-                            IntOffset.Zero
-                        }
-                    } else {
-                        IntOffset.Zero
-                    }
-                },
+                .navigationBarsPadding()
+                .padding(
+                    end = 16.dp,
+                    bottom = fabBottomPadding
+                ),
+
             containerColor = MaterialTheme.colorScheme.primary
         ) {
+
             Icon(
                 painter = painterResource(
-                    if (state.isBottomSheetOpen) Res.drawable.ic_fab_check_56
-                    else Res.drawable.ic_add_56
+                    if (state.isBottomSheetOpen) {
+                        Res.drawable.ic_fab_check_56
+                    } else {
+                        Res.drawable.ic_add_56
+                    }
                 ),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimary
@@ -211,11 +289,14 @@ fun AddItemScreen(
         }
     }
 }
+
 @Preview
 @PreviewLightDark
 @Composable
 private fun AddItemScreenPreview() {
+
     ShoppingListTheme {
+
         AddItemScreen(
             modifier = Modifier.fillMaxSize(),
             onBackClick = {},

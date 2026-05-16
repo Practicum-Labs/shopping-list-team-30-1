@@ -2,6 +2,8 @@ package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.model.ProductItem
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.model.UnitType
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -56,10 +58,53 @@ class ProductsViewModel : ViewModel() {
                     )
                 }
             }
+
             ProductsIntent.ToggleBottomSheet -> {
 
                 _state.value = _state.value.copy(
                     isBottomSheetOpen = !_state.value.isBottomSheetOpen
+                )
+            }
+
+            ProductsIntent.AddItem -> {
+
+                val currentState = _state.value
+
+                if (currentState.name.isBlank()) return
+
+                val newItem = ProductItem(
+                    id = System.currentTimeMillis(),
+                    name = currentState.name,
+                    count = currentState.count,
+                    unit = currentState.unit
+                )
+
+                _state.value = currentState.copy(
+                    items = currentState.items + newItem,
+
+                    name = "",
+                    count = "",
+                    unit = UnitType.PIECE,
+
+                    isBottomSheetOpen = false
+                )
+            }
+
+            is ProductsIntent.ToggleItemChecked -> {
+
+                _state.value = _state.value.copy(
+                    items = _state.value.items.map { item ->
+
+                        if (item.id == intent.id) {
+
+                            item.copy(
+                                isChecked = !item.isChecked
+                            )
+
+                        } else {
+                            item
+                        }
+                    }
                 )
             }
         }

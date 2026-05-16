@@ -10,6 +10,8 @@ sealed interface ProductsIntent {
 
     data object IncreaseCount : ProductsIntent
     data object DecreaseCount : ProductsIntent
+    data object AddItem : ProductsIntent
 
     data object ToggleBottomSheet : ProductsIntent
+    data class ToggleItemChecked(val id: Long) : ProductsIntent
 }
