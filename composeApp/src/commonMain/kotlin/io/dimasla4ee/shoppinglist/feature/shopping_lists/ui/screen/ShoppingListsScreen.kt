@@ -179,7 +179,7 @@ fun ShoppingListsScreen(
                 }
 
                 DeleteListDialog(
-                    listName = selectedList?.name.orEmpty(),
+                    listName = dialog.name,
                     onDismiss = onDismiss,
                     onConfirm = onDeleteConfirm
                 )

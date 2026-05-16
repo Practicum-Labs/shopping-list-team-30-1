@@ -59,7 +59,8 @@ class ShoppingListsStateProvider : PreviewParameterProvider<ShoppingListsState> 
         ShoppingListsState(
             lists = sampleLists(),
             dialog = ShoppingListDialog.Delete(
-                id = 1
+                id = 1,
+                name = "Мыльнорыльное"
             )
         ),
 

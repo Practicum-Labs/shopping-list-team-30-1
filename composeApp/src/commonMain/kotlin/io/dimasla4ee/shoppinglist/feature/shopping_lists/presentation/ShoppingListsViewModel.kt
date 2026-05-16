@@ -46,7 +46,10 @@ class ShoppingListsViewModel(
         when (event) {
             is ShoppingListCardEvent.Delete -> {
                 state = state.copy(
-                    dialog = ShoppingListDialog.Delete(event.item.id),
+                    dialog = ShoppingListDialog.Delete(
+                        id = event.item.id,
+                        name = event.item.name
+                    ),
                     deleteTargetId = event.item.id
                 )
             }
