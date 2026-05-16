@@ -20,6 +20,8 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.CreateListDia
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteAllListsDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.RenameListDialog
+import io.dimasla4ee.shoppinglist.utils.OrientationProvider
+import io.dimasla4ee.shoppinglist.utils.ScreenOrientation
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.screen_title
@@ -55,32 +57,81 @@ fun ShoppingListsScreen(
 
     modifier: Modifier = Modifier
 ) {
-    if (state.isSearchMode) {
-        ShoppingListsScaffoldSearch(
-            query = state.searchQuery,
-            onQueryChange = onSearchQueryChange,
-            onBack = onSearchDismiss,
-            onClear = { onSearchQueryChange("") }
+    OrientationProvider { orientation ->
+        if (state.isSearchMode) {
+            ShoppingListsScaffoldSearch(
+                query = state.searchQuery,
+                onQueryChange = onSearchQueryChange,
+                onBack = onSearchDismiss,
+                onClear = { onSearchQueryChange("") }
+            ) { padding ->
+                when {
+                    visibleLists.isEmpty() && state.searchQuery.isNotEmpty() -> {
+                        when (orientation) {
+                            ScreenOrientation.PORTRAIT -> ShoppingListsSearchEmptyPortrait(
+                                modifier = Modifier.padding(padding)
+                            )
+
+                            ScreenOrientation.LANDSCAPE -> ShoppingListsSearchEmptyLandscape(
+                                modifier = Modifier.padding(padding)
+                            )
+                        }
+                    }
+
+                    visibleLists.isEmpty() -> {
+                        when (orientation) {
+                            ScreenOrientation.PORTRAIT -> ShoppingListsEmptyPortrait(
+                                modifier = Modifier.padding(padding)
+                            )
+
+                            ScreenOrientation.LANDSCAPE -> ShoppingListsEmptyLandscape(
+                                modifier = Modifier.padding(padding)
+                            )
+                        }
+                    }
+
+                    else -> {
+                        ShoppingListsContent(
+                            lists = visibleLists,
+                            onEvent = onEvent,
+                            modifier = Modifier.padding(padding)
+                        )
+                    }
+                }
+            }
+
+        } else {
+
+            ShoppingListsScaffold(
+                modifier = modifier,
+                title = stringResource(Res.string.screen_title),
+                action1 = TopBarAction(
+                    "Search",
+                    onClick = onSearchClick
+                ),
+                action2 = TopBarAction(
+                    "Delete",
+                    onClick = onDeleteAllClick
+                ),
+                action3 = TopBarAction(
+                    "Theme",
+                    onClick = onThemeToggle
+                ),
+
+            onFabClick = if (state.isFabVisible) onFabClick else null
         ) { padding ->
 
-            when {
-                visibleLists.isEmpty() &&
-                        state.searchQuery.isNotEmpty() -> {
+                if (visibleLists.isEmpty()) {
+                    when (orientation) {
+                        ScreenOrientation.PORTRAIT -> ShoppingListsEmptyPortrait(
+                            modifier = Modifier.padding(padding)
+                        )
 
-                    ShoppingListsSearchEmptyState(
-                        modifier = Modifier.padding(padding)
-                    )
-                }
-
-                visibleLists.isEmpty() -> {
-
-                    ShoppingListsEmptyState(
-                        modifier = Modifier.padding(padding)
-                    )
-                }
-
-                else -> {
-
+                        ScreenOrientation.LANDSCAPE -> ShoppingListsEmptyLandscape(
+                            modifier = Modifier.padding(padding)
+                        )
+                    }
+                } else {
                     ShoppingListsContent(
                         lists = visibleLists,
                         onEvent = onEvent,
@@ -90,89 +141,56 @@ fun ShoppingListsScreen(
             }
         }
 
-    } else {
+        if (state.isIconSheetVisible) {
+            IconPickerBottomSheet(
+                selectedIcon = state.lists
+                    .find { it.id == state.selectedListId }
+                    ?.icon,
+                onIconSelect = onIconSelect,
+                onDismiss = onSheetDismiss
+            )
+        }
 
-        ShoppingListsScaffold(
-            modifier = modifier,
-            title = stringResource(Res.string.screen_title),
-            action1 = TopBarAction(
-                "Search",
-                onClick = onSearchClick
-            ),
-            action2 = TopBarAction(
-                "Delete",
-                onClick = onDeleteAllClick
-            ),
-            action3 = TopBarAction("Theme",
-                onClick = onThemeToggle),
+        when (val dialog = state.dialog) {
 
-            //isDarkTheme = isDarkTheme,
-            onFabClick = if (state.isFabVisible) onFabClick else null
-        ) { padding ->
+            ShoppingListDialog.None -> Unit
 
-            if (visibleLists.isEmpty()) {
-                ShoppingListsEmptyState(
-                    modifier = Modifier.padding(padding)
-                )
-            } else {
-                ShoppingListsContent(
-                    lists = visibleLists,
-                    onEvent = onEvent,
-                    modifier = Modifier.padding(padding)
+            ShoppingListDialog.Create -> {
+                CreateListDialog(
+                    name = state.newListName,
+                    onNameChange = onNameChange,
+                    onDismiss = onDismiss,
+                    onConfirm = onConfirm
                 )
             }
-        }
-    }
 
-    if (state.isIconSheetVisible) {
-        IconPickerBottomSheet(
-            selectedIcon = state.lists
-                .find { it.id == state.selectedListId }
-                ?.icon,
-            onIconSelect = onIconSelect,
-            onDismiss = onSheetDismiss
-        )
-    }
-
-    when (val dialog = state.dialog) {
-
-        ShoppingListDialog.None -> Unit
-
-        ShoppingListDialog.Create -> {
-            CreateListDialog(
-                name = state.newListName,
-                onNameChange = onNameChange,
-                onDismiss = onDismiss,
-                onConfirm = onConfirm
-            )
-        }
-
-        is ShoppingListDialog.Rename -> {
-            RenameListDialog(
-                newName = state.renameValue,
-                onRenameChange = onRenameValueChange,
-                onDismiss = onDismiss,
-                onConfirm = onRenameConfirm
-            )
-        }
-
-        is ShoppingListDialog.Delete -> {
-            val selectedList = state.lists.find {
-                it.id == dialog.id
+            is ShoppingListDialog.Rename -> {
+                RenameListDialog(
+                    newName = state.renameValue,
+                    onRenameChange = onRenameValueChange,
+                    onDismiss = onDismiss,
+                    onConfirm = onRenameConfirm
+                )
             }
 
-            DeleteListDialog(
-                listName = selectedList?.name.orEmpty(),
-                onDismiss = onDismiss,
-                onConfirm = onDeleteConfirm
-            )
-        }
+            is ShoppingListDialog.Delete -> {
+                val selectedList = state.lists.find {
+                    it.id == dialog.id
+                }
 
-        ShoppingListDialog.DeleteAll -> {
-            DeleteAllListsDialog(
-                onDismiss = onDismiss,
-                onConfirm = onDeleteAllConfirm
-            )
+                DeleteListDialog(
+                    listName = selectedList?.name.orEmpty(),
+                    onDismiss = onDismiss,
+                    onConfirm = onDeleteConfirm
+                )
+            }
+
+            ShoppingListDialog.DeleteAll -> {
+                DeleteAllListsDialog(
+                    onDismiss = onDismiss,
+                    onConfirm = onDeleteAllConfirm
+                )
+            }
         }
     }
 }
@@ -217,7 +235,7 @@ private fun ShoppingListsScreenPreview(
 
             onSearchClick = {},
             onSearchQueryChange = {},
-            onSearchDismiss = {},
+            onSearchDismiss = {}
         )
     }
 }

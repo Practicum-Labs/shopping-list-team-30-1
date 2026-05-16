@@ -7,21 +7,24 @@ import androidx.compose.ui.unit.sp
 
 object AppDimensions {
 
+    val paddingVeryLarge = 64.dp
     val paddingLarge = 44.dp
-    val paddingVeryBig = 32.dp
-    val paddingBigger = 24.dp
+    val paddingVeryBig = 24.dp
     val paddingBig = 18.dp
-    val bottomSheetIconsSpaceBy = 12.dp
     val paddingMedium = 16.dp
     val paddingSmall = 8.dp
     val paddingVerySmall = 4.dp
+
+    val bottomSheetIconsSpaceBy = 12.dp
 
     val logoSize = 78.sp
     val logoOffset = 2.dp
 
     val spacerSmall = 8.dp
-    val spacerLarge = 48.dp
-    val spacerVeryLarge = 94.dp
+    val spacerBig = 32.dp
+    val spacerVeryBig = 48.dp
+    val spacerLarge = 94.dp
+    val spacerVeryLarge = 120.dp
 
     val clickableAreaOfIcon = 56.dp
     val areaOfIcon = 40.dp
