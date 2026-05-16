@@ -2,6 +2,7 @@ package io.dimasla4ee.shoppinglist.app.di
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.core.config.DatabaseConfig
 import io.dimasla4ee.shoppinglist.core.database.db.ShoppingListDatabase
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
@@ -36,12 +37,12 @@ actual val platformDataModule = module {
 )
 class InMemorySettingsRepository : SettingsRepository {
 
-    private val darkThemeState = MutableStateFlow(false)
+    private val themeModeState = MutableStateFlow(ThemeMode.SYSTEM)
 
-    override val isDarkTheme: Flow<Boolean> =
-        darkThemeState.asStateFlow()
+    override val themeMode: Flow<ThemeMode> =
+        themeModeState.asStateFlow()
 
-    override suspend fun setDarkTheme(enabled: Boolean) {
-        darkThemeState.value = enabled
+    override suspend fun setThemeMode(mode: ThemeMode) {
+        themeModeState.value = mode
     }
 }

@@ -50,9 +50,10 @@ fun DeleteListDialog(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
+                val template = stringResource(Res.string.dialog_delete_list)
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(Res.string.dialog_delete_list, listName),
+                    text = template.format(listName),
                     style = AppTypography.titleLarge,
                     textAlign = TextAlign.Center
                 )
