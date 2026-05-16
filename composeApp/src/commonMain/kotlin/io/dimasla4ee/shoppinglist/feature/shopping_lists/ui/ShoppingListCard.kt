@@ -62,7 +62,16 @@ fun ShoppingListCard(
     elevation: CardElevation = ShoppingListCardDefaults.shoppingListCardElevation()
 ) {
     val scope = rememberCoroutineScope()
-    val swipeState = rememberSwipeToDismissBoxState()
+    val swipeState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.EndToStart) {
+                onEvent(ShoppingListCardEvent.Delete(listItem))
+                false
+            } else {
+                true
+            }
+        }
+    )
     val isStartToEnd = swipeState.dismissDirection == SwipeToDismissBoxValue.StartToEnd
     val backgroundColor = when (isStartToEnd) {
         true -> Color.Transparent
