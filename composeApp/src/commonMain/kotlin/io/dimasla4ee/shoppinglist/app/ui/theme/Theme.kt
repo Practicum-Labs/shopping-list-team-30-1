@@ -34,6 +34,7 @@ private val LightColorScheme = lightColorScheme(
     surfaceVariant = Beige300,
     onSurfaceVariant = Brown400,
 
+    surfaceContainer = Beige150,
     surfaceContainerLow = Beige100,
 
     outline = Brown400,
@@ -73,6 +74,7 @@ private val DarkColorScheme = darkColorScheme(
     surfaceVariant = Brown800,
     onSurfaceVariant = Gray300,
 
+    surfaceContainer = Brown700,
     surfaceContainerLow = Brown550,
 
     outline = Gray300,
