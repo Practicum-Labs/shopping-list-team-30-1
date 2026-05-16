@@ -33,6 +33,7 @@ fun ShoppingListsScreen(
 
     onFabClick: (() -> Unit)?,
     onEvent: (ShoppingListCardEvent) -> Unit,
+    onListClick: (ShoppingList) -> Unit,
 
     onNameChange: (String) -> Unit,
     onDismiss: () -> Unit,
@@ -94,6 +95,7 @@ fun ShoppingListsScreen(
                         ShoppingListsContent(
                             lists = visibleLists,
                             onEvent = onEvent,
+                            onListClick = onListClick,
                             modifier = Modifier.padding(padding)
                         )
                     }
@@ -135,6 +137,7 @@ fun ShoppingListsScreen(
                     ShoppingListsContent(
                         lists = visibleLists,
                         onEvent = onEvent,
+                        onListClick = onListClick,
                         modifier = Modifier.padding(padding)
                     )
                 }
@@ -215,6 +218,7 @@ private fun ShoppingListsScreenPreview(
 
             onFabClick = {},
             onEvent = {},
+            onListClick = {},
             onNameChange = {},
 
             onDismiss = {},

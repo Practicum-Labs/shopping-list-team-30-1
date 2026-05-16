@@ -53,6 +53,7 @@ import shoppinglist.composeapp.generated.resources.ic_menu_24
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddItemScreen(
+    title: String,
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null,
@@ -97,7 +98,7 @@ fun AddItemScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AppTopBar(
-                title = "Название списка",
+                title = title,
                 navigationIcon = {
                     if (onBackClick != null) {
                         IconButton(onClick = onBackClick) {
@@ -217,6 +218,7 @@ fun AddItemScreen(
 private fun AddItemScreenPreview() {
     ShoppingListTheme {
         AddItemScreen(
+            title = "Мыльнорыльное",
             modifier = Modifier.fillMaxSize(),
             onBackClick = {},
             onMenuClick = {}
