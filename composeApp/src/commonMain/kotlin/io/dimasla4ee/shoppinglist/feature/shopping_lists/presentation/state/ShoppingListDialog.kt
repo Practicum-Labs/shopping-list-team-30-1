@@ -12,7 +12,8 @@ sealed class ShoppingListDialog {
     ) : ShoppingListDialog()
 
     data class Delete(
-        val id: Long
+        val id: Long,
+        val name: String
     ) : ShoppingListDialog()
 
     data object DeleteAll : ShoppingListDialog()
