@@ -3,7 +3,7 @@ package io.dimasla4ee.shoppinglist.feature.authorization.ui.sign_in
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.dimasla4ee.shoppinglist.core.presentation.preview.AuthorizationPreviewHelper
-import io.dimasla4ee.shoppinglist.feature.authorization.presentation.SignInState
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in.SignInState
 
 class SignInInfoProvider : PreviewParameterProvider<SignInState> {
     override val values: Sequence<SignInState>

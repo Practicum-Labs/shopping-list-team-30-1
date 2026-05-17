@@ -24,8 +24,7 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppOutlinedTextField
 import io.dimasla4ee.shoppinglist.core.presentation.preview.CenterAlignedBoxWithSystemPaddings
 import io.dimasla4ee.shoppinglist.core.utils.appDefaultFormSize
-import io.dimasla4ee.shoppinglist.feature.authorization.ui.recover_password.RecoverPasswordInfoProvider
-import io.dimasla4ee.shoppinglist.feature.authorization.presentation.RecoverPasswordState
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordState
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.authorization_email_hint
