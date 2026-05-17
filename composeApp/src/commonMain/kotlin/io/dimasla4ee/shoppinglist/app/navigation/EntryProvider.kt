@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AddItemScreen
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
@@ -40,6 +41,15 @@ fun entryProvider(
             visibleLists = viewModel.visibleLists,
             onFabClick = viewModel::onFabClick,
             onEvent = viewModel::onCardEvent,
+
+            onListClick = { list ->
+                topLevelBackStack.add(
+                    Route.ProductsList(
+                        listId = list.id,
+                        listName = list.name
+                    )
+                )
+            },
             onNameChange = viewModel::onNameChange,
             onDismiss = viewModel::onDialogDismiss,
             onConfirm = viewModel::onCreateList,
@@ -58,9 +68,17 @@ fun entryProvider(
         )
     }
 
-    entry<Route.ProductsList> {
-        // TODO(feature-team): интегрировать экран списка товаров и удалить ScreenPlaceholder
-        ScreenPlaceholder("Products")
+    entry<Route.ProductsList> { route ->
+        AddItemScreen(
+            title = route.listName,
+            modifier = Modifier.fillMaxSize(),
+            onBackClick = {
+                topLevelBackStack.removeLast()
+            },
+            onMenuClick = {
+                // TODO(feature-team): добавить клик по Меню, если потребуется
+            }
+        )
     }
 
     entry<Route.Authorization> {

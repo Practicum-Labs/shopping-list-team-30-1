@@ -17,6 +17,7 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.ShoppingListCard
 fun ShoppingListsContent(
     lists: List<ShoppingList>,
     onEvent: (ShoppingListCardEvent) -> Unit,
+    onListClick: (ShoppingList) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -31,7 +32,14 @@ fun ShoppingListsContent(
 
             ShoppingListCard(
                 listItem = list.toUi(),
-                onEvent = onEvent
+                onEvent = { event ->
+                    when (event) {
+                        is ShoppingListCardEvent.Click -> {
+                            onListClick(list)
+                        }
+                        else -> onEvent(event)
+                    }
+                }
             )
         }
     }

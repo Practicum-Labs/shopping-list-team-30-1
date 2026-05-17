@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
@@ -42,6 +41,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.content_back
 import shoppinglist.composeapp.generated.resources.content_menu
@@ -53,10 +53,11 @@ import shoppinglist.composeapp.generated.resources.ic_menu_24
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddItemScreen(
+    title: String,
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null,
-    viewModel: ProductsViewModel = viewModel()
+    viewModel: ProductsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -97,7 +98,7 @@ fun AddItemScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AppTopBar(
-                title = "Название списка",
+                title = title,
                 navigationIcon = {
                     if (onBackClick != null) {
                         IconButton(onClick = onBackClick) {
@@ -217,6 +218,7 @@ fun AddItemScreen(
 private fun AddItemScreenPreview() {
     ShoppingListTheme {
         AddItemScreen(
+            title = "Мыльнорыльное",
             modifier = Modifier.fillMaxSize(),
             onBackClick = {},
             onMenuClick = {}

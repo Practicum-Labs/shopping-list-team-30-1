@@ -98,6 +98,8 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
 
             implementation("me.gosimple:nbvcxz:1.5.1")
+
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.2")
         }
     }
 }
