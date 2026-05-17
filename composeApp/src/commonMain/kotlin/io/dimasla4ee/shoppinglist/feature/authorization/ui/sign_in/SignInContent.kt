@@ -69,8 +69,8 @@ fun SignInContent(
         ) {
             AppOutlinedPasswordTextField(
                 state = state.password,
-                label = stringResource(Res.string.authorization_password_hint),
-                placeholder = stringResource(Res.string.authorization_password_label),
+                label = stringResource(Res.string.authorization_password_label),
+                placeholder = stringResource(Res.string.authorization_password_hint),
                 isPasswordVisible = state.isPasswordVisible,
                 onShowPassword = onShowPassword
             )

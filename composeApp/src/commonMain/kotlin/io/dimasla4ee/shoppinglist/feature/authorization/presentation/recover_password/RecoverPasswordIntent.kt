@@ -2,7 +2,7 @@ package io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_pa
 
 import io.dimasla4ee.shoppinglist.core.mvi.MviIntent
 
-sealed interface RecoverPasswordIntent: MviIntent {
-    data object RecoverPassword: RecoverPasswordIntent
-    data object CancelClicked: RecoverPasswordIntent
+sealed interface RecoverPasswordIntent : MviIntent {
+    data object RecoverPasswordClicked : RecoverPasswordIntent
+    data object CancelClicked : RecoverPasswordIntent
 }
