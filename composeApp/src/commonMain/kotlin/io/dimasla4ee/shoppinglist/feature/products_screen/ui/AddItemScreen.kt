@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -47,6 +48,7 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.Pro
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.content_back
 import shoppinglist.composeapp.generated.resources.content_menu
@@ -63,7 +65,7 @@ fun AddItemScreen(
     onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null,
-    viewModel: ProductsViewModel = viewModel()
+    viewModel: ProductsViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -208,9 +210,11 @@ fun AddItemScreen(
                         sheetHeight = coordinates.size.height
                     },
 
-                shape = MaterialTheme.shapes.extraLarge.copy(
-                    bottomStart = CornerSize(0.dp),
-                    bottomEnd = CornerSize(0.dp)
+                shape = RoundedCornerShape(
+                    topStart = 28.dp,
+                    topEnd = 28.dp,
+                    bottomStart = 0.dp,
+                    bottomEnd = 0.dp
                 ),
 
                 color = MaterialTheme.colorScheme.primaryContainer
@@ -266,11 +270,11 @@ fun AddItemScreen(
 
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .navigationBarsPadding()
                 .padding(
                     end = 16.dp,
                     bottom = fabBottomPadding
-                ),
+                )
+                .navigationBarsPadding(),
 
             containerColor = MaterialTheme.colorScheme.primary
         ) {

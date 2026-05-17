@@ -3,6 +3,7 @@ package io.dimasla4ee.shoppinglist.app.di
 import io.dimasla4ee.shoppinglist.app.navigation.NavigationViewModel
 import org.koin.core.module.dsl.viewModel
 import io.dimasla4ee.shoppinglist.core.presentation.settings.SettingsViewModel
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -21,6 +22,10 @@ val presentationModule = module {
             getThemeUseCase = get(),
             toggleThemeUseCase = get()
         )
+    }
+
+    viewModel {
+        ProductsViewModel()
     }
 
     viewModel {
