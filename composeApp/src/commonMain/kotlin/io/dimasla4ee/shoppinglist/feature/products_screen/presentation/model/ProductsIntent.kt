@@ -1,12 +1,12 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 
-import io.dimasla4ee.shoppinglist.feature.products_screen.domain.model.UnitType
+import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 
 sealed interface ProductsIntent {
 
     data class ChangeName(val name: String) : ProductsIntent
-    data class ChangeCount(val count: String) : ProductsIntent
-    data class ChangeUnit(val unit: UnitType) : ProductsIntent
+    data class ChangeCount(val amount: String) : ProductsIntent
+    data class ChangeUnit(val unit: MeasurementUnit) : ProductsIntent
 
     data object IncreaseCount : ProductsIntent
     data object DecreaseCount : ProductsIntent

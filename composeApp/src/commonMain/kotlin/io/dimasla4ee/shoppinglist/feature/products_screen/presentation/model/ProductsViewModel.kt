@@ -2,8 +2,8 @@ package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.dimasla4ee.shoppinglist.feature.products_screen.domain.model.ProductItem
-import io.dimasla4ee.shoppinglist.feature.products_screen.domain.model.UnitType
+import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
+import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,7 +29,7 @@ class ProductsViewModel : ViewModel() {
 
             is ProductsIntent.ChangeCount -> {
                 _state.value = _state.value.copy(
-                    count = intent.count
+                    amount = intent.amount
                 )
             }
 
@@ -41,20 +41,20 @@ class ProductsViewModel : ViewModel() {
 
             ProductsIntent.IncreaseCount -> {
 
-                val currentCount = _state.value.count.toIntOrNull() ?: 0
+                val currentCount = _state.value.amount.toIntOrNull() ?: 0
 
                 _state.value = _state.value.copy(
-                    count = (currentCount + 1).toString()
+                    amount = (currentCount + 1).toString()
                 )
             }
 
             ProductsIntent.DecreaseCount -> {
 
-                val currentCount = _state.value.count.toIntOrNull() ?: return
+                val currentCount = _state.value.amount.toIntOrNull() ?: return
 
                 if (currentCount > 0) {
                     _state.value = _state.value.copy(
-                        count = (currentCount - 1).toString()
+                        amount = (currentCount - 1).toString()
                     )
                 }
             }
@@ -72,10 +72,10 @@ class ProductsViewModel : ViewModel() {
 
                 if (currentState.name.isBlank()) return
 
-                val newItem = ProductItem(
+                val newItem = Product(
                     id = System.currentTimeMillis(),
                     name = currentState.name,
-                    count = currentState.count,
+                    amount = currentState.amount,
                     unit = currentState.unit
                 )
 
@@ -83,8 +83,8 @@ class ProductsViewModel : ViewModel() {
                     items = currentState.items + newItem,
 
                     name = "",
-                    count = "",
-                    unit = UnitType.PIECE,
+                    amount = "",
+                    unit = MeasurementUnit.PIECE,
 
                     isBottomSheetOpen = false
                 )
@@ -97,9 +97,7 @@ class ProductsViewModel : ViewModel() {
 
                         if (item.id == intent.id) {
 
-                            item.copy(
-                                isChecked = !item.isChecked
-                            )
+                            item.copy(isChecked = !item.isChecked)
 
                         } else {
                             item

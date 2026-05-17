@@ -27,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -67,7 +68,7 @@ fun AddItemScreen(
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var sheetHeight by remember { mutableStateOf(0) }
+    var sheetHeight by remember { mutableIntStateOf(0) }
 
     val density = LocalDensity.current
 
@@ -218,7 +219,7 @@ fun AddItemScreen(
 
                 AddProductBottomSheet(
                     name = state.name,
-                    count = state.count,
+                    amount = state.amount,
                     unit = state.unit,
 
                     onNameChange = {

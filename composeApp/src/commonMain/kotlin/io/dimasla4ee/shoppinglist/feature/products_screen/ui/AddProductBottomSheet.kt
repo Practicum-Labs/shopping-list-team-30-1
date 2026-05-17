@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import io.dimasla4ee.shoppinglist.feature.products_screen.domain.model.UnitType
+import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.content_minus
@@ -34,11 +34,11 @@ private const val HALF_WEIGHT = 0.5f
 @Composable
 fun AddProductBottomSheet(
     name: String,
-    unit: UnitType,
-    count: String,
+    unit: MeasurementUnit,
+    amount: String,
     onNameChange: (String) -> Unit,
     onCountChange: (String) -> Unit,
-    onUnitChange: (UnitType) -> Unit,
+    onUnitChange: (MeasurementUnit) -> Unit,
     onIncreaseClick: () -> Unit,
     onDecreaseClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -71,7 +71,7 @@ fun AddProductBottomSheet(
 
             // Количество
             OutlinedTextField(
-                value = count,
+                value = amount,
                 onValueChange = { value ->
 
                     if (value.all { it.isDigit() }) {
@@ -107,7 +107,7 @@ fun AddProductBottomSheet(
                 icon = Res.drawable.ic_minus_24,
                 contentDescription = stringResource(Res.string.content_minus),
                 onClick = onDecreaseClick,
-                enabled = (count.toIntOrNull() ?: 0) > 0
+                enabled = (amount.toIntOrNull() ?: 0) > 0
             )
 
             Spacer(modifier = Modifier.width(4.dp))
@@ -144,8 +144,8 @@ private fun AddProductBottomSheetPreview() {
     ShoppingListTheme {
         AddProductBottomSheet(
             name = "",
-            count = "",
-            unit = UnitType.PIECE,
+            amount = "",
+            unit = MeasurementUnit.PIECE,
             onNameChange = {},
             onCountChange = {},
             onUnitChange = {},
@@ -164,8 +164,8 @@ private fun AddProductBottomSheetDarkPreview() {
     ShoppingListTheme(darkTheme = true) {
         AddProductBottomSheet(
             name = "",
-            count = "",
-            unit = UnitType.PIECE,
+            amount = "",
+            unit = MeasurementUnit.PIECE,
             onNameChange = {},
             onCountChange = {},
             onUnitChange = {},

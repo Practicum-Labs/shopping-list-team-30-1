@@ -16,13 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import io.dimasla4ee.shoppinglist.feature.products_screen.domain.model.ProductItem
-import io.dimasla4ee.shoppinglist.feature.products_screen.domain.model.UnitType
+import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
+import io.dimasla4ee.shoppinglist.core.domain.model.Product
+import io.dimasla4ee.shoppinglist.core.presentation.mappers.toStringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ShoppingListItem(
-    item: ProductItem,
+    item: Product,
     onCheckedChange: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -38,8 +39,8 @@ fun ShoppingListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        RadioButton(
-            selected = item.isChecked,
+        CircleCheckButton(
+            checked = item.isChecked,
             onClick = onCheckedChange
         )
 
@@ -49,9 +50,7 @@ fun ShoppingListItem(
 
             Text(
                 text = item.name,
-
                 style = MaterialTheme.typography.bodyLarge,
-
                 textDecoration = if (item.isChecked) {
                     TextDecoration.LineThrough
                 } else {
@@ -60,8 +59,8 @@ fun ShoppingListItem(
             )
 
             Text(
-                text = "${item.count} ${
-                    stringResource(item.unit.titleRes)
+                text = "${item.amount} ${
+                    stringResource(item.unit.toStringResource())
                 }",
 
                 style = MaterialTheme.typography.bodyMedium
@@ -76,11 +75,11 @@ fun ShoppingListItem(
 private fun ShoppingListItemPreview() {
     ShoppingListTheme {
         ShoppingListItem(
-            item = ProductItem(
+            item = Product(
                 id = 1L,
                 name = "Колбасевич",
-                count = "3",
-                unit = UnitType.KILOGRAM,
+                amount = "1",
+                unit = MeasurementUnit.KILOGRAM,
                 isChecked = false
             ),
             onCheckedChange = {}
@@ -94,14 +93,13 @@ private fun ShoppingListItemPreview() {
 private fun ShoppingListItemCheckedPreview() {
     ShoppingListTheme {
         ShoppingListItem(
-            item = ProductItem(
+            item = Product(
                 id = 1L,
                 name = "Хлеб",
-                count = "2",
-                unit = UnitType.PIECE,
+                amount = "2",
+                unit = MeasurementUnit.PIECE,
                 isChecked = true
             ),
-
             onCheckedChange = {}
         )
     }

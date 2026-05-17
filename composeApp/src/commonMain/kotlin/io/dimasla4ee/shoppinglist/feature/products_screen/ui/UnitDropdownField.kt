@@ -15,7 +15,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import io.dimasla4ee.shoppinglist.feature.products_screen.domain.model.UnitType
+import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
+import io.dimasla4ee.shoppinglist.core.presentation.mappers.toStringResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.hint_units
@@ -23,8 +24,8 @@ import shoppinglist.composeapp.generated.resources.hint_units
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UnitDropdownField(
-    selectedUnit: UnitType,
-    onUnitSelect: (UnitType) -> Unit,
+    selectedUnit: MeasurementUnit,
+    onUnitSelect: (MeasurementUnit) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -36,7 +37,7 @@ fun UnitDropdownField(
     ) {
 
         OutlinedTextField(
-            value = stringResource(selectedUnit.titleRes),
+            value = stringResource(selectedUnit.toStringResource()),
             onValueChange = {},
             readOnly = true,
             label = {
@@ -56,11 +57,11 @@ fun UnitDropdownField(
             onDismissRequest = { expanded = false }
         ) {
 
-            UnitType.entries.forEach { currentUnit ->
+            MeasurementUnit.entries.forEach { currentUnit ->
 
                 DropdownMenuItem(
                     text = {
-                        Text(stringResource(currentUnit.titleRes))
+                        Text(stringResource(currentUnit.toStringResource()))
                     },
 
                     onClick = {
@@ -78,7 +79,7 @@ fun UnitDropdownField(
 private fun UnitDropdownFieldPreview() {
     ShoppingListTheme {
         UnitDropdownField(
-            selectedUnit = UnitType.LITER,
+            selectedUnit = MeasurementUnit.LITER,
             onUnitSelect = {}
         )
     }

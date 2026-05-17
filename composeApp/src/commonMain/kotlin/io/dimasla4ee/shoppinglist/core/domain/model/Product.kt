@@ -1,7 +1,9 @@
 package io.dimasla4ee.shoppinglist.core.domain.model
 
 data class Product(
+    val id: Long,
     val name: String,
-    val amount: Float,
-    val unit: MeasurementUnit
+    val amount: String,
+    val unit: MeasurementUnit,
+    val isChecked: Boolean = false
 )
