@@ -55,8 +55,7 @@ import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
 import shoppinglist.composeapp.generated.resources.ic_fab_check_56
 import shoppinglist.composeapp.generated.resources.ic_menu_24
 
-private val FabBottomPaddingClosed = 16.dp
-private val FabBottomPaddingOpened = 260.dp
+private const val BOTTOM_SHEET_HEIGHT_FRACTION = 0.5f
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -201,7 +200,7 @@ fun AddItemScreen(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.5f)
+                    .fillMaxHeight(BOTTOM_SHEET_HEIGHT_FRACTION)
                     .padding(horizontal = 6.dp)
                     .imePadding()
                     .navigationBarsPadding()

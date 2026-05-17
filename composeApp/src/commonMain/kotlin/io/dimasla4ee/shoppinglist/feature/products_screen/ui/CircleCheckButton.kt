@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.ic_add_circle_24
 import shoppinglist.composeapp.generated.resources.ic_check_24
 
 @Composable
@@ -63,7 +62,7 @@ fun CircleCheckButton(
 @Preview
 @PreviewLightDark
 @Composable
-fun CircleCheckButtonPreview() {
+private fun CircleCheckButtonPreview() {
     ShoppingListTheme {
         CircleCheckButton(
             checked = true,
@@ -75,7 +74,7 @@ fun CircleCheckButtonPreview() {
 @Preview
 @PreviewLightDark
 @Composable
-fun CircleUncheckButtonPreview() {
+private fun CircleUncheckButtonPreview() {
     ShoppingListTheme {
         CircleCheckButton(
             checked = false,
