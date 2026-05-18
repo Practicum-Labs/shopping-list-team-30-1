@@ -5,6 +5,7 @@ import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.utils.AppLog
 
+@Suppress("ForbiddenComment")
 class RegisterViewModel(
     private val registerUseCase: RegisterUseCase
 ) : MviViewModel<RegisterIntent, RegisterState, RegisterEffect>(
@@ -44,8 +45,7 @@ class RegisterViewModel(
         val password = current.password.text.toString()
 
         // TODO: Показывать snackbar / ошибки валидации
-        if (email.isBlank() || password.isBlank()) return null
-        if (!current.isRegisterAllowed) return null
+        if (email.isBlank() || password.isBlank() || !current.isRegisterAllowed) return null
 
         val result = registerUseCase.invoke(email, password)
 

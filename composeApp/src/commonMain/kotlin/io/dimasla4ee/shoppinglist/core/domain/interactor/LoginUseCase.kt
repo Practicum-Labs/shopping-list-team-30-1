@@ -5,6 +5,7 @@ import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
 import io.dimasla4ee.shoppinglist.core.domain.model.Response
 import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
 
+@Suppress("ForbiddenComment")
 class LoginUseCase(
     private val authRepository: AuthRepository
 ) {

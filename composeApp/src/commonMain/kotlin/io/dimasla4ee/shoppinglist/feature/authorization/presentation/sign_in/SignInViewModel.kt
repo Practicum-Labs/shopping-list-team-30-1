@@ -5,6 +5,7 @@ import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.utils.AppLog
 
+@Suppress("ForbiddenComment")
 class SignInViewModel(
     val loginUseCase: LoginUseCase
 ) : MviViewModel<SignInIntent, SignInState, SignInEffect>(
