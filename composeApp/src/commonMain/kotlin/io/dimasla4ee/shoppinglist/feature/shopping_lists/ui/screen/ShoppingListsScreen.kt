@@ -2,17 +2,18 @@ package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListsScaffold
 import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListsScaffoldSearch
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarAction
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListsState
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.bottom_sheet.IconPickerBottomSheet
@@ -29,42 +30,44 @@ import shoppinglist.composeapp.generated.resources.screen_title
 @Composable
 fun ShoppingListsScreen(
     state: ShoppingListsState,
-    visibleLists: List<ShoppingList>,
-
-    onFabClick: (() -> Unit)?,
-    onEvent: (ShoppingListCardEvent) -> Unit,
-    onListClick: (ShoppingList) -> Unit,
-
-    onNameChange: (String) -> Unit,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-
-    onIconSelect: (ShoppingListIcon) -> Unit,
-    onSheetDismiss: () -> Unit,
-
-    onDeleteAllClick: () -> Unit,
-    onDeleteAllConfirm: () -> Unit,
-
-    onDeleteConfirm: () -> Unit,
-
-    onRenameValueChange: (String) -> Unit,
-    onRenameConfirm: () -> Unit,
-
+    onIntent: (ShoppingListsIntent) -> Unit,
     onThemeToggle: () -> Unit,
-
-    onSearchClick: () -> Unit,
-    onSearchQueryChange: (String) -> Unit,
-    onSearchDismiss: () -> Unit,
-
     modifier: Modifier = Modifier
 ) {
+    val visibleLists = remember(
+        state.lists,
+        state.searchQuery
+    ) {
+        val query = state.searchQuery.trim()
+
+        if (query.isEmpty()) {
+            state.lists
+        } else {
+            state.lists.filter {
+                it.name.contains(query, ignoreCase = true)
+            }
+        }
+    }
+
     OrientationProvider { orientation ->
         if (state.isSearchMode) {
             ShoppingListsScaffoldSearch(
                 query = state.searchQuery,
-                onQueryChange = onSearchQueryChange,
-                onBack = onSearchDismiss,
-                onClear = { onSearchQueryChange("") }
+                onQueryChange = {
+                    onIntent(
+                        ShoppingListsIntent.SearchQueryChanged(it)
+                    )
+                },
+                onBack = {
+                    onIntent(
+                        ShoppingListsIntent.SearchDismiss
+                    )
+                },
+                onClear = {
+                    onIntent(
+                        ShoppingListsIntent.SearchQueryChanged("")
+                    )
+                }
             ) { padding ->
                 when {
                     visibleLists.isEmpty() && state.searchQuery.isNotEmpty() -> {
@@ -94,8 +97,50 @@ fun ShoppingListsScreen(
                     else -> {
                         ShoppingListsContent(
                             lists = visibleLists,
-                            onEvent = onEvent,
-                            onListClick = onListClick,
+                            onEvent = { event ->
+                                when (event) {
+                                    is ShoppingListCardEvent.Click -> {
+                                        onIntent(
+                                            ShoppingListsIntent.ListClicked(
+                                                event.item
+                                            )
+                                        )
+                                    }
+
+                                    is ShoppingListCardEvent.Edit -> {
+                                        onIntent(
+                                            ShoppingListsIntent.EditClicked(
+                                                event.item
+                                            )
+                                        )
+                                    }
+
+                                    is ShoppingListCardEvent.Copy -> {
+                                        onIntent(
+                                            ShoppingListsIntent.CopyClicked(
+                                                event.item
+                                            )
+                                        )
+                                    }
+
+                                    is ShoppingListCardEvent.ChangeIcon -> {
+                                        onIntent(
+                                            ShoppingListsIntent.ChangeIconClicked(
+                                                event.item
+                                            )
+                                        )
+                                    }
+
+                                    is ShoppingListCardEvent.Delete -> {
+                                        onIntent(
+                                            ShoppingListsIntent.DeleteClicked(
+                                                event.item
+                                            )
+                                        )
+                                    }
+                                }
+                            },
+
                             modifier = Modifier.padding(padding)
                         )
                     }
@@ -109,18 +154,34 @@ fun ShoppingListsScreen(
                 title = stringResource(Res.string.screen_title),
                 action1 = TopBarAction(
                     "Search",
-                    onClick = onSearchClick
+                    onClick = {
+                        onIntent(
+                            ShoppingListsIntent.SearchClick
+                        )
+                    }
                 ),
                 action2 = TopBarAction(
                     "Delete",
-                    onClick = onDeleteAllClick
+                    onClick = {
+                        onIntent(
+                            ShoppingListsIntent.DeleteAllClick
+                        )
+                    }
                 ),
                 action3 = TopBarAction(
                     "Theme",
                     onClick = onThemeToggle
                 ),
 
-            onFabClick = if (state.isFabVisible) onFabClick else null
+                onFabClick = if (state.isFabVisible) {
+                    {
+                        onIntent(
+                            ShoppingListsIntent.FabClick
+                        )
+                    }
+                } else {
+                    null
+                }
         ) { padding ->
 
                 if (visibleLists.isEmpty()) {
@@ -136,8 +197,52 @@ fun ShoppingListsScreen(
                 } else {
                     ShoppingListsContent(
                         lists = visibleLists,
-                        onEvent = onEvent,
-                        onListClick = onListClick,
+                        onEvent = { event ->
+
+                            when (event) {
+
+                                is ShoppingListCardEvent.Click -> {
+                                    onIntent(
+                                        ShoppingListsIntent.ListClicked(
+                                            event.item
+                                        )
+                                    )
+                                }
+
+                                is ShoppingListCardEvent.Edit -> {
+                                    onIntent(
+                                        ShoppingListsIntent.EditClicked(
+                                            event.item
+                                        )
+                                    )
+                                }
+
+                                is ShoppingListCardEvent.Copy -> {
+                                    onIntent(
+                                        ShoppingListsIntent.CopyClicked(
+                                            event.item
+                                        )
+                                    )
+                                }
+
+                                is ShoppingListCardEvent.ChangeIcon -> {
+                                    onIntent(
+                                        ShoppingListsIntent.ChangeIconClicked(
+                                            event.item
+                                        )
+                                    )
+                                }
+
+                                is ShoppingListCardEvent.Delete -> {
+                                    onIntent(
+                                        ShoppingListsIntent.DeleteClicked(
+                                            event.item
+                                        )
+                                    )
+                                }
+                            }
+                        },
+
                         modifier = Modifier.padding(padding)
                     )
                 }
@@ -149,8 +254,17 @@ fun ShoppingListsScreen(
                 selectedIcon = state.lists
                     .find { it.id == state.selectedListId }
                     ?.icon,
-                onIconSelect = onIconSelect,
-                onDismiss = onSheetDismiss
+                onIconSelect = { icon: ShoppingListIcon ->
+
+                    onIntent(
+                        ShoppingListsIntent.IconSelected(icon)
+                    )
+                },
+                onDismiss = {
+                    onIntent(
+                        ShoppingListsIntent.SheetDismiss
+                    )
+                }
             )
         }
 
@@ -161,37 +275,75 @@ fun ShoppingListsScreen(
             ShoppingListDialog.Create -> {
                 CreateListDialog(
                     name = state.newListName,
-                    onNameChange = onNameChange,
-                    onDismiss = onDismiss,
-                    onConfirm = onConfirm
+                    onNameChange = {
+                        onIntent(
+                            ShoppingListsIntent.NameChanged(it)
+                        )
+                    },
+
+                    onDismiss = {
+                        onIntent(
+                            ShoppingListsIntent.DialogDismiss
+                        )
+                    },
+                    onConfirm = {
+                        onIntent(
+                            ShoppingListsIntent.CreateList
+                        )
+                    }
                 )
             }
 
             is ShoppingListDialog.Rename -> {
                 RenameListDialog(
                     newName = state.renameValue,
-                    onRenameChange = onRenameValueChange,
-                    onDismiss = onDismiss,
-                    onConfirm = onRenameConfirm
+                    onRenameChange = {
+                        onIntent(
+                            ShoppingListsIntent.RenameValueChanged(it)
+                        )
+                    },
+                    onDismiss = {
+                        onIntent(
+                            ShoppingListsIntent.DialogDismiss
+                        )
+                    },
+                    onConfirm = {
+                        onIntent(
+                            ShoppingListsIntent.RenameConfirm
+                        )
+                    }
                 )
             }
 
             is ShoppingListDialog.Delete -> {
-                val selectedList = state.lists.find {
-                    it.id == dialog.id
-                }
 
                 DeleteListDialog(
                     listName = dialog.name,
-                    onDismiss = onDismiss,
-                    onConfirm = onDeleteConfirm
+                    onDismiss = {
+                        onIntent(
+                            ShoppingListsIntent.DialogDismiss
+                        )
+                    },
+                    onConfirm = {
+                        onIntent(
+                            ShoppingListsIntent.DeleteConfirm
+                        )
+                    }
                 )
             }
 
             ShoppingListDialog.DeleteAll -> {
                 DeleteAllListsDialog(
-                    onDismiss = onDismiss,
-                    onConfirm = onDeleteAllConfirm
+                    onDismiss = {
+                        onIntent(
+                            ShoppingListsIntent.DialogDismiss
+                        )
+                    },
+                    onConfirm = {
+                        onIntent(
+                            ShoppingListsIntent.DeleteAllConfirm
+                        )
+                    }
                 )
             }
         }
@@ -208,38 +360,8 @@ private fun ShoppingListsScreenPreview(
     ShoppingListTheme {
         ShoppingListsScreen(
             state = state,
-            visibleLists = when {
-                state.searchQuery.isBlank() -> state.lists
-
-                else -> state.lists.filter {
-                    it.name.contains(state.searchQuery, ignoreCase = true)
-                }
-            },
-
-            onFabClick = {},
-            onEvent = {},
-            onListClick = {},
-            onNameChange = {},
-
-            onDismiss = {},
-            onConfirm = {},
-
-            onIconSelect = {},
-            onSheetDismiss = {},
-
-            onDeleteAllClick = {},
-            onDeleteAllConfirm = {},
-
-            onDeleteConfirm = {},
-
-            onRenameValueChange = {},
-            onRenameConfirm = {},
-
-            onThemeToggle = {},
-
-            onSearchClick = {},
-            onSearchQueryChange = {},
-            onSearchDismiss = {}
+            onIntent = {},
+            onThemeToggle = {}
         )
     }
 }

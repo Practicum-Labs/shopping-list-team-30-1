@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,9 +15,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AddItemScreen
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsEffect
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
 
 fun entryProvider(
@@ -32,38 +37,34 @@ fun entryProvider(
     entry<Route.ShoppingLists> {
         val viewModel: ShoppingListsViewModel = koinViewModel()
 
+        val state by viewModel.state.collectAsState()
+
         LaunchedEffect(Unit) {
-            viewModel.observeLists()
+
+            viewModel.dispatch(
+                ShoppingListsIntent.ObserveLists
+            )
+        }
+
+        LaunchedEffect(Unit) {
+            viewModel.effects.collectLatest { effect ->
+                when (effect) {
+                    is ShoppingListsEffect.NavigateToProducts -> {
+                        topLevelBackStack.add(
+                            Route.ProductsList(
+                                listId = effect.listId,
+                                listName = effect.listName
+                            )
+                        )
+                    }
+                }
+            }
         }
 
         ShoppingListsScreen(
-            state = viewModel.state,
-            visibleLists = viewModel.visibleLists,
-            onFabClick = viewModel::onFabClick,
-            onEvent = viewModel::onCardEvent,
-
-            onListClick = { list ->
-                topLevelBackStack.add(
-                    Route.ProductsList(
-                        listId = list.id,
-                        listName = list.name
-                    )
-                )
-            },
-            onNameChange = viewModel::onNameChange,
-            onDismiss = viewModel::onDialogDismiss,
-            onConfirm = viewModel::onCreateList,
-            onIconSelect = viewModel::onIconSelected,
-            onSheetDismiss = viewModel::onSheetDismiss,
-            onDeleteAllClick = viewModel::onDeleteAllClick,
-            onDeleteAllConfirm = viewModel::onDeleteAllConfirm,
-            onDeleteConfirm = viewModel::onDeleteConfirm,
-            onRenameValueChange = viewModel::onRenameValueChange,
-            onRenameConfirm = viewModel::onRenameConfirm,
+            state = state,
+            onIntent = viewModel::dispatch,
             onThemeToggle = onThemeToggle,
-            onSearchClick = viewModel::onSearchClick,
-            onSearchQueryChange = viewModel::onSearchQueryChange,
-            onSearchDismiss = viewModel::onSearchDismiss,
             modifier = Modifier.fillMaxSize()
         )
     }
