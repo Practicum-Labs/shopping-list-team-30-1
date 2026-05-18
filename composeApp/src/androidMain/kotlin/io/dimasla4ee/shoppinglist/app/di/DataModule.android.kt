@@ -1,12 +1,13 @@
 package io.dimasla4ee.shoppinglist.app.di
 
-import android.content.Context
-import android.content.SharedPreferences
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import io.dimasla4ee.shoppinglist.app.data.database.SettingsDataSource
 import io.dimasla4ee.shoppinglist.app.data.repository.SettingsRepositoryImpl
 import io.dimasla4ee.shoppinglist.core.config.DatabaseConfig
+import io.dimasla4ee.shoppinglist.core.data.dataStore.createDataStore
 import io.dimasla4ee.shoppinglist.core.database.db.ShoppingListDatabase
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
 import org.koin.android.ext.koin.androidContext
@@ -22,12 +23,8 @@ actual val platformDataModule = module {
         )
     }
 
-    single<SharedPreferences> {
-
-        androidContext().getSharedPreferences(
-            "settings",
-            Context.MODE_PRIVATE
-        )
+    single<DataStore<Preferences>> {
+        createDataStore(androidContext())
     }
 
     single {
