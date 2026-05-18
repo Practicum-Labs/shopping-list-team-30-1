@@ -90,8 +90,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.ktorfit)
 
-            implementation(libs.androidx.datastore)
-            implementation(libs.androidx.datastore.preferences)
+            api(libs.androidx.datastore)
+            api(libs.androidx.datastore.preferences)
         }
         commonTest.dependencies {
             implementation(libs.junit)

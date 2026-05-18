@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.core.data.dataStore
+package io.dimasla4ee.shoppinglist.core.data.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
