@@ -3,6 +3,7 @@ package io.dimasla4ee.shoppinglist.core.data.network.api
 import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Header
+import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
 import io.dimasla4ee.shoppinglist.core.data.network.dto.Request
 import io.dimasla4ee.shoppinglist.core.domain.model.Response
@@ -24,6 +25,8 @@ interface AuthApi {
          * Базовый префикс для эндпоинтов аутентификации.
          */
         private const val AUTH = "auth"
+        private const val CONTENT_JSON = "Content-Type: application/json"
+        private const val ACCEPT_JSON = "Accept: application/json"
     }
 
     /**
@@ -35,6 +38,7 @@ interface AuthApi {
      * @return данные авторизованного пользователя после успешной регистрации:
      * идентификатор пользователя, access token и refresh token.
      */
+    @Headers(CONTENT_JSON, ACCEPT_JSON)
     @POST("$AUTH/registration")
     suspend fun registerUser(
         @Body request: Request.RegisterRequest
@@ -48,6 +52,7 @@ interface AuthApi {
      * @param request тело запроса, содержащее refresh token.
      * @return новая пара токенов: access token и refresh token.
      */
+    @Headers(CONTENT_JSON, ACCEPT_JSON)
     @POST("$AUTH/refresh")
     suspend fun refresh(
         @Body request: Request.RefreshTokenRequest
@@ -60,6 +65,7 @@ interface AuthApi {
      *
      * @return текстовое сообщение от сервера о результате запуска восстановления.
      */
+    @Headers(ACCEPT_JSON)
     @POST("$AUTH/recovery")
     suspend fun recoverPassword(): Response.RecoverPasswordResponse
 
@@ -72,6 +78,7 @@ interface AuthApi {
      * @return данные авторизации: идентификатор пользователя,
      * access token и refresh token.
      */
+    @Headers(CONTENT_JSON, ACCEPT_JSON)
     @POST("$AUTH/login")
     suspend fun login(
         @Body request: Request.UserAuthRequest
@@ -87,6 +94,7 @@ interface AuthApi {
      * @param authorization значение HTTP-заголовка `Authorization`.
      * @return результат проверки токена.
      */
+    @Headers(ACCEPT_JSON)
     @GET("$AUTH/check")
     suspend fun checkUser(
         @Header("Authorization") authorization: String
