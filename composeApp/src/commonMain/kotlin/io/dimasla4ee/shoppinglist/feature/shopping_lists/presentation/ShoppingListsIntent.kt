@@ -1,6 +1,5 @@
 package io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation
 
-import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.core.mvi.MviIntent
 
