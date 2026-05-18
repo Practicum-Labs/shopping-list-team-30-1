@@ -12,6 +12,7 @@ class LoginUseCase(
         email: String,
         password: String
     ): DomainResult<Response.UserAuthResponse, NetworkError> {
+        // TODO: Сохранение токенов в локальное хранилище после успешной авторизации
         return authRepository.login(email, password)
     }
 }
