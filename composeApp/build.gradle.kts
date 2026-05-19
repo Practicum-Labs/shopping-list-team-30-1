@@ -91,6 +91,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.ktorfit)
 
+            implementation(libs.reorderable)
+
             api(libs.androidx.datastore)
             api(libs.androidx.datastore.preferences)
         }
