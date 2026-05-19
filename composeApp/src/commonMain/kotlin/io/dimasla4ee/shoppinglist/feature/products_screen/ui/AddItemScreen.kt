@@ -58,11 +58,11 @@ private const val BOTTOM_SHEET_HEIGHT_FRACTION = 0.5f
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddItemScreen(
-    modifier: Modifier = Modifier,
     state: AddProductUiState,
     onIntent: (ProductsIntent) -> Unit,
     onBackClick: (() -> Unit)? = null,
     onMenuClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     var sheetHeight by remember { mutableIntStateOf(0) }
