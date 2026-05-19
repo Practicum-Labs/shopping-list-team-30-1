@@ -39,6 +39,7 @@ import io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in.Sig
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.authorization_button
+import shoppinglist.composeapp.generated.resources.authorization_continue_as_guest
 import shoppinglist.composeapp.generated.resources.authorization_email_hint
 import shoppinglist.composeapp.generated.resources.authorization_email_label
 import shoppinglist.composeapp.generated.resources.authorization_forgot_password
@@ -86,7 +87,7 @@ fun SignInContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 AppTextButton(
-                    text = "Войти как гость",
+                    text = stringResource(Res.string.authorization_continue_as_guest),
                     textStyle = MaterialTheme.typography.bodySmall,
                     textDecoration = TextDecoration.None,
                     onClick = onGuestMode

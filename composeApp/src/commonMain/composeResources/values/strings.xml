@@ -21,6 +21,7 @@
     <string name="authorization_recover_password_description">Введите email, указанный при регистрации. Мы отправим инструкции по восстановлению пароля.</string>
     <string name="authorization_recover_password_button">Восстановить пароль</string>
     <string name="authorization_recover_password_cancel">Отмена</string>
+    <string name="authorization_continue_as_guest">Продолжить как гость</string>
 
     <!-- Сложность пароля -->
     <string name="password_strength_very_weak">Очень слабый</string>
