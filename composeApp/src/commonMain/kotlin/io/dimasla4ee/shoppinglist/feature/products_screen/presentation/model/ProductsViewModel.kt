@@ -55,7 +55,8 @@ class ProductsViewModel :
                     id = System.currentTimeMillis(),
                     name = currentState.name,
                     amount = currentState.amount,
-                    unit = currentState.unit
+                    unit = currentState.unit,
+                    position = currentState.items.size
                 )
 
                 updateState {

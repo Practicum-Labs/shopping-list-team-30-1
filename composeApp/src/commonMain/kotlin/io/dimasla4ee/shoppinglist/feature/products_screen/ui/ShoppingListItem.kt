@@ -4,9 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -80,7 +78,8 @@ private fun ShoppingListItemPreview() {
                 name = "Колбасевич",
                 amount = "1",
                 unit = MeasurementUnit.KILOGRAM,
-                isChecked = false
+                isChecked = false,
+                position = 0
             ),
             onCheckedChange = {}
         )
@@ -98,7 +97,8 @@ private fun ShoppingListItemCheckedPreview() {
                 name = "Хлеб",
                 amount = "2",
                 unit = MeasurementUnit.PIECE,
-                isChecked = true
+                isChecked = true,
+                position = 0
             ),
             onCheckedChange = {}
         )
