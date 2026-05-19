@@ -50,6 +50,14 @@ class ProductsViewModel :
                 current.copy(items = reordered)
             }
 
+            ProductsIntent.ToggleSortMode -> {
+                val newMode = when (current.sortMode) {
+                    SortMode.CUSTOM -> SortMode.ALPHABETICAL
+                    SortMode.ALPHABETICAL -> SortMode.CUSTOM
+                }
+                current.copy(sortMode = newMode)
+            }
+
             ProductsIntent.AddItem,
             is ProductsIntent.ToggleItemChecked -> current
         }

@@ -23,7 +23,8 @@ fun LazyItemScope.ReorderableShoppingItem(
     state: ReorderableLazyListState,
     hapticFeedback: HapticFeedback,
     onCheckedChange: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showDragHandle: Boolean = true
 ) {
     ReorderableItem(
         state = state,
@@ -38,6 +39,8 @@ fun LazyItemScope.ReorderableShoppingItem(
                 item = item,
                 onCheckedChange = onCheckedChange
             )
+
+            if (!showDragHandle) return@ReorderableItem
 
             AppIconButton(
                 iconRes = Res.drawable.ic_drag_handle_24,
