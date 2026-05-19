@@ -16,6 +16,7 @@ import io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in.Sig
 import io.dimasla4ee.shoppinglist.feature.authorization.ui.recover_password.RecoverPasswordScreen
 import io.dimasla4ee.shoppinglist.feature.authorization.ui.register.RegisterScreen
 import io.dimasla4ee.shoppinglist.feature.authorization.ui.sign_in.SignInScreen
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AddItemRoute
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AddItemScreen
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
