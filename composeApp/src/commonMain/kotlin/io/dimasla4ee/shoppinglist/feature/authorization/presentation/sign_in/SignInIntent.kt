@@ -7,5 +7,5 @@ sealed interface SignInIntent : MviIntent {
     data object SignInClicked : SignInIntent
     data object ForgotPasswordClicked : SignInIntent
     data object SignUpClicked : SignInIntent
-    data object GuestModeClicked : SignInIntent
+    data object ContinueAsGuestClicked : SignInIntent
 }

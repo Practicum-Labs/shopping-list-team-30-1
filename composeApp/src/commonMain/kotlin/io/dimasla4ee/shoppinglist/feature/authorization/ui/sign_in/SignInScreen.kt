@@ -32,8 +32,8 @@ fun SignInScreen(
             onRegistration = {
                 onIntent(SignInIntent.SignUpClicked)
             },
-            onGuestMode = {
-                onIntent(SignInIntent.GuestModeClicked)
+            onContinueAsGuest = {
+                onIntent(SignInIntent.ContinueAsGuestClicked)
             },
             modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
         )

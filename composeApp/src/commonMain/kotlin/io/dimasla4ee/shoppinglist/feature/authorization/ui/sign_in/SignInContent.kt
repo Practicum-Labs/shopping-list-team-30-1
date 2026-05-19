@@ -9,11 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,7 +51,7 @@ fun SignInContent(
     onSignIn: () -> Unit,
     onForgotPassword: () -> Unit,
     onRegistration: () -> Unit,
-    onGuestMode: () -> Unit,
+    onContinueAsGuest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -90,7 +86,7 @@ fun SignInContent(
                     text = stringResource(Res.string.authorization_continue_as_guest),
                     textStyle = MaterialTheme.typography.bodySmall,
                     textDecoration = TextDecoration.None,
-                    onClick = onGuestMode
+                    onClick = onContinueAsGuest
                 )
                 AppTextButton(
                     text = stringResource(Res.string.authorization_forgot_password),
@@ -138,7 +134,7 @@ private fun PreviewSignInContent(
             onSignIn = {},
             onRegistration = {},
             onForgotPassword = {},
-            onGuestMode = {},
+            onContinueAsGuest = {},
             onShowPassword = {
                 localState = localState.copy(
                     isPasswordVisible = !localState.isPasswordVisible
