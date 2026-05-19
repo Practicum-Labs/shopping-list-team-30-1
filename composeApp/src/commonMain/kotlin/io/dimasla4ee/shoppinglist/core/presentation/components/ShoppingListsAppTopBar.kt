@@ -21,10 +21,10 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.app.ui.theme.appTopBarColors
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.ic_construction_24
 import shoppinglist.composeapp.generated.resources.ic_delete_list_24
 import shoppinglist.composeapp.generated.resources.ic_fab_24
 import shoppinglist.composeapp.generated.resources.ic_search_24
+import shoppinglist.composeapp.generated.resources.ic_system_theme_24
 import shoppinglist.composeapp.generated.resources.ic_theme_24
 import shoppinglist.composeapp.generated.resources.ic_theme_light_24
 
@@ -47,7 +47,7 @@ fun ShoppingListsScaffold(
 
     val themeIcon = when (themeMode) {
 
-        ThemeMode.SYSTEM -> Res.drawable.ic_construction_24
+        ThemeMode.SYSTEM -> Res.drawable.ic_system_theme_24
 
         ThemeMode.LIGHT -> Res.drawable.ic_theme_24
 

@@ -12,11 +12,11 @@ import androidx.compose.ui.text.style.TextDecoration
 @Composable
 fun AppTextButton(
     text: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.labelLarge,
     textDecoration: TextDecoration = TextDecoration.Underline,
-    colors: ButtonColors = AppButtonDefaults.appTextButtonColors(),
-    onClick: () -> Unit
+    colors: ButtonColors = AppButtonDefaults.appTextButtonColors()
 ) {
     TextButton(
         modifier = modifier,
