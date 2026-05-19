@@ -1,5 +1,6 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 
+import androidx.compose.foundation.lazy.LazyListItemInfo
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.mvi.MviIntent
 
@@ -15,4 +16,9 @@ sealed interface ProductsIntent : MviIntent {
 
     data object ToggleBottomSheet : ProductsIntent
     data class ToggleItemChecked(val id: Long) : ProductsIntent
+
+    data class ReorderProduct(
+        val fromIndex: Int,
+        val toIndex: Int
+    ) : ProductsIntent
 }

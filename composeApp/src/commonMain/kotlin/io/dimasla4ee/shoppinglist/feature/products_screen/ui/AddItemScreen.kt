@@ -10,14 +10,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -32,8 +35,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -42,10 +47,11 @@ import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
-import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListItem
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.AppIconButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.content_back
 import shoppinglist.composeapp.generated.resources.content_menu
@@ -53,7 +59,7 @@ import shoppinglist.composeapp.generated.resources.ic_add_56
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
 import shoppinglist.composeapp.generated.resources.ic_fab_check_56
 import shoppinglist.composeapp.generated.resources.ic_menu_24
-import shoppinglist.composeapp.generated.resources.ic_shopping_cart_24
+import shoppinglist.composeapp.generated.resources.ic_sort_by_alpha_24
 
 private const val BOTTOM_SHEET_HEIGHT_FRACTION = 0.5f
 
@@ -62,10 +68,10 @@ private const val BOTTOM_SHEET_HEIGHT_FRACTION = 0.5f
 fun AddItemScreen(
     listName: String,
     state: AddProductUiState,
-    onIntent: (ProductsIntent) -> Unit,
-    onBackClick: (() -> Unit)? = null,
     onMenuClick: () -> Unit,
+    onIntent: (ProductsIntent) -> Unit,
     modifier: Modifier = Modifier,
+    onBackClick: (() -> Unit)? = null
 ) {
 
     var sheetHeight by remember { mutableIntStateOf(0) }
@@ -79,6 +85,18 @@ fun AddItemScreen(
             16.dp
         }
     )
+
+    val hapticFeedback = LocalHapticFeedback.current
+    val lazyListState = rememberLazyListState()
+    val reorderableLazyListState = rememberReorderableLazyListState(lazyListState) { from, to ->
+        onIntent(
+            ProductsIntent.ReorderProduct(
+                fromIndex = from.index,
+                toIndex = to.index
+            )
+        )
+        hapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
+    }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -136,25 +154,49 @@ fun AddItemScreen(
                 } else {
 
                     LazyColumn(
+                        state = lazyListState,
                         modifier = Modifier.fillMaxSize()
                     ) {
-
                         items(
                             items = state.items,
                             key = { item -> item.id }
                         ) { item ->
-
-                            ShoppingListItem(
-                                item = item,
-
-                                onCheckedChange = {
-                                    onIntent(
-                                        ProductsIntent.ToggleItemChecked(item.id)
-                                    )
+                            ReorderableItem(
+                                state = reorderableLazyListState,
+                                key = item.id
+                            ) { isDragging ->
+                                val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)
+                                Surface(shadowElevation = elevation) {
+                                    Row {
+                                        ShoppingListItem(
+                                            modifier = Modifier.width(300.dp),
+                                            item = item,
+                                            onCheckedChange = {
+                                                onIntent(ProductsIntent.ToggleItemChecked(item.id))
+                                            }
+                                        )
+                                        AppIconButton(
+                                            iconRes = Res.drawable.ic_sort_by_alpha_24,
+                                            modifier = Modifier.draggableHandle(
+                                                onDragStarted = {
+                                                    hapticFeedback.performHapticFeedback(
+                                                        HapticFeedbackType.GestureThresholdActivate
+                                                    )
+                                                },
+                                                onDragStopped = {
+                                                    hapticFeedback.performHapticFeedback(
+                                                        HapticFeedbackType.GestureEnd
+                                                    )
+                                                }
+                                            ),
+                                            onClick = {}
+                                        )
+                                    }
                                 }
-                            )
+                            }
                         }
                     }
+
                 }
             }
         }

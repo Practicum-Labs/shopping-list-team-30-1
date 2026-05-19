@@ -36,6 +36,27 @@ class ProductsViewModel :
                     isBottomSheetOpen = !current.isBottomSheetOpen
                 )
 
+            is ProductsIntent.ReorderProduct -> {
+                val items = current.items.toMutableList()
+
+                if (
+                    intent.fromIndex !in items.indices ||
+                    intent.toIndex !in items.indices
+                ) {
+                    return current
+                }
+
+                val movedItem = items.removeAt(intent.fromIndex)
+                items.add(intent.toIndex, movedItem)
+
+                val reordered = items.mapIndexed { index, product ->
+                    product.copy(position = index)
+                }
+
+                current.copy(items = reordered)
+            }
+
+
             ProductsIntent.AddItem,
             is ProductsIntent.ToggleItemChecked -> current
         }
