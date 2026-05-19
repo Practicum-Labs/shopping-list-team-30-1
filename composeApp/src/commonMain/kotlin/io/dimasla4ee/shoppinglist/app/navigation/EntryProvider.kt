@@ -73,8 +73,10 @@ fun entryProvider(
         )
     }
 
-    entry<Route.ProductsList> {
+    entry<Route.ProductsList> { route ->
+
         AddItemRoute(
+            listName = route.listName,
             onMenuClick = {},
             onBackClick = {
                 topLevelBackStack.removeLast()

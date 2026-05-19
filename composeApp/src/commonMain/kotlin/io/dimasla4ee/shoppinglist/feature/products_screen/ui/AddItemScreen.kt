@@ -42,6 +42,7 @@ import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListItem
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -52,12 +53,14 @@ import shoppinglist.composeapp.generated.resources.ic_add_56
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
 import shoppinglist.composeapp.generated.resources.ic_fab_check_56
 import shoppinglist.composeapp.generated.resources.ic_menu_24
+import shoppinglist.composeapp.generated.resources.ic_shopping_cart_24
 
 private const val BOTTOM_SHEET_HEIGHT_FRACTION = 0.5f
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddItemScreen(
+    listName: String,
     state: AddProductUiState,
     onIntent: (ProductsIntent) -> Unit,
     onBackClick: (() -> Unit)? = null,
@@ -89,7 +92,7 @@ fun AddItemScreen(
         ) {
 
             AppTopBar(
-                title = "блаблабла",
+                title = listName,
                 navigationIcon = {
                     if (onBackClick != null) {
                         IconButton(
@@ -296,6 +299,7 @@ private fun AddItemScreenPreview() {
     ShoppingListTheme {
 
         AddItemRoute(
+            listName = "Bobs",
             onBackClick = {},
             onMenuClick = {}
         )
