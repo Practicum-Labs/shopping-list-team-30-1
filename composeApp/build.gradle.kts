@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.ktorfit)
 }
 
 detekt {
@@ -89,6 +90,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.ktorfit)
+
+            api(libs.androidx.datastore)
+            api(libs.androidx.datastore.preferences)
         }
         commonTest.dependencies {
             implementation(libs.junit)

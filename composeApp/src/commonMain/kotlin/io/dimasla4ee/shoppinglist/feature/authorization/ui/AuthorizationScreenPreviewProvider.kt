@@ -3,8 +3,6 @@ package io.dimasla4ee.shoppinglist.feature.authorization.ui
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.dimasla4ee.shoppinglist.core.mvi.MviState
-import io.dimasla4ee.shoppinglist.feature.authorization.domain.password_strength_meter.PasswordStrengthLevel
-import io.dimasla4ee.shoppinglist.feature.authorization.domain.password_strength_meter.PasswordStrengthResult
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordState
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterState
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in.SignInState
@@ -32,12 +30,7 @@ sealed class AuthorizationScreenType(
         state = RegisterState(
             email = TextFieldState("new_user@example.com"),
             password = TextFieldState("Str0ng!Pass"),
-            isPasswordVisible = false,
-            passwordStrength = PasswordStrengthResult(
-                score = 3,
-                level = PasswordStrengthLevel.Strong,
-                isAcceptable = true
-            )
+            isPasswordVisible = false
         )
     )
 

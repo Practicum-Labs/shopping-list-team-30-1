@@ -5,6 +5,7 @@ import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
 import io.dimasla4ee.shoppinglist.core.domain.model.Response
 import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
 
+@Suppress("ForbiddenComment")
 class LoginUseCase(
     private val authRepository: AuthRepository
 ) {
@@ -12,6 +13,7 @@ class LoginUseCase(
         email: String,
         password: String
     ): DomainResult<Response.UserAuthResponse, NetworkError> {
+        // TODO: Сохранение токенов в локальное хранилище после успешной авторизации
         return authRepository.login(email, password)
     }
 }
