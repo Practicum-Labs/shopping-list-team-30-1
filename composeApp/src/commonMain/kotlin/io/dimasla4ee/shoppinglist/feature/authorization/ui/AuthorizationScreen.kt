@@ -55,7 +55,7 @@ fun AuthorizationScreen(
                 Text(
                     inlineContent = inlineContentMap,
                     text = annotatedString,
-                    style = appTypography().titleLargeEmphasized,
+                    style = MaterialTheme.typography.titleLargeEmphasized,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
                 )
