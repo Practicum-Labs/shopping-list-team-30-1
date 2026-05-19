@@ -1,17 +1,21 @@
 package io.dimasla4ee.shoppinglist.app.navigation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordEffect
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordViewModel
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterEffect
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterViewModel
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in.SignInEffect
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in.SignInViewModel
+import io.dimasla4ee.shoppinglist.feature.authorization.ui.recover_password.RecoverPasswordScreen
+import io.dimasla4ee.shoppinglist.feature.authorization.ui.register.RegisterScreen
+import io.dimasla4ee.shoppinglist.feature.authorization.ui.sign_in.SignInScreen
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AddItemScreen
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
@@ -82,37 +86,78 @@ fun entryProvider(
     }
 
     entry<Route.Authorization> {
-        // TODO(feature-team): интегрировать экран авторизации и удалить ScreenPlaceholder
-        ScreenPlaceholder("Authorisation")
+        val viewModel = koinViewModel<SignInViewModel>()
+        val state by viewModel.state.collectAsState()
+
+        LaunchedEffect(viewModel) {
+            viewModel.effects.collect { effect ->
+                when (effect) {
+                    SignInEffect.NavigateToMain -> {
+                        topLevelBackStack.replaceStack(Route.ShoppingLists)
+                    }
+
+                    SignInEffect.NavigateToRecoverPassword -> {
+                        topLevelBackStack.add(Route.PasswordRecovery)
+                    }
+
+                    SignInEffect.NavigateToRegister -> {
+                        topLevelBackStack.add(Route.Registration)
+                    }
+                }
+            }
+        }
+
+        SignInScreen(
+            state = state,
+            onIntent = viewModel::dispatch,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 
     entry<Route.Registration> {
-        // TODO(feature-team): интегрировать экран регистрации и удалить ScreenPlaceholder
-        ScreenPlaceholder("Registration")
+        val viewModel = koinViewModel<RegisterViewModel>()
+        val state by viewModel.state.collectAsState()
+
+        LaunchedEffect(viewModel) {
+            viewModel.effects.collect { effect ->
+                when (effect) {
+                    RegisterEffect.NavigateToMain -> {
+                        topLevelBackStack.replaceStack(Route.ShoppingLists)
+                    }
+
+                    RegisterEffect.NavigateToSignIn -> {
+                        topLevelBackStack.removeLast()
+                    }
+                }
+            }
+        }
+
+        RegisterScreen(
+            state = state,
+            onIntent = viewModel::dispatch,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 
     entry<Route.PasswordRecovery> {
-        // TODO(feature-team): интегрировать экран восстановления пароля и удалить ScreenPlaceholder
-        ScreenPlaceholder("PasswordRecovery")
-    }
+        val viewModel = koinViewModel<RecoverPasswordViewModel>()
+        val state by viewModel.state.collectAsState()
 
-}
+        LaunchedEffect(viewModel) {
+            viewModel.effects.collect { effect ->
+                when (effect) {
+                    RecoverPasswordEffect.NavigateToSignIn -> {
+                        topLevelBackStack.removeLast()
+                    }
+                }
+            }
+        }
 
-@Composable
-private fun ScreenPlaceholder(
-    text: String?,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Red),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "placeholder\n\n\n$text",
-            fontSize = 50.sp,
-            color = Color.White
+        RecoverPasswordScreen(
+            state = state,
+            onIntent = viewModel::dispatch,
+            modifier = Modifier.fillMaxSize()
         )
     }
+
 }
