@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.app.core.presentantion.components
+package io.dimasla4ee.shoppinglist.app.presentantion.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box

@@ -3,11 +3,11 @@ package io.dimasla4ee.shoppinglist.feature.authorization.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -37,9 +37,10 @@ import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.createWelcomeLogo
 @Composable
 fun AuthorizationScreen(
     modifier: Modifier = Modifier,
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable () -> Unit
 ) {
     val (annotatedString, inlineContentMap) = createWelcomeLogo()
+    val scrollState = rememberScrollState()
 
     Scaffold(
         modifier = modifier,
@@ -59,16 +60,23 @@ fun AuthorizationScreen(
                     textAlign = TextAlign.Center
                 )
             }
-
-        },
+        }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier.fillMaxSize()
-                .imePadding()
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.Center
+        BoxWithConstraints(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
-            content(paddingValues)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = maxHeight)
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                content()
+            }
         }
     }
 }
@@ -79,43 +87,36 @@ fun AuthorizationScreen(
 private fun AuthorizationScreenPreview(
     @PreviewParameter(AuthorizationScreenPreviewProvider::class) screenType: AuthorizationScreenType
 ) = ShoppingListTheme {
-    AuthorizationScreen(Modifier.fillMaxSize()) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentAlignment = Alignment.Center
-        ) {
-            when (screenType) {
-                AuthorizationScreenType.RecoverPassword -> {
-                    RecoverPasswordContent(
-                        state = screenType.state as RecoverPasswordState,
-                        onRecoverPassword = {},
-                        onCancel = {},
-                        modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
-                    )
-                }
+    AuthorizationScreen(Modifier.fillMaxSize()) {
+        when (screenType) {
+            AuthorizationScreenType.RecoverPassword -> {
+                RecoverPasswordContent(
+                    state = screenType.state as RecoverPasswordState,
+                    onRecoverPassword = {},
+                    onCancel = {},
+                    modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
+                )
+            }
 
-                AuthorizationScreenType.Register -> {
-                    RegisterContent(
-                        state = screenType.state as RegisterState,
-                        onShowPassword = {},
-                        onRegister = {},
-                        onAuthorization = {},
-                        modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
-                    )
-                }
+            AuthorizationScreenType.Register -> {
+                RegisterContent(
+                    state = screenType.state as RegisterState,
+                    onShowPassword = {},
+                    onRegister = {},
+                    onAuthorization = {},
+                    modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
+                )
+            }
 
-                AuthorizationScreenType.SignIn -> {
-                    SignInContent(
-                        state = screenType.state as SignInState,
-                        onShowPassword = {},
-                        onSignIn = {},
-                        onForgotPassword = {},
-                        onRegistration = {},
-                        modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
-                    )
-                }
+            AuthorizationScreenType.SignIn -> {
+                SignInContent(
+                    state = screenType.state as SignInState,
+                    onShowPassword = {},
+                    onSignIn = {},
+                    onForgotPassword = {},
+                    onRegistration = {},
+                    modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
+                )
             }
         }
     }

@@ -1,11 +1,15 @@
 package io.dimasla4ee.shoppinglist.app.di
 
 import io.dimasla4ee.shoppinglist.app.navigation.NavigationViewModel
-import org.koin.core.module.dsl.viewModel
 import io.dimasla4ee.shoppinglist.core.presentation.settings.SettingsViewModel
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordViewModel
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterViewModel
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in.SignInViewModel
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
@@ -24,6 +28,8 @@ val presentationModule = module {
         )
     }
 
+    viewModel<ProductsViewModel> { ProductsViewModel() }
+
     viewModel {
         ShoppingListsViewModel(
             interactor = get()
@@ -31,6 +37,10 @@ val presentationModule = module {
     }
 
     viewModel { ProductsViewModel() }
+
+    viewModelOf(::SignInViewModel)
+    viewModelOf(::RegisterViewModel)
+    viewModelOf(::RecoverPasswordViewModel)
 }
 
 /**
