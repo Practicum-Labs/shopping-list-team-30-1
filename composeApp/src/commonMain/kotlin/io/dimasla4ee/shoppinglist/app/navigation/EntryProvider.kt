@@ -28,7 +28,7 @@ fun entryProvider(
 ) = entryProvider<NavKey> {
     entry<Route.Welcome> {
         WelcomeScreen(
-            onGoToShopping = { topLevelBackStack.add(Route.ShoppingLists) },
+            onGoToShopping = { topLevelBackStack.add(Route.Authorization) },
             modifier = Modifier.fillMaxSize()
         )
     }

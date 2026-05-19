@@ -2,12 +2,15 @@ package io.dimasla4ee.shoppinglist.feature.authorization.ui.sign_in
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -18,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +32,7 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions.SignInDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppOutlinedPasswordTextField
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppOutlinedTextField
+import io.dimasla4ee.shoppinglist.core.presentation.components.buttons.AppTextButton
 import io.dimasla4ee.shoppinglist.core.presentation.preview.CenterAlignedBoxWithSystemPaddings
 import io.dimasla4ee.shoppinglist.core.utils.appDefaultFormSize
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in.SignInState
@@ -49,6 +54,7 @@ fun SignInContent(
     onSignIn: () -> Unit,
     onForgotPassword: () -> Unit,
     onRegistration: () -> Unit,
+    onGuestMode: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -64,7 +70,7 @@ fun SignInContent(
         )
 
         Column(
-            horizontalAlignment = Alignment.End,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.appDefaultFormSize()
         ) {
             AppOutlinedPasswordTextField(
@@ -75,15 +81,21 @@ fun SignInContent(
                 onShowPassword = onShowPassword
             )
 
-            TextButton(
-                onClick = onForgotPassword,
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = MaterialTheme.colorScheme.secondary
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
+                AppTextButton(
+                    text = "Войти как гость",
+                    textStyle = MaterialTheme.typography.bodySmall,
+                    textDecoration = TextDecoration.None,
+                    onClick = onGuestMode
+                )
+                AppTextButton(
                     text = stringResource(Res.string.authorization_forgot_password),
-                    style = MaterialTheme.typography.bodySmall
+                    textStyle = MaterialTheme.typography.bodySmall,
+                    textDecoration = TextDecoration.None,
+                    onClick = onForgotPassword
                 )
             }
         }
@@ -103,17 +115,10 @@ fun SignInContent(
             modifier = Modifier.padding(top = SignInDimensions.FooterTopPadding)
         ) {
             Text(stringResource(Res.string.authorization_no_account))
-            TextButton(
-                onClick = onRegistration,
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = MaterialTheme.colorScheme.secondary
-                )
-            ) {
-                Text(
-                    text = stringResource(Res.string.authorization_button),
-                    textDecoration = TextDecoration.Underline
-                )
-            }
+            AppTextButton(
+                text = stringResource(Res.string.authorization_button),
+                onClick = onRegistration
+            )
         }
     }
 }
@@ -132,6 +137,7 @@ private fun PreviewSignInContent(
             onSignIn = {},
             onRegistration = {},
             onForgotPassword = {},
+            onGuestMode = {},
             onShowPassword = {
                 localState = localState.copy(
                     isPasswordVisible = !localState.isPasswordVisible

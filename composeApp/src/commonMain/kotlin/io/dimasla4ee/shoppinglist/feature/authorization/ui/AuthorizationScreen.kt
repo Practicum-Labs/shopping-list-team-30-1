@@ -113,6 +113,7 @@ private fun AuthorizationScreenPreview(
                     state = screenType.state as SignInState,
                     onShowPassword = {},
                     onSignIn = {},
+                    onGuestMode = {},
                     onForgotPassword = {},
                     onRegistration = {},
                     modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
