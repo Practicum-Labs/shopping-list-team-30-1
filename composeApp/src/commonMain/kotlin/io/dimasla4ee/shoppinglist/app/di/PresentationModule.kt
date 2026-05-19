@@ -28,6 +28,8 @@ val presentationModule = module {
         )
     }
 
+    viewModel<ProductsViewModel> { ProductsViewModel() }
+
     viewModel {
         ShoppingListsViewModel(
             interactor = get()
