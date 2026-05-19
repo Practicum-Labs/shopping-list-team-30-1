@@ -25,193 +25,338 @@ class ShoppingListsViewModel(
     ): ShoppingListsState {
 
         return when (intent) {
+
             ShoppingListsIntent.FabClick -> {
-                current.copy(
-                    dialog = ShoppingListDialog.Create
-                )
+                reduceFabClick(current)
             }
 
             is ShoppingListsIntent.NameChanged -> {
-                current.copy(
-                    newListName = intent.value
-                )
+                reduceNameChanged(intent, current)
             }
 
             ShoppingListsIntent.DialogDismiss -> {
-                current.copy(
-                    dialog = ShoppingListDialog.None,
-                    newListName = "",
-                    renameValue = "",
-                    selectedListId = null,
-                    isIconSheetVisible = false
-                )
+                reduceDialogDismiss(current)
             }
 
             ShoppingListsIntent.DeleteAllClick -> {
-                current.copy(
-                    dialog = ShoppingListDialog.DeleteAll
-                )
+                reduceDeleteAllClick(current)
             }
 
             ShoppingListsIntent.SearchClick -> {
-                current.copy(
-                    isSearchMode = true,
-                    isFabVisible = false
-                )
+                reduceSearchClick(current)
             }
 
             ShoppingListsIntent.SearchDismiss -> {
-                current.copy(
-                    isSearchMode = false,
-                    isFabVisible = true,
-                    searchQuery = ""
-                )
+                reduceSearchDismiss(current)
             }
 
             is ShoppingListsIntent.SearchQueryChanged -> {
-                current.copy(
-                    searchQuery = intent.value
-                )
+                reduceSearchQueryChanged(intent, current)
             }
 
             is ShoppingListsIntent.RenameValueChanged -> {
-                current.copy(
-                    renameValue = intent.value
-                )
+                reduceRenameValueChanged(intent, current)
             }
 
             is ShoppingListsIntent.EditClicked -> {
-                current.copy(
-                    dialog = ShoppingListDialog.Rename(
-                        id = intent.item.id,
-                        value = intent.item.name
-                    ),
-                    renameValue = intent.item.name
-                )
+                reduceEditClicked(intent, current)
             }
 
             is ShoppingListsIntent.DeleteClicked -> {
-                current.copy(
-                    dialog = ShoppingListDialog.Delete(
-                        id = intent.item.id,
-                        name = intent.item.name
-                    )
-                )
+                reduceDeleteClicked(intent, current)
             }
 
             is ShoppingListsIntent.ChangeIconClicked -> {
-                current.copy(
-                    isIconSheetVisible = true,
-                    selectedListId = intent.item.id
-                )
+                reduceChangeIconClicked(intent, current)
             }
 
             ShoppingListsIntent.SheetDismiss -> {
-                current.copy(
-                    isIconSheetVisible = false,
-                    selectedListId = null
-                )
+                reduceSheetDismiss(current)
             }
 
             else -> current
         }
     }
 
-    override suspend fun handleIntent(intent: ShoppingListsIntent) {
+    private fun reduceFabClick(
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            dialog = ShoppingListDialog.Create
+        )
+    }
+
+    private fun reduceNameChanged(
+        intent: ShoppingListsIntent.NameChanged,
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            newListName = intent.value
+        )
+    }
+
+    private fun reduceDialogDismiss(
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            dialog = ShoppingListDialog.None,
+            newListName = "",
+            renameValue = "",
+            selectedListId = null,
+            isIconSheetVisible = false
+        )
+    }
+
+    private fun reduceDeleteAllClick(
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            dialog = ShoppingListDialog.DeleteAll
+        )
+    }
+
+    private fun reduceSearchClick(
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            isSearchMode = true,
+            isFabVisible = false
+        )
+    }
+
+    private fun reduceSearchDismiss(
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            isSearchMode = false,
+            isFabVisible = true,
+            searchQuery = ""
+        )
+    }
+
+    private fun reduceSearchQueryChanged(
+        intent: ShoppingListsIntent.SearchQueryChanged,
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            searchQuery = intent.value
+        )
+    }
+
+    private fun reduceEditClicked(
+        intent: ShoppingListsIntent.EditClicked,
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            dialog = ShoppingListDialog.Rename(
+                id = intent.item.id,
+                value = intent.item.name
+            ),
+            renameValue = intent.item.name
+        )
+    }
+
+    private fun reduceDeleteClicked(
+        intent: ShoppingListsIntent.DeleteClicked,
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            dialog = ShoppingListDialog.Delete(
+                id = intent.item.id,
+                name = intent.item.name
+            )
+        )
+    }
+
+    private fun reduceChangeIconClicked(
+        intent: ShoppingListsIntent.ChangeIconClicked,
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            isIconSheetVisible = true,
+            selectedListId = intent.item.id
+        )
+    }
+
+    private fun reduceRenameValueChanged(
+        intent: ShoppingListsIntent.RenameValueChanged,
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            renameValue = intent.value
+        )
+    }
+
+    private fun reduceSheetDismiss(
+        current: ShoppingListsState
+    ): ShoppingListsState {
+
+        return current.copy(
+            isIconSheetVisible = false,
+            selectedListId = null
+        )
+    }
+
+    override suspend fun handleIntent(
+        intent: ShoppingListsIntent
+    ) {
 
         when (intent) {
+
             ShoppingListsIntent.ObserveLists -> {
-                observeLists()
+                handleObserveLists()
             }
 
             ShoppingListsIntent.CreateList -> {
-                val name = state.value.newListName.trim()
-                if (name.isEmpty()) return
-                interactor.addShoppingList(name)
-                updateState {
-                    it.copy(
-                        dialog = ShoppingListDialog.None,
-                        newListName = ""
-                    )
-                }
+                handleCreateList()
             }
 
             ShoppingListsIntent.DeleteAllConfirm -> {
-                interactor.deleteAllShoppingLists()
-
-                dispatch(ShoppingListsIntent.DialogDismiss)
+                handleDeleteAllConfirm()
             }
 
             is ShoppingListsIntent.CopyClicked -> {
-
-                val target = findListById(
-                    intent.item.id
-                ) ?: return
-
-                interactor.duplicateShoppingList(target)
+                handleCopyClicked(intent)
             }
 
             is ShoppingListsIntent.IconSelected -> {
-
-                val selectedId = state.value.selectedListId ?: return
-
-                val target = findListById(
-                    selectedId
-                ) ?: return
-
-                interactor.updateShoppingList(
-                    target.copy(icon = intent.icon)
-                )
-
-                dispatch(ShoppingListsIntent.SheetDismiss)
+                handleIconSelected(intent)
             }
 
             ShoppingListsIntent.RenameConfirm -> {
-
-                val dialog = state.value.dialog as? ShoppingListDialog.Rename
-                    ?: return
-
-                val name = state.value.renameValue.trim()
-
-                if (name.isEmpty()) return
-
-                val oldList = findListById(
-                    dialog.id
-                ) ?: return
-
-                interactor.updateShoppingList(
-                    oldList.copy(name = name)
-                )
-
-                dispatch(ShoppingListsIntent.DialogDismiss)
+                handleRenameConfirm()
             }
 
             ShoppingListsIntent.DeleteConfirm -> {
-
-                val dialog = state.value.dialog as? ShoppingListDialog.Delete
-                    ?: return
-
-                val target = findListById(
-                    dialog.id
-                ) ?: return
-
-                interactor.deleteShoppingList(target)
-
-                dispatch(ShoppingListsIntent.DialogDismiss)
+                handleDeleteConfirm()
             }
 
             is ShoppingListsIntent.ListClicked -> {
-
-                emitEffect(
-                    ShoppingListsEffect.NavigateToProducts(
-                        listId = intent.item.id,
-                        listName = intent.item.name
-                    )
-                )
+                handleListClicked(intent)
             }
 
             else -> Unit
         }
+    }
+
+    private suspend fun handleObserveLists() {
+        observeLists()
+    }
+
+    private suspend fun handleCreateList() {
+
+        val name = state.value.newListName.trim()
+
+        if (name.isEmpty()) return
+
+        interactor.addShoppingList(name)
+
+        updateState {
+            it.copy(
+                dialog = ShoppingListDialog.None,
+                newListName = ""
+            )
+        }
+    }
+
+    private suspend fun handleDeleteAllConfirm() {
+
+        interactor.deleteAllShoppingLists()
+
+        dispatch(
+            ShoppingListsIntent.DialogDismiss
+        )
+    }
+
+    private suspend fun handleCopyClicked(
+        intent: ShoppingListsIntent.CopyClicked
+    ) {
+
+        val target = findListById(
+            intent.item.id
+        ) ?: return
+
+        interactor.duplicateShoppingList(target)
+    }
+
+    private suspend fun handleIconSelected(
+        intent: ShoppingListsIntent.IconSelected
+    ) {
+
+        val selectedId = state.value.selectedListId
+            ?: return
+
+        val target = findListById(selectedId)
+            ?: return
+
+        interactor.updateShoppingList(
+            target.copy(icon = intent.icon)
+        )
+
+        dispatch(
+            ShoppingListsIntent.SheetDismiss
+        )
+    }
+
+    private suspend fun handleRenameConfirm() {
+
+        val dialog = state.value.dialog
+                as? ShoppingListDialog.Rename
+            ?: return
+
+        val name = state.value.renameValue.trim()
+
+        if (name.isEmpty()) return
+
+        val oldList = findListById(dialog.id)
+            ?: return
+
+        interactor.updateShoppingList(
+            oldList.copy(name = name)
+        )
+
+        dispatch(
+            ShoppingListsIntent.DialogDismiss
+        )
+    }
+
+    private suspend fun handleDeleteConfirm() {
+
+        val dialog = state.value.dialog
+                as? ShoppingListDialog.Delete
+            ?: return
+
+        val target = findListById(dialog.id)
+            ?: return
+
+        interactor.deleteShoppingList(target)
+
+        dispatch(
+            ShoppingListsIntent.DialogDismiss
+        )
+    }
+
+    private suspend fun handleListClicked(
+        intent: ShoppingListsIntent.ListClicked
+    ) {
+
+        emitEffect(
+            ShoppingListsEffect.NavigateToProducts(
+                listId = intent.item.id,
+                listName = intent.item.name
+            )
+        )
     }
 
     private suspend fun observeLists() {
