@@ -5,7 +5,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.dimasla4ee.shoppinglist.core.presentation.preview.AuthorizationPreviewHelper
 import io.dimasla4ee.shoppinglist.feature.authorization.domain.password_strength_meter.PasswordEstimator
 import io.dimasla4ee.shoppinglist.feature.authorization.domain.password_strength_meter.PasswordStrengthMapper
-import io.dimasla4ee.shoppinglist.feature.authorization.presentation.RegisterState
+import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterState
 
 class RegisterInfoProvider : PreviewParameterProvider<RegisterState> {
 

@@ -31,6 +31,8 @@ val presentationModule = module {
             interactor = get()
         )
     }
+
+    viewModel { ProductsViewModel() }
 }
 
 /**

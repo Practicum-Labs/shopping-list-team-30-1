@@ -44,6 +44,7 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.Add
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.content_back
 import shoppinglist.composeapp.generated.resources.content_menu
@@ -88,9 +89,7 @@ fun AddItemScreen(
         ) {
 
             AppTopBar(
-                title = state.isBottomSheetOpen.toString(),
-
-
+                title = title,
                 navigationIcon = {
                     if (onBackClick != null) {
                         IconButton(

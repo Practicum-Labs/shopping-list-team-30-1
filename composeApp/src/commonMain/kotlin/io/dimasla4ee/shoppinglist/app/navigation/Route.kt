@@ -13,7 +13,10 @@ sealed interface Route : NavKey {
     data object ShoppingLists : Route
 
     @Serializable
-    data object ProductsList : Route
+    data class ProductsList(
+        val listId: Long,
+        val listName: String
+    ) : Route
 
     @Serializable
     data object Authorization : Route

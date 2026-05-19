@@ -41,6 +41,15 @@ fun entryProvider(
             visibleLists = viewModel.visibleLists,
             onFabClick = viewModel::onFabClick,
             onEvent = viewModel::onCardEvent,
+
+            onListClick = { list ->
+                topLevelBackStack.add(
+                    Route.ProductsList(
+                        listId = list.id,
+                        listName = list.name
+                    )
+                )
+            },
             onNameChange = viewModel::onNameChange,
             onDismiss = viewModel::onDialogDismiss,
             onConfirm = viewModel::onCreateList,

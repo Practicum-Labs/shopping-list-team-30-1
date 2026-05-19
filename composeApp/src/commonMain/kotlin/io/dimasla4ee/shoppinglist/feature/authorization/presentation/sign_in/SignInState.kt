@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.feature.authorization.presentation
+package io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in
 
 import androidx.compose.foundation.text.input.TextFieldState
 import io.dimasla4ee.shoppinglist.core.mvi.MviState
