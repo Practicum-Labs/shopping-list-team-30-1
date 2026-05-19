@@ -89,7 +89,7 @@ fun AddItemScreen(
         ) {
 
             AppTopBar(
-                title = "title",
+                title = "блаблабла",
                 navigationIcon = {
                     if (onBackClick != null) {
                         IconButton(
