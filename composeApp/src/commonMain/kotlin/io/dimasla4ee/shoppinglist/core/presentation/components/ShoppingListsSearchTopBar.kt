@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
-import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.appTopBarColors
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -88,12 +87,12 @@ fun ShoppingListsScaffoldSearch(
                     TextField(
                         value = query,
                         onValueChange = onQueryChange,
-                        textStyle = AppTypography.bodyLarge,
+                        textStyle = MaterialTheme.typography.bodyLarge,
 
                         placeholder = {
                             Text(
                                 text = stringResource(Res.string.hint_search_list),
-                                style = AppTypography.bodyLarge,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onTertiary
                             )
                         },

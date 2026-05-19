@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import io.dimasla4ee.shoppinglist.app.ui.theme.noteworthyTypography
+import io.dimasla4ee.shoppinglist.app.ui.theme.appTypography
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordState
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterState
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in.SignInState
@@ -55,7 +55,7 @@ fun AuthorizationScreen(
                 Text(
                     inlineContent = inlineContentMap,
                     text = annotatedString,
-                    style = noteworthyTypography().titleLargeEmphasized,
+                    style = MaterialTheme.typography.titleLargeEmphasized,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
                 )
