@@ -1,74 +1,53 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
-import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
-import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 
-class ProductsViewModel : ViewModel() {
+class ProductsViewModel :
+    MviViewModel<ProductsIntent, AddProductUiState, ProductsEffect>(
+        AddProductUiState()
+    ) {
 
-    private val _state = MutableStateFlow(AddProductUiState())
-    val state = _state.asStateFlow()
+    override fun reduce(intent: ProductsIntent, current: AddProductUiState): AddProductUiState {
+        return when (intent) {
 
-    fun onIntent(intent: ProductsIntent) {
+            is ProductsIntent.ChangeName ->
+                current.copy(name = intent.name)
 
-        when (intent) {
+            is ProductsIntent.ChangeCount ->
+                current.copy(amount = intent.amount)
 
-            is ProductsIntent.ChangeName -> {
-                _state.value = _state.value.copy(
-                    name = intent.name
-                )
-            }
+            is ProductsIntent.ChangeUnit ->
+                current.copy(unit = intent.unit)
 
-            is ProductsIntent.ChangeCount -> {
-                _state.value = _state.value.copy(
-                    amount = intent.amount
-                )
-            }
-
-            is ProductsIntent.ChangeUnit -> {
-                _state.value = _state.value.copy(
-                    unit = intent.unit
-                )
-            }
-
-            ProductsIntent.IncreaseCount -> {
-
-                val currentCount = _state.value.amount.toIntOrNull() ?: 0
-
-                _state.value = _state.value.copy(
-                    amount = (currentCount + 1).toString()
-                )
+            is ProductsIntent.IncreaseCount -> {
+                val count = current.amount.toIntOrNull() ?: 0
+                current.copy(amount = (count + 1).toString())
             }
 
             ProductsIntent.DecreaseCount -> {
-
-                val currentCount = _state.value.amount.toIntOrNull() ?: return
-
-                if (currentCount > 0) {
-                    _state.value = _state.value.copy(
-                        amount = (currentCount - 1).toString()
-                    )
-                }
+                val count = current.amount.toIntOrNull() ?: 0
+                current.copy(amount = (count - 1).coerceAtLeast(0).toString())
             }
 
-            ProductsIntent.ToggleBottomSheet -> {
-
-                _state.value = _state.value.copy(
-                    isBottomSheetOpen = !_state.value.isBottomSheetOpen
+            ProductsIntent.ToggleBottomSheet ->
+                current.copy(
+                    isBottomSheetOpen = !current.isBottomSheetOpen
                 )
-            }
+
+            ProductsIntent.AddItem,
+            is ProductsIntent.ToggleItemChecked -> current
+        }
+
+    }
+
+    override suspend fun handleIntent(intent: ProductsIntent) {
+        when (intent) {
 
             ProductsIntent.AddItem -> {
 
-                val currentState = _state.value
+                val currentState = state.value
 
                 if (currentState.name.isBlank()) return
 
@@ -79,32 +58,36 @@ class ProductsViewModel : ViewModel() {
                     unit = currentState.unit
                 )
 
-                _state.value = currentState.copy(
-                    items = currentState.items + newItem,
-
-                    name = "",
-                    amount = "",
-                    unit = MeasurementUnit.PIECE,
-
-                    isBottomSheetOpen = false
-                )
+                updateState {
+                    it.copy(
+                        items = it.items + newItem,
+                        name = "",
+                        amount = "",
+                        unit = MeasurementUnit.PIECE,
+                        isBottomSheetOpen = false
+                    )
+                }
             }
 
             is ProductsIntent.ToggleItemChecked -> {
 
-                _state.value = _state.value.copy(
-                    items = _state.value.items.map { item ->
-
-                        if (item.id == intent.id) {
-
-                            item.copy(isChecked = !item.isChecked)
-
-                        } else {
-                            item
+                updateState { current ->
+                    current.copy(
+                        items = current.items.map { item ->
+                            if (item.id == intent.id) {
+                                item.copy(
+                                    isChecked = !item.isChecked
+                                )
+                            } else {
+                                item
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
+
+            ProductsIntent.ToggleBottomSheet -> Unit
+            else -> Unit
         }
     }
 }

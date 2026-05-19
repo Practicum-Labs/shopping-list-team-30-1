@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -29,7 +28,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,16 +37,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
-import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.content_back
 import shoppinglist.composeapp.generated.resources.content_menu
@@ -62,13 +57,13 @@ private const val BOTTOM_SHEET_HEIGHT_FRACTION = 0.5f
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddItemScreen(
-    onMenuClick: () -> Unit,
     modifier: Modifier = Modifier,
+    state: AddProductUiState,
+    onIntent: (ProductsIntent) -> Unit,
     onBackClick: (() -> Unit)? = null,
-    viewModel: ProductsViewModel = koinViewModel()
+    onMenuClick: () -> Unit,
 ) {
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
     var sheetHeight by remember { mutableIntStateOf(0) }
 
     val density = LocalDensity.current
@@ -84,7 +79,6 @@ fun AddItemScreen(
     Box(
         modifier = modifier.fillMaxSize()
     ) {
-
         // Основной контент
         Column(
             modifier = Modifier
@@ -94,7 +88,8 @@ fun AddItemScreen(
         ) {
 
             AppTopBar(
-                title = "Название списка",
+                title = state.isBottomSheetOpen.toString(),
+
 
                 navigationIcon = {
                     if (onBackClick != null) {
@@ -151,7 +146,7 @@ fun AddItemScreen(
                                 item = item,
 
                                 onCheckedChange = {
-                                    viewModel.onIntent(
+                                    onIntent(
                                         ProductsIntent.ToggleItemChecked(item.id)
                                     )
                                 }
@@ -178,7 +173,7 @@ fun AddItemScreen(
                         )
                     )
                     .clickable {
-                        viewModel.onIntent(
+                        onIntent(
                             ProductsIntent.ToggleBottomSheet
                         )
                     }
@@ -226,31 +221,31 @@ fun AddItemScreen(
                     unit = state.unit,
 
                     onNameChange = {
-                        viewModel.onIntent(
+                        onIntent(
                             ProductsIntent.ChangeName(it)
                         )
                     },
 
                     onCountChange = {
-                        viewModel.onIntent(
+                        onIntent(
                             ProductsIntent.ChangeCount(it)
                         )
                     },
 
                     onUnitChange = {
-                        viewModel.onIntent(
+                        onIntent(
                             ProductsIntent.ChangeUnit(it)
                         )
                     },
 
                     onIncreaseClick = {
-                        viewModel.onIntent(
+                        onIntent(
                             ProductsIntent.IncreaseCount
                         )
                     },
 
                     onDecreaseClick = {
-                        viewModel.onIntent(
+                        onIntent(
                             ProductsIntent.DecreaseCount
                         )
                     }
@@ -262,9 +257,9 @@ fun AddItemScreen(
         FloatingActionButton(
             onClick = {
                 if (state.isBottomSheetOpen) {
-                    viewModel.onIntent(ProductsIntent.AddItem)
+                    onIntent(ProductsIntent.AddItem)
                 } else {
-                    viewModel.onIntent(ProductsIntent.ToggleBottomSheet)
+                    onIntent(ProductsIntent.ToggleBottomSheet)
                 }
             },
 
@@ -301,8 +296,7 @@ private fun AddItemScreenPreview() {
 
     ShoppingListTheme {
 
-        AddItemScreen(
-            modifier = Modifier.fillMaxSize(),
+        AddItemRoute(
             onBackClick = {},
             onMenuClick = {}
         )

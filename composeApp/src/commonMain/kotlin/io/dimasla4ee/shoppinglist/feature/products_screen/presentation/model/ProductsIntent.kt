@@ -1,8 +1,9 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
+import io.dimasla4ee.shoppinglist.core.mvi.MviIntent
 
-sealed interface ProductsIntent {
+sealed interface ProductsIntent : MviIntent {
 
     data class ChangeName(val name: String) : ProductsIntent
     data class ChangeCount(val amount: String) : ProductsIntent

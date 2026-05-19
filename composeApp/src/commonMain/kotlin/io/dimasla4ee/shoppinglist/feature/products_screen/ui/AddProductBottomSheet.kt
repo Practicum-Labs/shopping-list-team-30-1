@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
@@ -139,29 +140,10 @@ fun shoppingListTextFieldColors() = OutlinedTextFieldDefaults.colors(
 )
 
 @Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 private fun AddProductBottomSheetPreview() {
     ShoppingListTheme {
-        AddProductBottomSheet(
-            name = "",
-            amount = "",
-            unit = MeasurementUnit.PIECE,
-            onNameChange = {},
-            onCountChange = {},
-            onUnitChange = {},
-            onIncreaseClick = {},
-            onDecreaseClick = {},
-        )
-    }
-}
-
-@Preview(
-    showBackground = true,
-    backgroundColor = 0xFF19120C
-)
-@Composable
-private fun AddProductBottomSheetDarkPreview() {
-    ShoppingListTheme(darkTheme = true) {
         AddProductBottomSheet(
             name = "",
             amount = "",

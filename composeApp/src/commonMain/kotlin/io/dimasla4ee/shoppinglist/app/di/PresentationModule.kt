@@ -24,9 +24,7 @@ val presentationModule = module {
         )
     }
 
-    viewModel {
-        ProductsViewModel()
-    }
+    viewModel<ProductsViewModel> { ProductsViewModel() }
 
     viewModel {
         ShoppingListsViewModel(

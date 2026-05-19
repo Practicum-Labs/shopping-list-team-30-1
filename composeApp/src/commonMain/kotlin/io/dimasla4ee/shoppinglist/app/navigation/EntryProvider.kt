@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AddItemRoute
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
@@ -59,8 +60,12 @@ fun entryProvider(
     }
 
     entry<Route.ProductsList> {
-        // TODO(feature-team): интегрировать экран списка товаров и удалить ScreenPlaceholder
-        ScreenPlaceholder("Products")
+        AddItemRoute(
+            onMenuClick = {},
+            onBackClick = {
+                topLevelBackStack.removeLast()
+            }
+        )
     }
 
     entry<Route.Authorization> {

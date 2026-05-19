@@ -2,6 +2,7 @@ package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
+import io.dimasla4ee.shoppinglist.core.mvi.MviState
 
 data class AddProductUiState(
     val name: String = "",
@@ -10,4 +11,4 @@ data class AddProductUiState(
     val items: List<Product> = emptyList(),
 
     val isBottomSheetOpen: Boolean = false
-)
+) : MviState
