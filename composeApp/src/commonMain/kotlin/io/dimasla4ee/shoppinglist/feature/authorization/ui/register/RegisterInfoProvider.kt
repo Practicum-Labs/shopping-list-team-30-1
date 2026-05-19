@@ -3,13 +3,9 @@ package io.dimasla4ee.shoppinglist.feature.authorization.ui.register
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import io.dimasla4ee.shoppinglist.core.presentation.preview.AuthorizationPreviewHelper
-import io.dimasla4ee.shoppinglist.feature.authorization.domain.password_strength_meter.PasswordEstimator
-import io.dimasla4ee.shoppinglist.feature.authorization.domain.password_strength_meter.PasswordStrengthMapper
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterState
 
 class RegisterInfoProvider : PreviewParameterProvider<RegisterState> {
-
-    private val passwordEstimator = PasswordEstimator()
 
     override val values: Sequence<RegisterState>
         get() {
@@ -33,17 +29,10 @@ class RegisterInfoProvider : PreviewParameterProvider<RegisterState> {
         password: String,
         isPasswordVisible: Boolean
     ): RegisterState {
-        val rawScore = passwordEstimator.estimate(password)
-        val passwordStrength = PasswordStrengthMapper.fromScore(
-            score = rawScore,
-            password = password
-        )
-
         return RegisterState(
             email = TextFieldState(email),
             password = TextFieldState(password),
-            isPasswordVisible = isPasswordVisible,
-            passwordStrength = passwordStrength
+            isPasswordVisible = isPasswordVisible
         )
     }
 }
