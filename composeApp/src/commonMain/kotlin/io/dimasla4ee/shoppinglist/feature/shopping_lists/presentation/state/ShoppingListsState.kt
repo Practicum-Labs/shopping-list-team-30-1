@@ -1,6 +1,7 @@
 package io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state
 
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
+import io.dimasla4ee.shoppinglist.core.mvi.MviState
 
 data class ShoppingListsState(
     val lists: List<ShoppingList> = emptyList(),
@@ -21,4 +22,4 @@ data class ShoppingListsState(
     val deleteTargetId: Long? = null,
 
     val isFabVisible: Boolean = true
-)
+) : MviState
