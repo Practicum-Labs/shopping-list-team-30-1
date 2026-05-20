@@ -39,35 +39,16 @@ fun ShoppingListsScreen(
         state.searchQuery
     ) {
         val query = state.searchQuery.trim()
-
-        if (query.isEmpty()) {
-            state.lists
-        } else {
-            state.lists.filter {
-                it.name.contains(query, ignoreCase = true)
-            }
-        }
+        state.lists.filter { it.name.contains(query, ignoreCase = true) }
     }
 
     OrientationProvider { orientation ->
         if (state.isSearchMode) {
             ShoppingListsScaffoldSearch(
                 query = state.searchQuery,
-                onQueryChange = {
-                    onIntent(
-                        ShoppingListsIntent.SearchQueryChanged(it)
-                    )
-                },
-                onBack = {
-                    onIntent(
-                        ShoppingListsIntent.SearchDismiss
-                    )
-                },
-                onClear = {
-                    onIntent(
-                        ShoppingListsIntent.SearchQueryChanged("")
-                    )
-                }
+                onQueryChange = { onIntent(ShoppingListsIntent.SearchQueryChanged(it)) },
+                onBack = { onIntent(ShoppingListsIntent.SearchDismiss) },
+                onClear = { onIntent(ShoppingListsIntent.SearchQueryChanged("")) }
             ) { padding ->
                 when {
                     visibleLists.isEmpty() && state.searchQuery.isNotEmpty() -> {
@@ -98,47 +79,28 @@ fun ShoppingListsScreen(
                         ShoppingListsContent(
                             lists = visibleLists,
                             onEvent = { event ->
-                                when (event) {
+                                val intent = when (event) {
                                     is ShoppingListCardEvent.Click -> {
-                                        onIntent(
-                                            ShoppingListsIntent.ListClicked(
-                                                event.item
-                                            )
-                                        )
+                                        ShoppingListsIntent.ListClicked(event.item)
                                     }
 
                                     is ShoppingListCardEvent.Edit -> {
-                                        onIntent(
-                                            ShoppingListsIntent.EditClicked(
-                                                event.item
-                                            )
-                                        )
+                                        ShoppingListsIntent.EditClicked(event.item)
                                     }
 
                                     is ShoppingListCardEvent.Copy -> {
-                                        onIntent(
-                                            ShoppingListsIntent.CopyClicked(
-                                                event.item
-                                            )
-                                        )
+                                        ShoppingListsIntent.CopyClicked(event.item)
                                     }
 
                                     is ShoppingListCardEvent.ChangeIcon -> {
-                                        onIntent(
-                                            ShoppingListsIntent.ChangeIconClicked(
-                                                event.item
-                                            )
-                                        )
+                                        ShoppingListsIntent.ChangeIconClicked(event.item)
                                     }
 
                                     is ShoppingListCardEvent.Delete -> {
-                                        onIntent(
-                                            ShoppingListsIntent.DeleteClicked(
-                                                event.item
-                                            )
-                                        )
+                                        ShoppingListsIntent.DeleteClicked(event.item)
                                     }
                                 }
+                                onIntent(intent)
                             },
 
                             modifier = Modifier.padding(padding)
@@ -153,36 +115,24 @@ fun ShoppingListsScreen(
                 modifier = modifier,
                 title = stringResource(Res.string.screen_title),
                 action1 = TopBarAction(
-                    "Search",
-                    onClick = {
-                        onIntent(
-                            ShoppingListsIntent.SearchClick
-                        )
-                    }
+                    contentDescription = "Search",
+                    onClick = { onIntent(ShoppingListsIntent.SearchClick) }
                 ),
                 action2 = TopBarAction(
-                    "Delete",
-                    onClick = {
-                        onIntent(
-                            ShoppingListsIntent.DeleteAllClick
-                        )
-                    }
+                    contentDescription = "Delete",
+                    onClick = { onIntent(ShoppingListsIntent.DeleteAllClick) }
                 ),
                 action3 = TopBarAction(
-                    "Theme",
+                    contentDescription = "Theme",
                     onClick = onThemeToggle
                 ),
 
                 onFabClick = if (state.isFabVisible) {
-                    {
-                        onIntent(
-                            ShoppingListsIntent.FabClick
-                        )
-                    }
+                    { onIntent(ShoppingListsIntent.FabClick) }
                 } else {
                     null
                 }
-        ) { padding ->
+            ) { padding ->
 
                 if (visibleLists.isEmpty()) {
                     when (orientation) {
@@ -198,49 +148,28 @@ fun ShoppingListsScreen(
                     ShoppingListsContent(
                         lists = visibleLists,
                         onEvent = { event ->
-
-                            when (event) {
-
+                            val intent = when (event) {
                                 is ShoppingListCardEvent.Click -> {
-                                    onIntent(
-                                        ShoppingListsIntent.ListClicked(
-                                            event.item
-                                        )
-                                    )
+                                    ShoppingListsIntent.ListClicked(event.item)
                                 }
 
                                 is ShoppingListCardEvent.Edit -> {
-                                    onIntent(
-                                        ShoppingListsIntent.EditClicked(
-                                            event.item
-                                        )
-                                    )
+                                    ShoppingListsIntent.EditClicked(event.item)
                                 }
 
                                 is ShoppingListCardEvent.Copy -> {
-                                    onIntent(
-                                        ShoppingListsIntent.CopyClicked(
-                                            event.item
-                                        )
-                                    )
+                                    ShoppingListsIntent.CopyClicked(event.item)
                                 }
 
                                 is ShoppingListCardEvent.ChangeIcon -> {
-                                    onIntent(
-                                        ShoppingListsIntent.ChangeIconClicked(
-                                            event.item
-                                        )
-                                    )
+                                    ShoppingListsIntent.ChangeIconClicked(event.item)
                                 }
 
                                 is ShoppingListCardEvent.Delete -> {
-                                    onIntent(
-                                        ShoppingListsIntent.DeleteClicked(
-                                            event.item
-                                        )
-                                    )
+                                    ShoppingListsIntent.DeleteClicked(event.item)
                                 }
                             }
+                            onIntent(intent)
                         },
 
                         modifier = Modifier.padding(padding)
@@ -255,95 +184,45 @@ fun ShoppingListsScreen(
                     .find { it.id == state.selectedListId }
                     ?.icon,
                 onIconSelect = { icon: ShoppingListIcon ->
-
-                    onIntent(
-                        ShoppingListsIntent.IconSelected(icon)
-                    )
+                    onIntent(ShoppingListsIntent.IconSelected(icon))
                 },
-                onDismiss = {
-                    onIntent(
-                        ShoppingListsIntent.SheetDismiss
-                    )
-                }
+                onDismiss = { onIntent(ShoppingListsIntent.SheetDismiss) }
             )
         }
 
         when (val dialog = state.dialog) {
-
             ShoppingListDialog.None -> Unit
 
             ShoppingListDialog.Create -> {
                 CreateListDialog(
                     name = state.newListName,
-                    onNameChange = {
-                        onIntent(
-                            ShoppingListsIntent.NameChanged(it)
-                        )
-                    },
-
-                    onDismiss = {
-                        onIntent(
-                            ShoppingListsIntent.DialogDismiss
-                        )
-                    },
-                    onConfirm = {
-                        onIntent(
-                            ShoppingListsIntent.CreateList
-                        )
-                    }
+                    onNameChange = { onIntent(ShoppingListsIntent.NameChanged(it)) },
+                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                    onConfirm = { onIntent(ShoppingListsIntent.CreateList) }
                 )
             }
 
             is ShoppingListDialog.Rename -> {
                 RenameListDialog(
                     newName = state.renameValue,
-                    onRenameChange = {
-                        onIntent(
-                            ShoppingListsIntent.RenameValueChanged(it)
-                        )
-                    },
-                    onDismiss = {
-                        onIntent(
-                            ShoppingListsIntent.DialogDismiss
-                        )
-                    },
-                    onConfirm = {
-                        onIntent(
-                            ShoppingListsIntent.RenameConfirm
-                        )
-                    }
+                    onRenameChange = { onIntent(ShoppingListsIntent.RenameValueChanged(it)) },
+                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                    onConfirm = { onIntent(ShoppingListsIntent.RenameConfirm) }
                 )
             }
 
             is ShoppingListDialog.Delete -> {
-
                 DeleteListDialog(
                     listName = dialog.name,
-                    onDismiss = {
-                        onIntent(
-                            ShoppingListsIntent.DialogDismiss
-                        )
-                    },
-                    onConfirm = {
-                        onIntent(
-                            ShoppingListsIntent.DeleteConfirm
-                        )
-                    }
+                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                    onConfirm = { onIntent(ShoppingListsIntent.DeleteConfirm) }
                 )
             }
 
             ShoppingListDialog.DeleteAll -> {
                 DeleteAllListsDialog(
-                    onDismiss = {
-                        onIntent(
-                            ShoppingListsIntent.DialogDismiss
-                        )
-                    },
-                    onConfirm = {
-                        onIntent(
-                            ShoppingListsIntent.DeleteAllConfirm
-                        )
-                    }
+                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                    onConfirm = { onIntent(ShoppingListsIntent.DeleteAllConfirm) }
                 )
             }
         }
