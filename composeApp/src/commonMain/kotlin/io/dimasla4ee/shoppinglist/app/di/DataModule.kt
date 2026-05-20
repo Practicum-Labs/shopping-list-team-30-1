@@ -77,7 +77,10 @@ val dataModule = module {
     }
 
     single<AuthRepository> {
-        AuthRepositoryImpl(networkClient = get())
+        AuthRepositoryImpl(
+            networkClient = get(),
+            tokenStorage = get()
+        )
     }
 }
 
