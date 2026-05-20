@@ -5,7 +5,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsViewModel
-import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListItem
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -21,7 +20,7 @@ fun AddItemRoute(
     LaunchedEffect(Unit) {
         viewModel.getSortMode(listId)
     }
-    
+
     AddItemScreen(
         listName = listName,
         state = state,

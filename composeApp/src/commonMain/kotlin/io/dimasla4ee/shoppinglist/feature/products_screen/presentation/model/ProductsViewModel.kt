@@ -104,20 +104,12 @@ class ProductsViewModel(
             }
 
             is ProductsIntent.ToggleItemChecked -> {
-
-                updateState { current ->
-                    current.copy(
-                        items = current.items.map { item ->
-                            if (item.id == intent.id) {
-                                item.copy(
-                                    isChecked = !item.isChecked
-                                )
-                            } else {
-                                item
-                            }
-                        }
-                    )
+                val products = state.value.items.toMutableList().apply {
+                    remove(intent.product)
+                    add(intent.product.copy(isChecked = !intent.product.isChecked))
                 }
+
+                updateState { it.copy(items = products) }
             }
 
             ProductsIntent.ToggleSortMode -> {
