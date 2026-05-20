@@ -48,8 +48,9 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
-import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.AddProductBottomSheet
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -69,7 +70,7 @@ private const val BOTTOM_SHEET_HEIGHT_FRACTION = 0.5f
 @Composable
 fun AddItemScreen(
     listName: String,
-    state: AddProductUiState,
+    state: ProductsState,
     onMenuClick: () -> Unit,
     onIntent: (ProductsIntent) -> Unit,
     modifier: Modifier = Modifier,
@@ -137,7 +138,9 @@ fun AddItemScreen(
                         contentDescription = stringResource(
                             Res.string.content_menu
                         ),
-                        onClick = onMenuClick
+                        onClick = {
+                            onIntent(ProductsIntent.ToggleMenuBottomSheet)
+                        }
                     )
                 )
             )
