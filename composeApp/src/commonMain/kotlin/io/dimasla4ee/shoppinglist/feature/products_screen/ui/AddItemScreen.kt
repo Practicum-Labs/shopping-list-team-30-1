@@ -49,7 +49,7 @@ import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
-import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.SortMode
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState

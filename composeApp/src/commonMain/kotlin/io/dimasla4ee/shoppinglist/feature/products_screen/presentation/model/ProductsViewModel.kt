@@ -3,6 +3,7 @@ package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 
 class ProductsViewModel :
     MviViewModel<ProductsIntent, AddProductUiState, ProductsEffect>(
