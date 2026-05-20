@@ -1,14 +1,31 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 
+import androidx.lifecycle.viewModelScope
+import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.GetSortModeUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.SetSortModeUseCase
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
+import kotlinx.coroutines.launch
 
-class ProductsViewModel :
-    MviViewModel<ProductsIntent, AddProductUiState, ProductsEffect>(
-        AddProductUiState()
-    ) {
+class ProductsViewModel(
+    val getSortModeUseCase: GetSortModeUseCase,
+    val setSortModeUseCase: SetSortModeUseCase
+) : MviViewModel<ProductsIntent, AddProductUiState, ProductsEffect>(
+    initialState = AddProductUiState()
+) {
+
+    private var listId: Long = 0
+
+    fun getSortMode(listId: Long) {
+        this.listId = listId
+        viewModelScope.launch {
+            getSortModeUseCase(listId).collect { mode ->
+                updateState { it.copy(sortMode = mode) }
+            }
+        }
+    }
 
     override fun reduce(intent: ProductsIntent, current: AddProductUiState): AddProductUiState {
         return when (intent) {
@@ -38,8 +55,9 @@ class ProductsViewModel :
                 )
 
             is ProductsIntent.ReorderProduct -> {
-                val items = current.items.toMutableList()
+                if (current.sortMode != SortMode.CUSTOM) return current
 
+                val items = current.items.toMutableList()
                 items.removeAt(intent.fromIndex).let { movedItem ->
                     items.add(intent.toIndex, movedItem)
                 }
@@ -51,14 +69,7 @@ class ProductsViewModel :
                 current.copy(items = reordered)
             }
 
-            ProductsIntent.ToggleSortMode -> {
-                val newMode = when (current.sortMode) {
-                    SortMode.CUSTOM -> SortMode.ALPHABETICAL
-                    SortMode.ALPHABETICAL -> SortMode.CUSTOM
-                }
-                current.copy(sortMode = newMode)
-            }
-
+            ProductsIntent.ToggleSortMode,
             ProductsIntent.AddItem,
             is ProductsIntent.ToggleItemChecked -> current
         }
@@ -69,7 +80,6 @@ class ProductsViewModel :
         when (intent) {
 
             ProductsIntent.AddItem -> {
-
                 val currentState = state.value
 
                 if (currentState.name.isBlank()) return
@@ -110,7 +120,15 @@ class ProductsViewModel :
                 }
             }
 
-            ProductsIntent.ToggleBottomSheet -> Unit
+            ProductsIntent.ToggleSortMode -> {
+                val currentMode = state.value.sortMode
+                val newMode = when (currentMode) {
+                    SortMode.CUSTOM -> SortMode.ALPHABETICAL
+                    SortMode.ALPHABETICAL -> SortMode.CUSTOM
+                }
+                setSortModeUseCase(listId, newMode)
+            }
+
             else -> Unit
         }
     }

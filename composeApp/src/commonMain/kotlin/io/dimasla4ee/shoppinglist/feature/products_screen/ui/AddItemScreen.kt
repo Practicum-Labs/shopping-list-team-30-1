@@ -349,6 +349,7 @@ fun SortModeIndicator(
 private fun AddItemScreenPreview() {
     ShoppingListTheme {
         AddItemRoute(
+            listId = 0,
             listName = "Bobs",
             onBackClick = {},
             onMenuClick = {}
