@@ -58,7 +58,9 @@ fun ShoppingListItem(
 
             Text(
                 text = "${item.amount} ${
-                    stringResource(item.unit.toStringResource())
+                    item.unit?.let { unit ->
+                        stringResource(unit.toStringResource())
+                    } ?: ""
                 }",
 
                 style = MaterialTheme.typography.bodyMedium

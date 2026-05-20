@@ -58,7 +58,7 @@ fun ShoppingListsScaffold(
         topBar = {
             TopAppBar(
                 colors = appTopBarColors(),
-                modifier = Modifier.padding(end = AppDimensions.paddingVerySmall),
+                modifier = Modifier.padding(end = AppDimensions.paddingExtraSmall),
                 title = {
                     Text(
                         text = title,
