@@ -28,12 +28,7 @@ val presentationModule = module {
         )
     }
 
-    viewModel {
-        ShoppingListsViewModel(
-            interactor = get()
-        )
-    }
-
+    viewModelOf(::ShoppingListsViewModel)
     viewModelOf(::ProductsViewModel)
     viewModelOf(::SignInViewModel)
     viewModelOf(::RegisterViewModel)
