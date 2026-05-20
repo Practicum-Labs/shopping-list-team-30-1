@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
-import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.DialogStyle
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.app.ui.theme.deleteDialogButtonCancel
@@ -54,7 +53,7 @@ fun DeleteListDialog(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = template.format(listName),
-                    style = AppTypography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center
                 )
             }

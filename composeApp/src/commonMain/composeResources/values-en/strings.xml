@@ -19,6 +19,7 @@
     <string name="authorization_recover_password_description">Enter the email you used during registration. We will send you password recovery instructions.</string>
     <string name="authorization_recover_password_button">Recover password</string>
     <string name="authorization_recover_password_cancel">Cancel</string>
+    <string name="authorization_continue_as_guest">Continue as Guest</string>
 
     <!-- Password strength -->
     <string name="password_strength_very_weak">Very weak</string>

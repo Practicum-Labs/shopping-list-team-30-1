@@ -33,10 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
-import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import io.dimasla4ee.shoppinglist.app.ui.theme.noteworthyTypography
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -71,7 +69,7 @@ fun WelcomeScreenPortrait(
             Text(
                 inlineContent = inlineContentMap,
                 text = annotatedString,
-                style = noteworthyTypography().titleLargeEmphasized,
+                style = MaterialTheme.typography.titleLargeEmphasized,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -107,7 +105,7 @@ fun WelcomeScreenPortrait(
                     text = stringResource(Res.string.onboard_welcome_message),
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onBackground,
-                    style = AppTypography.labelLarge
+                    style = MaterialTheme.typography.labelLarge
                 )
 
                 Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
@@ -116,7 +114,7 @@ fun WelcomeScreenPortrait(
                     text = stringResource(Res.string.onboard_instruction),
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onBackground,
-                    style = AppTypography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
         }

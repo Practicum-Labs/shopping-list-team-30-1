@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +18,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
-import io.dimasla4ee.shoppinglist.app.ui.theme.AppTypography
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import org.jetbrains.compose.resources.painterResource
@@ -60,7 +60,7 @@ fun ShoppingListsEmptyLandscape(
             Text(
                 text = stringResource(Res.string.no_lists_message),
                 textAlign = TextAlign.Center,
-                style = AppTypography.labelLarge
+                style = MaterialTheme.typography.labelLarge
             )
 
             Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
@@ -68,7 +68,7 @@ fun ShoppingListsEmptyLandscape(
             Text(
                 text = stringResource(Res.string.create_list_hint),
                 textAlign = TextAlign.Center,
-                style = AppTypography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
