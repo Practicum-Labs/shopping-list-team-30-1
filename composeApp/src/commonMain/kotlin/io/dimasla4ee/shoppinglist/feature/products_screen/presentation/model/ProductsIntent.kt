@@ -15,4 +15,11 @@ sealed interface ProductsIntent : MviIntent {
 
     data object ToggleBottomSheet : ProductsIntent
     data class ToggleItemChecked(val id: Long) : ProductsIntent
+
+    data class ReorderProduct(
+        val fromIndex: Int,
+        val toIndex: Int
+    ) : ProductsIntent
+
+    data object ToggleSortMode : ProductsIntent
 }

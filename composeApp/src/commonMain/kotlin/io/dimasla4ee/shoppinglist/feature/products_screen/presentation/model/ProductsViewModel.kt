@@ -36,6 +36,28 @@ class ProductsViewModel :
                     isBottomSheetOpen = !current.isBottomSheetOpen
                 )
 
+            is ProductsIntent.ReorderProduct -> {
+                val items = current.items.toMutableList()
+
+                items.removeAt(intent.fromIndex).let { movedItem ->
+                    items.add(intent.toIndex, movedItem)
+                }
+
+                val reordered = items.mapIndexed { index, product ->
+                    product.copy(position = index)
+                }
+
+                current.copy(items = reordered)
+            }
+
+            ProductsIntent.ToggleSortMode -> {
+                val newMode = when (current.sortMode) {
+                    SortMode.CUSTOM -> SortMode.ALPHABETICAL
+                    SortMode.ALPHABETICAL -> SortMode.CUSTOM
+                }
+                current.copy(sortMode = newMode)
+            }
+
             ProductsIntent.AddItem,
             is ProductsIntent.ToggleItemChecked -> current
         }
@@ -55,7 +77,8 @@ class ProductsViewModel :
                     id = System.currentTimeMillis(),
                     name = currentState.name,
                     amount = currentState.amount,
-                    unit = currentState.unit
+                    unit = currentState.unit,
+                    position = currentState.items.size
                 )
 
                 updateState {

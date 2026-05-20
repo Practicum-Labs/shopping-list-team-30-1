@@ -9,6 +9,12 @@ data class AddProductUiState(
     val amount: String = "",
     val unit: MeasurementUnit = MeasurementUnit.PIECE,
     val items: List<Product> = emptyList(),
-
+    val sortMode: SortMode = SortMode.CUSTOM,
     val isBottomSheetOpen: Boolean = false
-) : MviState
+) : MviState {
+    val sortedItems: List<Product>
+        get() = when (sortMode) {
+            SortMode.CUSTOM -> items.sortedBy { it.position }
+            SortMode.ALPHABETICAL -> items.sortedBy { it.name.lowercase() }
+        }
+}

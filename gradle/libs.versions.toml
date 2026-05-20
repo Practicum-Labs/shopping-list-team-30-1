@@ -52,6 +52,7 @@ jsoup = "1.22.2"
 detekt = "2.0.0-alpha.3"
 detektCompose = "0.5.8"
 junitJupiterVersion = "6.0.3"
+reorderable = "3.1.0"
 
 [libraries]
 # --- AndroidX ---
@@ -130,6 +131,7 @@ jupiter-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", v
 # --- Other ---
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 detekt-compose-rules = { module = "io.nlopez.compose.rules:detekt", version.ref = "detektCompose" }
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
