@@ -59,7 +59,7 @@ fun entryProvider(
         }
 
         WelcomeScreen(
-            onGoToShopping = { topLevelBackStack.add(Route.ShoppingLists) },
+            onGoToShopping = { topLevelBackStack.add(Route.Authorization) },
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -102,6 +102,7 @@ fun entryProvider(
     entry<Route.ProductsList> { route ->
 
         AddItemRoute(
+            listId = route.listId,
             listName = route.listName,
             onMenuClick = {},
             onBackClick = {

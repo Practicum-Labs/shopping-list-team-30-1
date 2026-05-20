@@ -1,5 +1,6 @@
 package io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation
 
+import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.RemoveSortModeUseCase
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
@@ -9,73 +10,67 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class ShoppingListsViewModel(
-    private val interactor: ShoppingListsInteractor
-) : MviViewModel<
-        ShoppingListsIntent,
-        ShoppingListsState,
-        ShoppingListsEffect
-        >(
-    ShoppingListsState()
+    private val interactor: ShoppingListsInteractor,
+    private val removeSortModeUseCase: RemoveSortModeUseCase
+) : MviViewModel<ShoppingListsIntent, ShoppingListsState, ShoppingListsEffect>(
+    initialState = ShoppingListsState()
 ) {
     private var observeJob: Job? = null
 
     override fun reduce(
         intent: ShoppingListsIntent,
         current: ShoppingListsState
-    ): ShoppingListsState {
+    ): ShoppingListsState = when (intent) {
 
-        return when (intent) {
-
-            ShoppingListsIntent.FabClick -> {
-                reduceFabClick(current)
-            }
-
-            is ShoppingListsIntent.NameChanged -> {
-                reduceNameChanged(intent, current)
-            }
-
-            ShoppingListsIntent.DialogDismiss -> {
-                reduceDialogDismiss(current)
-            }
-
-            ShoppingListsIntent.DeleteAllClick -> {
-                reduceDeleteAllClick(current)
-            }
-
-            ShoppingListsIntent.SearchClick -> {
-                reduceSearchClick(current)
-            }
-
-            ShoppingListsIntent.SearchDismiss -> {
-                reduceSearchDismiss(current)
-            }
-
-            is ShoppingListsIntent.SearchQueryChanged -> {
-                reduceSearchQueryChanged(intent, current)
-            }
-
-            is ShoppingListsIntent.RenameValueChanged -> {
-                reduceRenameValueChanged(intent, current)
-            }
-
-            is ShoppingListsIntent.EditClicked -> {
-                reduceEditClicked(intent, current)
-            }
-
-            is ShoppingListsIntent.DeleteClicked -> {
-                reduceDeleteClicked(intent, current)
-            }
-
-            is ShoppingListsIntent.ChangeIconClicked -> {
-                reduceChangeIconClicked(intent, current)
-            }
-
-            ShoppingListsIntent.SheetDismiss -> {
-                reduceSheetDismiss(current)
-            }
-
-            else -> current
+        ShoppingListsIntent.FabClick -> {
+            reduceFabClick(current)
         }
+
+        is ShoppingListsIntent.NameChanged -> {
+            reduceNameChanged(intent, current)
+        }
+
+        ShoppingListsIntent.DialogDismiss -> {
+            reduceDialogDismiss(current)
+        }
+
+        ShoppingListsIntent.DeleteAllClick -> {
+            reduceDeleteAllClick(current)
+        }
+
+        ShoppingListsIntent.SearchClick -> {
+            reduceSearchClick(current)
+        }
+
+        ShoppingListsIntent.SearchDismiss -> {
+            reduceSearchDismiss(current)
+        }
+
+        is ShoppingListsIntent.SearchQueryChanged -> {
+            reduceSearchQueryChanged(intent, current)
+        }
+
+        is ShoppingListsIntent.RenameValueChanged -> {
+            reduceRenameValueChanged(intent, current)
+        }
+
+        is ShoppingListsIntent.EditClicked -> {
+            reduceEditClicked(intent, current)
+        }
+
+        is ShoppingListsIntent.DeleteClicked -> {
+            reduceDeleteClicked(intent, current)
+        }
+
+        is ShoppingListsIntent.ChangeIconClicked -> {
+            reduceChangeIconClicked(intent, current)
+        }
+
+        ShoppingListsIntent.SheetDismiss -> {
+            reduceSheetDismiss(current)
+        }
+
+        else -> current
     }
 
     private fun reduceFabClick(
@@ -341,6 +336,7 @@ class ShoppingListsViewModel(
             ?: return
 
         interactor.deleteShoppingList(target)
+        removeSortModeUseCase(dialog.id)
 
         dispatch(
             ShoppingListsIntent.DialogDismiss

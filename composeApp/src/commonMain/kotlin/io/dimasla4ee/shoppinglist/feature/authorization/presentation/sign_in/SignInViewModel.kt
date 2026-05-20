@@ -23,7 +23,8 @@ class SignInViewModel(
 
         SignInIntent.ForgotPasswordClicked,
         SignInIntent.SignInClicked,
-        SignInIntent.SignUpClicked -> current
+        SignInIntent.SignUpClicked,
+        SignInIntent.ContinueAsGuestClicked -> current
     }
 
     override suspend fun handleIntent(intent: SignInIntent) {
@@ -34,6 +35,7 @@ class SignInViewModel(
             SignInIntent.SignInClicked -> handleSignIn(currentState) ?: return
             SignInIntent.SignUpClicked -> SignInEffect.NavigateToRegister
             SignInIntent.PasswordVisibilityToggleClicked -> return
+            SignInIntent.ContinueAsGuestClicked -> SignInEffect.NavigateToMain
         }
         emitEffect(effect)
     }
