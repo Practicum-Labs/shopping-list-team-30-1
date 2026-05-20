@@ -51,6 +51,7 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.AddProductBottomSheet
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -105,6 +106,23 @@ fun AddItemScreen(
     Box(
         modifier = modifier.fillMaxSize()
     ) {
+
+        ProductsMenuBottomSheet(
+            visible = state.isMenuBottomSheetOpen,
+            sortMode = state.sortMode,
+            onDismiss = {
+                onIntent(ProductsIntent.ToggleMenuBottomSheet)
+            },
+            onSortClick = {
+                onIntent(ProductsIntent.ToggleSortMode)
+            },
+            onDeleteAllClick = {
+                onIntent(ProductsIntent.DeleteAllProducts)
+            },
+            onDeleteCheckClick = {
+                onIntent(ProductsIntent.DeleteCheckedProducts)
+            }
+        )
         // Основной контент
         Column(
             modifier = Modifier
