@@ -47,9 +47,9 @@ import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
-import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.SortMode
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -164,7 +164,7 @@ fun AddItemScreen(
                                 item = item,
                                 state = reorderableLazyListState,
                                 hapticFeedback = hapticFeedback,
-                                onCheckedChange = { onIntent(ProductsIntent.ToggleItemChecked(item.id)) },
+                                onCheckedChange = { onIntent(ProductsIntent.ToggleItemChecked(item)) },
                                 showDragHandle = isCustomSort
                             )
                         }
@@ -349,6 +349,7 @@ fun SortModeIndicator(
 private fun AddItemScreenPreview() {
     ShoppingListTheme {
         AddItemRoute(
+            listId = 0,
             listName = "Bobs",
             onBackClick = {},
             onMenuClick = {}

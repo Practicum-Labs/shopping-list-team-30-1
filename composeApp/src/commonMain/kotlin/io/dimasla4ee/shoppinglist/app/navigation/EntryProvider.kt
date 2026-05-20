@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -18,7 +17,6 @@ import io.dimasla4ee.shoppinglist.feature.authorization.ui.recover_password.Reco
 import io.dimasla4ee.shoppinglist.feature.authorization.ui.register.RegisterScreen
 import io.dimasla4ee.shoppinglist.feature.authorization.ui.sign_in.SignInScreen
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AddItemRoute
-import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AddItemScreen
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsEffect
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
@@ -76,6 +74,7 @@ fun entryProvider(
     entry<Route.ProductsList> { route ->
 
         AddItemRoute(
+            listId = route.listId,
             listName = route.listName,
             onMenuClick = {},
             onBackClick = {
