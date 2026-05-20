@@ -44,6 +44,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
@@ -85,9 +86,9 @@ fun AddItemScreen(
 
     val fabBottomPadding by animateDpAsState(
         targetValue = if (state.isBottomSheetOpen && sheetHeight > 0) {
-            with(density) { sheetHeight.toDp() } + 16.dp
+            with(density) { sheetHeight.toDp() + AppDimensions.paddingExtraBig }
         } else {
-            16.dp
+            AppDimensions.paddingExtraBig
         }
     )
 
@@ -196,7 +197,6 @@ fun AddItemScreen(
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -226,28 +226,19 @@ fun AddItemScreen(
                 targetOffsetY = { it }
             )
         ) {
-
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(BOTTOM_SHEET_HEIGHT_FRACTION)
-                    .padding(horizontal = 6.dp)
+                    .padding(horizontal = AppDimensions.paddingVerySmall)
                     .imePadding()
                     .navigationBarsPadding()
                     .onGloballyPositioned { coordinates ->
                         sheetHeight = coordinates.size.height
                     },
-
-                shape = RoundedCornerShape(
-                    topStart = 28.dp,
-                    topEnd = 28.dp,
-                    bottomStart = 0.dp,
-                    bottomEnd = 0.dp
-                ),
-
+                shape = AppDimensions.BottomSheet.topCornerRadius,
                 color = MaterialTheme.colorScheme.primaryContainer
             ) {
-
                 AddProductBottomSheet(
                     name = state.name,
                     amount = state.amount,
@@ -295,18 +286,15 @@ fun AddItemScreen(
                     onIntent(ProductsIntent.ToggleBottomSheet)
                 }
             },
-
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(
-                    end = 16.dp,
+                    end = AppDimensions.paddingMedium,
                     bottom = fabBottomPadding
                 )
                 .navigationBarsPadding(),
-
             containerColor = MaterialTheme.colorScheme.primary
         ) {
-
             Icon(
                 painter = painterResource(
                     if (state.isBottomSheetOpen) {
@@ -315,8 +303,7 @@ fun AddItemScreen(
                         Res.drawable.ic_add_56
                     }
                 ),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimary
+                contentDescription = null
             )
         }
     }

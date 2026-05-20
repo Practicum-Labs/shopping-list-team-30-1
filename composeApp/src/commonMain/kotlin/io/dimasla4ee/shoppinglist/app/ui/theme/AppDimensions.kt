@@ -1,6 +1,7 @@
 package io.dimasla4ee.shoppinglist.app.ui.theme
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -9,11 +10,13 @@ object AppDimensions {
 
     val paddingVeryLarge = 64.dp
     val paddingLarge = 44.dp
+    val paddingExtraBig = 32.dp
     val paddingVeryBig = 24.dp
     val paddingBig = 18.dp
     val paddingMedium = 16.dp
     val paddingSmall = 8.dp
-    val paddingVerySmall = 4.dp
+    val paddingVerySmall = 6.dp
+    val paddingExtraSmall = 4.dp
 
     val bottomSheetIconsSpaceBy = 12.dp
 
@@ -21,6 +24,7 @@ object AppDimensions {
     val logoOffset = 2.dp
 
     val spacerSmall = 8.dp
+    val spacerMedium = 16.dp
     val spacerBig = 32.dp
     val spacerVeryBig = 48.dp
     val spacerLarge = 94.dp
@@ -131,8 +135,10 @@ object AppDimensions {
         )
     }
 
-    object IconBottomSheet {
-        val handler = DpSize(32.dp, 4.dp)
+    object BottomSheet {
+        val topCornerRadius = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
+        val handlerSize = DpSize(32.dp, 4.dp)
+        val handlerCornerRadius = 2.dp
     }
 
     object RegisterDimensions {

@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
@@ -24,7 +25,7 @@ import shoppinglist.composeapp.generated.resources.hint_units
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UnitDropdownField(
-    selectedUnit: MeasurementUnit,
+    selectedUnit: MeasurementUnit?,
     onUnitSelect: (MeasurementUnit) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -37,11 +38,15 @@ fun UnitDropdownField(
     ) {
 
         OutlinedTextField(
-            value = stringResource(selectedUnit.toStringResource()),
+            value = selectedUnit?.let { unit -> stringResource(unit.toStringResource()) } ?: "",
             onValueChange = {},
             readOnly = true,
             label = {
-                Text(stringResource(Res.string.hint_units))
+                Text(
+                    text = stringResource(Res.string.hint_units),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded)
