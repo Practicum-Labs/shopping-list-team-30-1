@@ -44,8 +44,9 @@ private val LightColorScheme = lightColorScheme(
     onError = White,
 
     surfaceContainerHigh = Beige150,
-    surfaceContainerHighest = Brown600
+    surfaceContainerHighest = Brown600,
 
+    tertiaryFixed = Gray200
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -84,7 +85,9 @@ private val DarkColorScheme = darkColorScheme(
     onError = Brown900,
 
     surfaceContainerHigh = Brown700,
-    surfaceContainerHighest = Brown600
+    surfaceContainerHighest = Brown600,
+
+    tertiaryFixed = Gray200
 )
 
 @Suppress("CompositionLocalAllowlist")
