@@ -9,8 +9,8 @@ import androidx.compose.ui.graphics.painter.Painter
 
 @Composable
 fun AppFloatingActionButton(
-    modifier: Modifier = Modifier,
     iconRes: Painter,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     FloatingActionButton(
