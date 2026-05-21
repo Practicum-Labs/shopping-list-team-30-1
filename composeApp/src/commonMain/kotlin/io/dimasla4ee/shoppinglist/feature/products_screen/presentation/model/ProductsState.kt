@@ -9,7 +9,7 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.state.Pro
 data class ProductsState(
     val name: String = "",
     val amount: String = "",
-    val unit: MeasurementUnit = MeasurementUnit.PIECE,
+    val unit: MeasurementUnit? = null,
     val items: List<Product> = emptyList(),
     val sortMode: SortMode = SortMode.CUSTOM,
     val isBottomSheetOpen: Boolean = false,

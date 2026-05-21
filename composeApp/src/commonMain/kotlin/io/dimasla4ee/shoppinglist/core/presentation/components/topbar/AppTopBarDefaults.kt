@@ -33,7 +33,7 @@ object AppTopBarDefaults {
 
     @Composable
     fun productsTopBarColors() = appTopBarColors(
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        containerColor = MaterialTheme.colorScheme.background,
         actionIconContentColor = MaterialTheme.colorScheme.onBackground,
         titleContentColor = MaterialTheme.colorScheme.onBackground,
         navigationIconContentColor = MaterialTheme.colorScheme.onBackground

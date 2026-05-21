@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets
+package io.dimasla4ee.shoppinglist.feature.products_screen.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
-import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AppFloatingActionButton
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.UnitDropdownField
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -48,7 +48,7 @@ fun AddProductBottomSheet(
     onIncreaseClick: () -> Unit,
     onDecreaseClick: () -> Unit,
     onFabClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
