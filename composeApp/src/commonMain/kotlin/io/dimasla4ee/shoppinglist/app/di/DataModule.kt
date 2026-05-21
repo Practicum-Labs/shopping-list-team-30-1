@@ -39,6 +39,7 @@ val dataModule = module {
 
         builder
             .setDriver(BundledSQLiteDriver())
+            .fallbackToDestructiveMigration(dropAllTables = false)
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()
     }
