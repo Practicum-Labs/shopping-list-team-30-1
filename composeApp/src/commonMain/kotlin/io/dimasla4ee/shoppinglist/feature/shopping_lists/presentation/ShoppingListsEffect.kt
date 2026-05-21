@@ -8,4 +8,6 @@ sealed interface ShoppingListsEffect : MviEffect {
         val listId: Long,
         val listName: String
     ) : ShoppingListsEffect
+
+    data object NavigateToAuthorization : ShoppingListsEffect
 }

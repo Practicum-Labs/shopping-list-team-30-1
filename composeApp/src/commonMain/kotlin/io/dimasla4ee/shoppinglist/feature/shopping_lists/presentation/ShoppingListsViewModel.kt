@@ -241,6 +241,14 @@ class ShoppingListsViewModel(
                 handleListClicked(intent)
             }
 
+            is ShoppingListsIntent.AuthorizationClicked -> {
+                val currentState = state.value
+                when (currentState.isAuthorized) {
+                    true -> updateState { it.copy(isAuthorized = false) }
+                    false -> emitEffect(ShoppingListsEffect.NavigateToAuthorization)
+                }
+            }
+
             else -> Unit
         }
     }

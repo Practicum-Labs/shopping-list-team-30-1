@@ -62,4 +62,6 @@ sealed interface ShoppingListsIntent : MviIntent {
     data class DeleteClicked(
         val item: ShoppingListItem
     ) : ShoppingListsIntent
+
+    data object AuthorizationClicked: ShoppingListsIntent
 }
