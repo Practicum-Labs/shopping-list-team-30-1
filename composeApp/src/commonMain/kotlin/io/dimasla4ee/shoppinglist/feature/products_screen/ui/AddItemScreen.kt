@@ -45,8 +45,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import io.dimasla4ee.shoppinglist.core.presentation.components.AppTopBar
-import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarIcon
+import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBar
+import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
@@ -132,9 +132,9 @@ fun AddItemScreen(
                 },
 
                 actions = listOf(
-                    TopBarIcon(
-                        icon = Res.drawable.ic_menu_24,
-                        contentDescription = stringResource(
+                    ActionItem(
+                        iconRes = Res.drawable.ic_menu_24,
+                        label = stringResource(
                             Res.string.content_menu
                         ),
                         onClick = onMenuClick

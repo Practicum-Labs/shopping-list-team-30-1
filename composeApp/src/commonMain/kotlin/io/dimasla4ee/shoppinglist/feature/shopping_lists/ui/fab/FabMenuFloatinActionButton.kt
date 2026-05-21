@@ -20,7 +20,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.traversalIndex
-import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarAction
+import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_close_24
@@ -31,8 +31,9 @@ import shoppinglist.composeapp.generated.resources.ic_shopping_cart_24
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FabMenuFloatingActionButton(
-    action2: TopBarAction,
-    onFabClick: (() -> Unit)?
+    onDeleteAllClick: ActionItem,
+    onAddListClick: (() -> Unit)?,
+    modifier: Modifier = Modifier
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -40,12 +41,11 @@ fun FabMenuFloatingActionButton(
         expanded = isExpanded,
         button = {
             ToggleFloatingActionButton(
-                modifier =
-                    Modifier.semantics {
-                        traversalIndex = -1f
-                        stateDescription = if (isExpanded) "Expanded" else "Collapsed"
-                        contentDescription = "Toggle menu"
-                    },
+                modifier = modifier.semantics {
+                    traversalIndex = -1f
+                    stateDescription = if (isExpanded) "Expanded" else "Collapsed"
+                    contentDescription = "Toggle menu"
+                },
                 checked = isExpanded,
                 onCheckedChange = { isExpanded = !isExpanded },
                 containerColor = ToggleFloatingActionButtonDefaults.containerColor(
@@ -77,7 +77,7 @@ fun FabMenuFloatingActionButton(
     ) {
         FloatingActionButtonMenuItem(
             onClick = {
-                action2.onClick()
+                onDeleteAllClick.onClick()
                 isExpanded = false
             },
             text = { Text("Delete all", style = MaterialTheme.typography.labelMedium) },
@@ -90,7 +90,7 @@ fun FabMenuFloatingActionButton(
         )
         FloatingActionButtonMenuItem(
             onClick = {
-                onFabClick?.invoke()
+                onAddListClick?.invoke()
                 isExpanded = false
             },
             text = {

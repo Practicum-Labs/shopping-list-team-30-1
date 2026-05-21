@@ -7,11 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
+import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
-import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListsScaffold
-import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListsScaffoldSearch
-import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarAction
+import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
@@ -21,10 +21,17 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.CreateListDia
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteAllListsDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.RenameListDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold.ShoppingListsScaffold
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold.ShoppingListsScaffoldSearch
 import io.dimasla4ee.shoppinglist.utils.OrientationProvider
 import io.dimasla4ee.shoppinglist.utils.ScreenOrientation
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.ic_delete_list_24
+import shoppinglist.composeapp.generated.resources.ic_search_24
+import shoppinglist.composeapp.generated.resources.ic_system_theme_24
+import shoppinglist.composeapp.generated.resources.ic_theme_24
+import shoppinglist.composeapp.generated.resources.ic_theme_light_24
 import shoppinglist.composeapp.generated.resources.screen_title
 
 @Composable
@@ -114,20 +121,27 @@ fun ShoppingListsScreen(
             ShoppingListsScaffold(
                 modifier = modifier,
                 title = stringResource(Res.string.screen_title),
-                action1 = TopBarAction(
-                    contentDescription = "Search",
+                onSearchClick = ActionItem(
+                    iconRes = Res.drawable.ic_search_24,
+                    label = "Search",
                     onClick = { onIntent(ShoppingListsIntent.SearchClick) }
                 ),
-                action2 = TopBarAction(
-                    contentDescription = "Delete",
+                onDeleteAllClick = ActionItem(
+                    iconRes = Res.drawable.ic_delete_list_24,
+                    label = "Delete",
                     onClick = { onIntent(ShoppingListsIntent.DeleteAllClick) }
                 ),
-                action3 = TopBarAction(
-                    contentDescription = "Theme",
+                onThemeSwitch = ActionItem(
+                    iconRes = when (LocalThemeMode.current) {
+                        ThemeMode.SYSTEM -> Res.drawable.ic_system_theme_24
+                        ThemeMode.LIGHT -> Res.drawable.ic_theme_24
+                        ThemeMode.DARK -> Res.drawable.ic_theme_light_24
+                    },
+                    label = "Theme",
                     onClick = onThemeToggle
                 ),
 
-                onFabClick = if (state.isFabVisible) {
+                onAddListClick = if (state.isFabVisible) {
                     { onIntent(ShoppingListsIntent.FabClick) }
                 } else {
                     null

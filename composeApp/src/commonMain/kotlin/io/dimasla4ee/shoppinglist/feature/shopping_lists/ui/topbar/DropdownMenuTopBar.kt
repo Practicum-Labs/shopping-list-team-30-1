@@ -19,8 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
-import io.dimasla4ee.shoppinglist.app.ui.theme.appTopBarColors
-import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarAction
+import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBarDefaults
+import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_delete_24
@@ -31,16 +31,17 @@ import shoppinglist.composeapp.generated.resources.ic_search_24
 @Composable
 fun DropdownMenuTopBar(
     title: String,
-    action1: TopBarAction,
-    action2: TopBarAction,
-    action3: TopBarAction,
-    themeMode: ThemeMode
+    onSearchClick: ActionItem,
+    onDeleteAllClick: ActionItem,
+    onThemeSwitch: ActionItem,
+    themeMode: ThemeMode,
+    modifier: Modifier = Modifier
 ) {
     var menuIsExpanded by remember { mutableStateOf(false) }
 
     TopAppBar(
-        colors = appTopBarColors(),
-        modifier = Modifier.padding(end = AppDimensions.paddingVerySmall),
+        colors = AppTopBarDefaults.shoppingListsTopBarColors(),
+        modifier = modifier.padding(end = AppDimensions.paddingVerySmall),
         title = {
             Text(
                 text = title,
@@ -48,10 +49,10 @@ fun DropdownMenuTopBar(
             )
         },
         actions = {
-            IconButton(onClick = action1.onClick) {
+            IconButton(onClick = onSearchClick.onClick) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_search_24),
-                    contentDescription = action1.contentDescription,
+                    contentDescription = onSearchClick.label,
                     tint = MaterialTheme.colorScheme.onTertiary
                 )
             }
@@ -79,7 +80,7 @@ fun DropdownMenuTopBar(
                     },
                     onClick = {
                         menuIsExpanded = false
-                        action2.onClick()
+                        onDeleteAllClick.onClick()
                     }
                 )
                 HorizontalDivider()
@@ -95,7 +96,7 @@ fun DropdownMenuTopBar(
                         },
                         onClick = {
                             menuIsExpanded = false
-                            action3.onClick
+                            onThemeSwitch.onClick
                         }
                     )
                 }

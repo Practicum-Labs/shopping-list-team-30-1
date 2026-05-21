@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.core.presentation.components
+package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
-import io.dimasla4ee.shoppinglist.app.ui.theme.appTopBarColors
+import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBarDefaults
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -65,7 +65,7 @@ fun ShoppingListsScaffoldSearch(
         topBar = {
 
             TopAppBar(
-                colors = appTopBarColors(),
+                colors = AppTopBarDefaults.shoppingListsTopBarColors(),
 
                 navigationIcon = {
                     IconButton(

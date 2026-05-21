@@ -14,13 +14,14 @@ import shoppinglist.composeapp.generated.resources.ic_fab_24
 
 @Composable
 fun FigmaFloatingActionButton(
-    onFabClick: (() -> Unit)?
+    onAddListClick: (() -> Unit)?,
+    modifier: Modifier = Modifier
 ) {
-    if (onFabClick != null) {
+    if (onAddListClick != null) {
         FloatingActionButton(
-            modifier = Modifier.offset(y = (-AppDimensions.paddingMedium)),
+            modifier = modifier.offset(y = (-AppDimensions.paddingMedium)),
             shape = RoundedCornerShape(AppDimensions.paddingMedium),
-            onClick = onFabClick,
+            onClick = onAddListClick,
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
         ) {
