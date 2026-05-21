@@ -5,6 +5,8 @@ import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListsState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -68,6 +70,13 @@ class ShoppingListsViewModel(
 
         ShoppingListsIntent.SheetDismiss -> {
             reduceSheetDismiss(current)
+        }
+
+        is ShoppingListsIntent.LogoutClick -> {
+            current.copy(
+                isAuthorized = false,
+                dialog = ShoppingListDialog.None
+            )
         }
 
         else -> current
@@ -244,7 +253,7 @@ class ShoppingListsViewModel(
             is ShoppingListsIntent.AuthorizationClicked -> {
                 val currentState = state.value
                 when (currentState.isAuthorized) {
-                    true -> updateState { it.copy(isAuthorized = false) }
+                    true -> updateState { it.copy(dialog = ShoppingListDialog.Logout) }
                     false -> emitEffect(ShoppingListsEffect.NavigateToAuthorization)
                 }
             }
@@ -363,15 +372,13 @@ class ShoppingListsViewModel(
         )
     }
 
-    private suspend fun observeLists() {
+    private fun observeLists() {
         if (observeJob != null) return
 
         observeJob = launchCollectJob()
     }
 
-    private fun launchCollectJob() = kotlinx.coroutines.CoroutineScope(
-        kotlinx.coroutines.Dispatchers.Main
-    ).launch {
+    private fun launchCollectJob() = CoroutineScope(Dispatchers.Main).launch {
         interactor.getShoppingLists().collectLatest { list ->
             updateState {
                 it.copy(

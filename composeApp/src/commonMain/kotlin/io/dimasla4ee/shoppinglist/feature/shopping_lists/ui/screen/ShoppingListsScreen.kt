@@ -14,12 +14,15 @@ import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent.NameChanged
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent.RenameValueChanged
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListsState
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.bottom_sheet.IconPickerBottomSheet
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.CreateListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteAllListsDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteListDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.LogoutDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.RenameListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold.ShoppingListsScaffold
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold.ShoppingListsScaffoldSearch
@@ -28,6 +31,8 @@ import io.dimasla4ee.shoppinglist.utils.ScreenOrientation
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_delete_list_24
+import shoppinglist.composeapp.generated.resources.ic_login_24
+import shoppinglist.composeapp.generated.resources.ic_logout_24
 import shoppinglist.composeapp.generated.resources.ic_search_24
 import shoppinglist.composeapp.generated.resources.ic_system_theme_24
 import shoppinglist.composeapp.generated.resources.ic_theme_24
@@ -140,7 +145,14 @@ fun ShoppingListsScreen(
                     label = "Theme",
                     onClick = onThemeToggle
                 ),
-
+                onAuthorizationClick = ActionItem(
+                    iconRes = when (state.isAuthorized) {
+                        true -> Res.drawable.ic_logout_24
+                        false -> Res.drawable.ic_login_24
+                    },
+                    label = "Authorization",
+                    onClick = { onIntent(ShoppingListsIntent.AuthorizationClicked) }
+                ),
                 onAddListClick = if (state.isFabVisible) {
                     { onIntent(ShoppingListsIntent.FabClick) }
                 } else {
@@ -210,7 +222,7 @@ fun ShoppingListsScreen(
             ShoppingListDialog.Create -> {
                 CreateListDialog(
                     name = state.newListName,
-                    onNameChange = { onIntent(ShoppingListsIntent.NameChanged(it)) },
+                    onNameChange = { onIntent(NameChanged(it)) },
                     onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
                     onConfirm = { onIntent(ShoppingListsIntent.CreateList) }
                 )
@@ -219,7 +231,7 @@ fun ShoppingListsScreen(
             is ShoppingListDialog.Rename -> {
                 RenameListDialog(
                     newName = state.renameValue,
-                    onRenameChange = { onIntent(ShoppingListsIntent.RenameValueChanged(it)) },
+                    onRenameChange = { onIntent(RenameValueChanged(it)) },
                     onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
                     onConfirm = { onIntent(ShoppingListsIntent.RenameConfirm) }
                 )
@@ -238,6 +250,12 @@ fun ShoppingListsScreen(
                     onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
                     onConfirm = { onIntent(ShoppingListsIntent.DeleteAllConfirm) }
                 )
+            }
+
+            ShoppingListDialog.Logout -> {
+                LogoutDialog(
+                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                    onConfirm = { onIntent(ShoppingListsIntent.LogoutClick) })
             }
         }
     }

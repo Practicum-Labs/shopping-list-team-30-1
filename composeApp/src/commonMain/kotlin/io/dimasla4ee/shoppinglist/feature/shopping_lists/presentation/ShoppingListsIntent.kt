@@ -19,11 +19,11 @@ sealed interface ShoppingListsIntent : MviIntent {
 
     data object DeleteAllClick : ShoppingListsIntent
 
-    data object DeleteAllConfirm: ShoppingListsIntent
+    data object DeleteAllConfirm : ShoppingListsIntent
 
-    data object SearchClick: ShoppingListsIntent
+    data object SearchClick : ShoppingListsIntent
 
-    data object SearchDismiss: ShoppingListsIntent
+    data object SearchDismiss : ShoppingListsIntent
 
     data class SearchQueryChanged(
         val value: String
@@ -63,5 +63,6 @@ sealed interface ShoppingListsIntent : MviIntent {
         val item: ShoppingListItem
     ) : ShoppingListsIntent
 
-    data object AuthorizationClicked: ShoppingListsIntent
+    data object AuthorizationClicked : ShoppingListsIntent
+    data object LogoutClick : ShoppingListsIntent
 }

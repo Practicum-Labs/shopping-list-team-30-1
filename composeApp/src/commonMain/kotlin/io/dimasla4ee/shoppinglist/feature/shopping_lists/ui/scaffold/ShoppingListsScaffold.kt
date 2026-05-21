@@ -30,6 +30,7 @@ fun ShoppingListsScaffold(
     onSearchClick: ActionItem,
     onDeleteAllClick: ActionItem,
     onThemeSwitch: ActionItem,
+    onAuthorizationClick: ActionItem,
     onAddListClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit
@@ -44,13 +45,15 @@ fun ShoppingListsScaffold(
                     title = title,
                     onSearchClick = onSearchClick,
                     onDeleteAllClick = onDeleteAllClick,
-                    onThemeSwitch = onThemeSwitch
+                    onThemeSwitch = onThemeSwitch,
+                    onAuthorizationClick = onAuthorizationClick
                 )
 
                 ScreenVariant.FAB_MENU -> FigmaTopBar(
                     title = title,
                     onSearchClick = onSearchClick,
-                    onThemeSwitch = onThemeSwitch
+                    onThemeSwitch = onThemeSwitch,
+                    onAuthorizationClick = onAuthorizationClick
                 )
 
                 ScreenVariant.DROPDOWN_MENU -> DropdownMenuTopBar(
@@ -58,6 +61,7 @@ fun ShoppingListsScaffold(
                     onSearchClick = onSearchClick,
                     onDeleteAllClick = onDeleteAllClick,
                     onThemeSwitch = onThemeSwitch,
+                    onAuthorizationClick = onAuthorizationClick,
                     themeMode = LocalThemeMode.current
                 )
             }
