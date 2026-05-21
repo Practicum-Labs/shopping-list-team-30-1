@@ -48,9 +48,10 @@ fun AddProductBottomSheet(
     onIncreaseClick: () -> Unit,
     onDecreaseClick: () -> Unit,
     onFabClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(AppDimensions.paddingSmallPlus)
     ) {
