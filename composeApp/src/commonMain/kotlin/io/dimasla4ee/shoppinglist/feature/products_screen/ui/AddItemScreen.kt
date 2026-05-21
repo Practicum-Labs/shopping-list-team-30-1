@@ -78,23 +78,7 @@ fun AddItemScreen(
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null
 ) {
-    val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-
     val sheetState = rememberModalBottomSheetState()
-
-    var sheetHeight by remember { mutableIntStateOf(0) }
-
-    val density = LocalDensity.current
-
-    val fabBottomPadding by animateDpAsState(
-        targetValue = if (state.isBottomSheetOpen) {
-            with(density) {
-                sheetHeight.toDp() + AppDimensions.paddingExtraBig - bottomPadding
-            }
-        } else {
-            AppDimensions.paddingExtraBig
-        }
-    )
 
     val hapticFeedback = LocalHapticFeedback.current
     val lazyListState = rememberLazyListState()
@@ -183,34 +167,13 @@ fun AddItemScreen(
             }
         }
 
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            // Затемнение
-            AnimatedVisibility(
-                visible = state.isBottomSheetOpen,
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.32f))
-                        .clickable { onIntent(ProductsIntent.ToggleBottomSheet) }
-                )
-            }
-
             // Bottom Sheet
             if (state.isBottomSheetOpen) {
                 ModalBottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppDimensions.paddingVerySmall)
-                        .onGloballyPositioned { coordinates ->
-                            sheetHeight = coordinates.size.height
-                        },
+                        .navigationBarsPadding()
+                        .padding(horizontal = AppDimensions.paddingVerySmall),
                     onDismissRequest = { onIntent(ProductsIntent.ToggleBottomSheet) },
                     sheetState = sheetState,
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -238,37 +201,27 @@ fun AddItemScreen(
                         onCountChange = { onIntent(ProductsIntent.ChangeCount(it)) },
                         onUnitChange = { onIntent(ProductsIntent.ChangeUnit(it)) },
                         onIncreaseClick = { onIntent(ProductsIntent.IncreaseCount) },
-                        onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) }
+                        onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) },
+                        onFabClick = { onIntent(ProductsIntent.AddItem) }
                     )
                 }
             }
 
             // FAB
-            FloatingActionButton(
-                onClick = {
-                    if (state.isBottomSheetOpen) {
-                        onIntent(ProductsIntent.AddItem)
-                    } else {
-                        onIntent(ProductsIntent.ToggleBottomSheet)
-                    }
-                },
+            AppFloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .imePadding()
-                    .padding(end = AppDimensions.paddingMedium, bottom = fabBottomPadding),
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(
-                    painter = painterResource(
-                        if (state.isBottomSheetOpen) {
-                            Res.drawable.ic_fab_check_56
-                        } else {
-                            Res.drawable.ic_add_56
-                        }
-                    ),
-                    contentDescription = null
-                )
-            }
+                    .padding(end = AppDimensions.paddingMedium, bottom = AppDimensions.paddingExtraBig),
+                onClick = { onIntent(ProductsIntent.ToggleBottomSheet) },
+                iconRes = painterResource(Res.drawable.ic_add_56)
+            )
+
+            SortModeIndicator(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                sortMode = state.sortMode,
+                onToggle = { onIntent(ProductsIntent.ToggleSortMode) }
+            )
+
         }
     }
 }

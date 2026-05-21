@@ -1,8 +1,10 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -26,6 +28,7 @@ fun AddItemRoute(
         state = state,
         onIntent = { viewModel.dispatch(it) },
         onMenuClick = onMenuClick,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        modifier = Modifier.fillMaxSize()
     )
 }
