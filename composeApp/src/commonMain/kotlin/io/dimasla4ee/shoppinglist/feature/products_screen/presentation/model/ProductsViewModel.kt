@@ -119,6 +119,7 @@ class ProductsViewModel(
 
             is ProductsIntent.EditProduct -> {
                 current.copy(
+                    id = intent.product.id,
                     isBottomSheetOpen = !current.isBottomSheetOpen,
                     name = intent.product.name,
                     amount = intent.product.amount.toString(),
@@ -132,89 +133,47 @@ class ProductsViewModel(
             ProductsIntent.DeleteCheckedProducts,
             ProductsIntent.DeleteAllProducts,
             ProductsIntent.AddItem,
-            is ProductsIntent.ToggleItemChecked,
-            ProductsIntent.ConfirmDeleteAll,
-            ProductsIntent.ConfirmDeleteChecked -> current
+            is ProductsIntent.ToggleItemChecked -> current
         }
     }
 
     override suspend fun handleIntent(intent: ProductsIntent) {
         when (intent) {
-
-            ProductsIntent.AddItem -> {
-                handleAddItem()
-            }
-
-            ProductsIntent.DeleteAllProducts -> {
-                updateState {
-                    it.copy(
-                        items = emptyList(),
-                        isMenuBottomSheetOpen = false
-                    )
-                }
-            }
-
-            is ProductsIntent.ChangeSortMode -> {
-                setSortModeUseCase(listId, intent.mode)
-            }
-
-            ProductsIntent.DeleteCheckedProducts -> {
-                updateState { current ->
-                    current.copy(
-                        items = current.items.filter { item ->
-                            !item.isChecked
-                        },
-                        isMenuBottomSheetOpen = false
-                    )
-                }
-            }
-
-            is ProductsIntent.ToggleItemChecked -> {
-                handleToggleChecked(intent.product)
-            }
-
-            ProductsIntent.ToggleSortMode -> {
-                handleToggleSortMode()
-            }
-
-            ProductsIntent.ConfirmDeleteAll -> {
-                handleDeleteAll()
-            }
-
-            ProductsIntent.ConfirmDeleteChecked -> {
-                handleDeleteChecked()
-            }
-
+            ProductsIntent.AddItem -> handleAddItem()
+            ProductsIntent.DeleteAllProducts -> handleDeleteAll()
+            is ProductsIntent.ChangeSortMode -> setSortModeUseCase(listId, intent.mode)
+            ProductsIntent.DeleteCheckedProducts -> handleDeleteChecked()
+            is ProductsIntent.ToggleItemChecked -> handleToggleChecked(intent.product)
+            ProductsIntent.ToggleSortMode -> handleToggleSortMode()
             is ProductsIntent.ReorderProduct -> Unit
-
-            ProductsIntent.CommitReorder -> {
-                handleCommitReorder()
-            }
-
+            ProductsIntent.CommitReorder -> handleCommitReorder()
             else -> Unit
         }
     }
 
     private suspend fun handleAddItem() {
         val currentState = state.value
+
         if (currentState.name.isBlank()) return
         productInteractor.addProduct(
             Product(
-                id = 0,
+                id = currentState.id ?: System.currentTimeMillis(),
                 listId = listId,
                 name = currentState.name.trim(),
                 amount = currentState.amount.toFloatOrNull() ?: 0f,
                 unit = currentState.unit,
                 isChecked = false,
-                position = currentState.items.size
+                position = currentState.position ?: currentState.items.size
             )
         )
 
         updateState {
             it.copy(
+                id = null,
                 name = "",
                 amount = "",
                 unit = MeasurementUnit.PIECE,
+                position = null,
                 isBottomSheetOpen = false
             )
         }
@@ -250,19 +209,19 @@ class ProductsViewModel(
 
         updateState {
             it.copy(
-                dialog = ProductDialog.None
+                dialog = ProductDialog.None,
+                isMenuBottomSheetOpen = false
             )
         }
     }
 
     private suspend fun handleDeleteChecked() {
-        productInteractor.deleteCheckedProducts(
-            listId
-        )
+        productInteractor.deleteCheckedProducts(listId)
 
         updateState {
             it.copy(
-                dialog = ProductDialog.None
+                dialog = ProductDialog.None,
+                isMenuBottomSheetOpen = false
             )
         }
     }

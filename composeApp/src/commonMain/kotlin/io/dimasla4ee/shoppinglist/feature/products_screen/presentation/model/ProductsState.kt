@@ -7,8 +7,10 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.state.ProductDialog
 
 data class ProductsState(
+    val id: Long? = null,
     val name: String = "",
     val amount: String = "",
+    val position: Int? = null,
     val unit: MeasurementUnit? = null,
     val items: List<Product> = emptyList(),
     val sortMode: SortMode = SortMode.CUSTOM,

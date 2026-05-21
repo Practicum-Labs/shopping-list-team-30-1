@@ -22,6 +22,7 @@ sealed interface ProductsIntent : MviIntent {
         val fromIndex: Int,
         val toIndex: Int
     ) : ProductsIntent
+
     data object CommitReorder : ProductsIntent
 
     data object ToggleSortMode : ProductsIntent
@@ -31,10 +32,6 @@ sealed interface ProductsIntent : MviIntent {
     data object ShowDeleteCheckedDialog : ProductsIntent
 
     data object DismissDialog : ProductsIntent
-
-    data object ConfirmDeleteAll : ProductsIntent
-
-    data object ConfirmDeleteChecked : ProductsIntent
 
     data object ToggleMenuBottomSheet : ProductsIntent
     data object DeleteAllProducts : ProductsIntent
