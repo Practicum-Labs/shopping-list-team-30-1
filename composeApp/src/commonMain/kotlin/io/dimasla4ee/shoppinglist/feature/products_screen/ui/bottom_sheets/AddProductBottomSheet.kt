@@ -1,16 +1,12 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -19,13 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
-import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppColors
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import org.jetbrains.compose.resources.stringResource
@@ -57,16 +51,6 @@ fun AddProductBottomSheet(
             .fillMaxWidth()
             .padding(AppDimensions.paddingMedium)
     ) {
-        Box(
-            modifier = Modifier
-                .size(AppDimensions.BottomSheet.handlerSize)
-                .clip(RoundedCornerShape(AppDimensions.BottomSheet.handlerCornerRadius))
-                .background(LocalAppColors.current.bottomSheetHandle)
-                .align(Alignment.CenterHorizontally)
-        )
-
-        Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
-
         OutlinedTextField(
             value = name,
             onValueChange = onNameChange,
