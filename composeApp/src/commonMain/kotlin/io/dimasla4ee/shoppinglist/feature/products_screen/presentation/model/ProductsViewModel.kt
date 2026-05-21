@@ -101,15 +101,14 @@ class ProductsViewModel(
                 if (current.sortMode != SortMode.CUSTOM) return current
 
                 val items = current.items.toMutableList()
-                items.removeAt(intent.fromIndex).let { movedItem ->
-                    items.add(intent.toIndex, movedItem)
-                }
+                val moved = items.removeAt(intent.fromIndex)
+                items.add(intent.toIndex, moved)
 
-                val reordered = items.mapIndexed { index, product ->
-                    product.copy(position = index)
-                }
-
-                current.copy(items = reordered)
+                current.copy(
+                    items = items.mapIndexed { index, product ->
+                        product.copy(position = index)
+                    }
+                )
             }
 
             ProductsIntent.ToggleMenuBottomSheet -> {
@@ -127,6 +126,7 @@ class ProductsViewModel(
                 )
             }
 
+            ProductsIntent.CommitReorder,
             ProductsIntent.ToggleSortMode,
             is ProductsIntent.ChangeSortMode,
             ProductsIntent.DeleteCheckedProducts,
@@ -134,8 +134,7 @@ class ProductsViewModel(
             ProductsIntent.AddItem,
             is ProductsIntent.ToggleItemChecked,
             ProductsIntent.ConfirmDeleteAll,
-            ProductsIntent.ConfirmDeleteChecked,
-            is ProductsIntent.ReorderProduct -> current
+            ProductsIntent.ConfirmDeleteChecked -> current
         }
     }
 
@@ -186,8 +185,10 @@ class ProductsViewModel(
                 handleDeleteChecked()
             }
 
-            is ProductsIntent.ReorderProduct -> {
-                handleReorder(intent)
+            is ProductsIntent.ReorderProduct -> Unit
+
+            ProductsIntent.CommitReorder -> {
+                handleCommitReorder()
             }
 
             else -> Unit
@@ -266,27 +267,11 @@ class ProductsViewModel(
         }
     }
 
-    private suspend fun handleReorder(
-        intent: ProductsIntent.ReorderProduct
-    ) {
-        if (state.value.sortMode != SortMode.CUSTOM) {
-            return
-        }
-
-        val currentItems =
-            state.value.items.toMutableList()
-        val movedItem =
-            currentItems.removeAt(intent.fromIndex)
-        currentItems.add(
-            intent.toIndex,
-            movedItem
-        )
-
-        currentItems.forEachIndexed { index, product ->
+    private suspend fun handleCommitReorder() {
+        val items = state.value.items
+        items.forEachIndexed { index, product ->
             productInteractor.updateProduct(
-                product.copy(
-                    position = index
-                )
+                product.copy(position = index)
             )
         }
     }

@@ -22,6 +22,7 @@ sealed interface ProductsIntent : MviIntent {
         val fromIndex: Int,
         val toIndex: Int
     ) : ProductsIntent
+    data object CommitReorder : ProductsIntent
 
     data object ToggleSortMode : ProductsIntent
 
