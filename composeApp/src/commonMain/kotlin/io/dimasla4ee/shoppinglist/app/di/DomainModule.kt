@@ -12,6 +12,8 @@ import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.RemoveSortModeU
 import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.SetSortModeUseCase
 import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractor
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractorImpl
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractorImpl
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsRepository
@@ -75,6 +77,12 @@ val domainModule = module {
     factoryOf(::SetSortModeUseCase)
     factoryOf(::GetSortModeUseCase)
     factoryOf(::RemoveSortModeUseCase)
+
+    single<ProductInteractor> {
+        ProductInteractorImpl(
+            repository = get()
+        )
+    }
 }
 
 /**

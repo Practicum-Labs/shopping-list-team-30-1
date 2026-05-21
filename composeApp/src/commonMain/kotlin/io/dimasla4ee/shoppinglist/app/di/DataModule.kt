@@ -12,6 +12,8 @@ import io.dimasla4ee.shoppinglist.core.data.repository.TokenStorageImpl
 import io.dimasla4ee.shoppinglist.core.database.dao.ShoppingListDao
 import io.dimasla4ee.shoppinglist.core.database.db.ShoppingListDatabase
 import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
+import io.dimasla4ee.shoppinglist.feature.products_screen.data.ProductRepositoryImpl
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductRepository
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
 import io.dimasla4ee.shoppinglist.core.domain.storage.TokenStorage
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.data.ShoppingListsRepositoryImpl
@@ -91,6 +93,14 @@ val dataModule = module {
 
     singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
     singleOf(::TokenStorageImpl) bind TokenStorage::class
+
+    single<ProductRepository> {
+        ProductRepositoryImpl(
+            dao = get()
+        )
+    }
+
+
 }
 
 /**
