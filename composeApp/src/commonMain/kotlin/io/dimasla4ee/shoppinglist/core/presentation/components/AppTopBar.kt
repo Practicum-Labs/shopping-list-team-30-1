@@ -30,7 +30,7 @@ fun AppTopBar(
     navigationIcon: (@Composable (() -> Unit))? = null,
     actions: List<TopBarIcon> = emptyList(),
 
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
     TopAppBar(
