@@ -17,8 +17,8 @@ fun AddItemRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.getSortMode(listId)
+    LaunchedEffect(listId) {
+        viewModel.init(listId)
     }
 
     AddItemScreen(

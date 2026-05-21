@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import io.dimasla4ee.shoppinglist.core.database.entity.ProductEntity
 import io.dimasla4ee.shoppinglist.core.database.entity.ShoppingListEntity
 import kotlinx.coroutines.flow.Flow
@@ -35,4 +36,14 @@ interface ShoppingListDao {
 
     @Query("DELETE FROM ShoppingListEntity")
     suspend fun deleteAllShoppingLists()
+
+    @Update
+    suspend fun updateProduct(productEntity: ProductEntity)
+
+    @Query("DELETE FROM ProductEntity WHERE listId = :listId")
+    suspend fun deleteAllProductsOfList(listId: Long)
+
+    @Query("DELETE FROM ProductEntity WHERE listId = :listId AND isChecked = 1")
+    suspend fun deleteCheckedProducts(listId: Long)
+
 }

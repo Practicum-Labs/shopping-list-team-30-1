@@ -75,8 +75,9 @@ private fun ShoppingListItemPreview() {
         ShoppingListItem(
             item = Product(
                 id = 1L,
+                listId = 1,
                 name = "Колбасевич",
-                amount = "1",
+                amount = 1f,
                 unit = MeasurementUnit.KILOGRAM,
                 isChecked = false,
                 position = 0
@@ -94,8 +95,9 @@ private fun ShoppingListItemCheckedPreview() {
         ShoppingListItem(
             item = Product(
                 id = 1L,
+                listId = 1,
                 name = "Хлеб",
-                amount = "2",
+                amount = 2f,
                 unit = MeasurementUnit.PIECE,
                 isChecked = true,
                 position = 0
