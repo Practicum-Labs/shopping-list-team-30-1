@@ -169,5 +169,4 @@ fun entryProvider(
             modifier = Modifier.fillMaxSize()
         )
     }
-
 }
