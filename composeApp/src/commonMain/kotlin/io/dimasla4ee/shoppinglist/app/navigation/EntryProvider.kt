@@ -7,6 +7,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
+import io.dimasla4ee.shoppinglist.app.navigation.Route.Authorization
+import io.dimasla4ee.shoppinglist.app.navigation.Route.PasswordRecovery
+import io.dimasla4ee.shoppinglist.app.navigation.Route.ProductsList
+import io.dimasla4ee.shoppinglist.app.navigation.Route.Registration
+import io.dimasla4ee.shoppinglist.app.navigation.Route.ShoppingLists
+import io.dimasla4ee.shoppinglist.app.navigation.Route.Welcome
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordEffect
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordViewModel
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterEffect
@@ -21,6 +27,8 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
+import io.dimasla4ee.shoppinglist.feature.welcome_screen.presentation.WelcomeEffect
+import io.dimasla4ee.shoppinglist.feature.welcome_screen.presentation.WelcomeViewModel
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
@@ -29,14 +37,14 @@ fun entryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>,
     onThemeToggle: () -> Unit,
 ) = entryProvider<NavKey> {
-    entry<Route.Welcome> {
+    entry<Welcome> {
         WelcomeScreen(
-            onGoToShopping = { topLevelBackStack.add(Route.Authorization) },
+            onGoToShopping = { topLevelBackStack.add(Authorization) },
             modifier = Modifier.fillMaxSize()
         )
     }
 
-    entry<Route.ShoppingLists> {
+    entry<ShoppingLists> {
         val viewModel: ShoppingListsViewModel = koinViewModel()
 
         val state by viewModel.state.collectAsState()
@@ -53,11 +61,15 @@ fun entryProvider(
                 when (effect) {
                     is ShoppingListsEffect.NavigateToProducts -> {
                         topLevelBackStack.add(
-                            Route.ProductsList(
+                            ProductsList(
                                 listId = effect.listId,
                                 listName = effect.listName
                             )
                         )
+                    }
+
+                    is ShoppingListsEffect.NavigateToAuthorization -> {
+                        topLevelBackStack.replaceStack(Authorization)
                     }
                 }
             }
@@ -71,7 +83,7 @@ fun entryProvider(
         )
     }
 
-    entry<Route.ProductsList> { route ->
+    entry<ProductsList> { route ->
 
         AddItemRoute(
             listId = route.listId,
@@ -83,7 +95,7 @@ fun entryProvider(
         )
     }
 
-    entry<Route.Authorization> {
+    entry<Authorization> {
         val viewModel = koinViewModel<SignInViewModel>()
         val state by viewModel.state.collectAsState()
 
@@ -91,15 +103,15 @@ fun entryProvider(
             viewModel.effects.collect { effect ->
                 when (effect) {
                     SignInEffect.NavigateToMain -> {
-                        topLevelBackStack.replaceStack(Route.ShoppingLists)
+                        topLevelBackStack.replaceStack(ShoppingLists)
                     }
 
                     SignInEffect.NavigateToRecoverPassword -> {
-                        topLevelBackStack.add(Route.PasswordRecovery)
+                        topLevelBackStack.add(PasswordRecovery)
                     }
 
                     SignInEffect.NavigateToRegister -> {
-                        topLevelBackStack.add(Route.Registration)
+                        topLevelBackStack.add(Registration)
                     }
                 }
             }
@@ -112,7 +124,7 @@ fun entryProvider(
         )
     }
 
-    entry<Route.Registration> {
+    entry<Registration> {
         val viewModel = koinViewModel<RegisterViewModel>()
         val state by viewModel.state.collectAsState()
 
@@ -120,7 +132,7 @@ fun entryProvider(
             viewModel.effects.collect { effect ->
                 when (effect) {
                     RegisterEffect.NavigateToMain -> {
-                        topLevelBackStack.replaceStack(Route.ShoppingLists)
+                        topLevelBackStack.replaceStack(ShoppingLists)
                     }
 
                     RegisterEffect.NavigateToSignIn -> {
@@ -137,7 +149,7 @@ fun entryProvider(
         )
     }
 
-    entry<Route.PasswordRecovery> {
+    entry<PasswordRecovery> {
         val viewModel = koinViewModel<RecoverPasswordViewModel>()
         val state by viewModel.state.collectAsState()
 

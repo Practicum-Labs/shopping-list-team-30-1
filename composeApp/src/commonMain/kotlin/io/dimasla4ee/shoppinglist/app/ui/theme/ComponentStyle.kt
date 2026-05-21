@@ -8,7 +8,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -51,11 +50,6 @@ fun dialogTextFieldColors() = TextFieldDefaults.colors(
     unfocusedIndicatorColor = MaterialTheme.colorScheme.secondary,
     // текст
     focusedTextColor = MaterialTheme.colorScheme.onSecondary
-)
-
-@Composable
-fun appTopBarColors() = TopAppBarDefaults.topAppBarColors(
-    containerColor = Color.Transparent
 )
 
 @Composable

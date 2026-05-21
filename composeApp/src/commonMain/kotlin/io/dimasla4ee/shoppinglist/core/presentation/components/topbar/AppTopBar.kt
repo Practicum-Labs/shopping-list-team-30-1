@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.core.presentation.components
+package io.dimasla4ee.shoppinglist.core.presentation.components.topbar
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -6,13 +6,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import org.jetbrains.compose.resources.DrawableResource
+import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
@@ -28,8 +28,8 @@ fun AppTopBar(
     title: String,
     modifier: Modifier = Modifier,
     navigationIcon: (@Composable (() -> Unit))? = null,
-    actions: List<TopBarIcon> = emptyList(),
-
+    actions: List<ActionItem> = emptyList(),
+    colors: TopAppBarColors = AppTopBarDefaults.productsTopBarColors(),
     containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
@@ -39,23 +39,21 @@ fun AppTopBar(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                color = contentColor) },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = containerColor
-        ),
-
-        navigationIcon = {
-            navigationIcon?.invoke()
+                color = contentColor
+            )
         },
-
+        colors = colors,
+        navigationIcon = { navigationIcon?.invoke() },
         actions = {
             actions.forEach { action ->
-                IconButton(onClick = action.onClick) {
-                    Icon(
-                        painter = painterResource(action.icon),
-                        contentDescription = action.contentDescription,
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
+                if (action.iconRes != null) {
+                    IconButton(onClick = action.onClick) {
+                        Icon(
+                            painter = painterResource(action.iconRes),
+                            contentDescription = action.label,
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
                 }
             }
         }
@@ -78,9 +76,9 @@ private fun AppTopBarPreview() {
                 }
             },
             actions = listOf(
-                TopBarIcon(
-                    icon = Res.drawable.ic_menu_24,
-                    contentDescription = "Menu",
+                ActionItem(
+                    iconRes = Res.drawable.ic_menu_24,
+                    label = "Menu",
                     onClick = {}
                 )
             )
@@ -95,16 +93,10 @@ private fun IvanTopBar() {
         AppTopBar(
             title = "Мои списки",
             actions = listOf(
-                TopBarIcon(Res.drawable.ic_library_add_check_24, "Search") {},
-                TopBarIcon(Res.drawable.ic_remove_circle_24, "Sort") {},
-                TopBarIcon(Res.drawable.ic_cancel_circle_24, "Menu") {}
+                ActionItem(Res.drawable.ic_library_add_check_24, "Search") {},
+                ActionItem(Res.drawable.ic_remove_circle_24, "Sort") {},
+                ActionItem(Res.drawable.ic_cancel_circle_24, "Menu") {}
             )
         )
     }
 }
-
-data class TopBarIcon(
-    val icon: DrawableResource,
-    val contentDescription: String? = null,
-    val onClick: () -> Unit
-)
