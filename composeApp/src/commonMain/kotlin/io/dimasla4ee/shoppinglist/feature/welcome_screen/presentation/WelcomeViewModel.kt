@@ -7,11 +7,7 @@ import java.lang.System.currentTimeMillis
 
 class WelcomeViewModel (
     private val checkSessionUseCase: CheckSessionUseCase
-) : MviViewModel<
-        WelcomeIntent,
-        WelcomeState,
-        WelcomeEffect
-        >(
+) : MviViewModel<WelcomeIntent, WelcomeState, WelcomeEffect>(
     initialState = WelcomeState()
 ) {
 
@@ -20,9 +16,7 @@ class WelcomeViewModel (
     }
 
     init {
-        dispatch(
-            WelcomeIntent.CheckSession
-        )
+        dispatch(WelcomeIntent.CheckSession)
     }
 
     override fun reduce(intent: WelcomeIntent, current: WelcomeState): WelcomeState = current
@@ -31,9 +25,7 @@ class WelcomeViewModel (
         when (intent) {
             WelcomeIntent.CheckSession -> {
                 val startTime = currentTimeMillis()
-
                 val authorized = checkSessionUseCase()
-
                 val elapsed = currentTimeMillis() - startTime
 
                 if (elapsed < MIN_WELCOME_DURATION) {
@@ -41,10 +33,8 @@ class WelcomeViewModel (
                 }
 
                 if (authorized) {
-
                     emitEffect(WelcomeEffect.NavigateToMain)
                 } else {
-
                     emitEffect(WelcomeEffect.NavigateToAuth)
                 }
             }

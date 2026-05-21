@@ -11,11 +11,9 @@ class TokenDataSource(
     private val dataStore: DataStore<Preferences>
 ) : TokenStorage {
     companion object {
-        private val ACCESS_TOKEN_KEY =
-            stringPreferencesKey("access_token")
+        private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
 
-        private val REFRESH_TOKEN_KEY =
-            stringPreferencesKey("refresh_token")
+        private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
     }
 
     override suspend fun saveTokens(
