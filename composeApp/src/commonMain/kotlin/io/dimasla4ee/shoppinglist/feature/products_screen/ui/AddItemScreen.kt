@@ -1,20 +1,12 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -48,7 +40,6 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.Pro
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.AddProductBottomSheet
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
-import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.SortSelector
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -86,34 +77,8 @@ fun AddItemScreen(
     }
     val isCustomSort = state.sortMode == SortMode.CUSTOM
 
-    Box(
-        modifier = modifier.fillMaxSize()
-    ) {
-
-        ProductsMenuBottomSheet(
-            visible = state.isMenuBottomSheetOpen,
-            sortMode = state.sortMode,
-            onDismiss = {
-                onIntent(ProductsIntent.ToggleMenuBottomSheet)
-            },
-            onSortClick = {
-                onIntent(ProductsIntent.ToggleSortMode)
-            },
-            onDeleteAllClick = {
-                onIntent(ProductsIntent.DeleteAllProducts)
-            },
-            onDeleteCheckClick = {
-                onIntent(ProductsIntent.DeleteCheckedProducts)
-            }
-        )
-        // Основной контент
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
+    Scaffold(
+        topBar = {
             AppTopBar(
                 title = listName,
                 navigationIcon = {
@@ -134,9 +99,34 @@ fun AddItemScreen(
                     )
                 )
             )
+        }
+    ) { paddingValues ->
 
-            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
-                val isPlaceholderVisible = state.items.isEmpty() && !state.isBottomSheetOpen
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            ProductsMenuBottomSheet(
+                visible = state.isMenuBottomSheetOpen,
+                sortMode = state.sortMode,
+                onDismiss = {
+                    onIntent(ProductsIntent.ToggleMenuBottomSheet)
+                },
+                onSortClick = {
+                    onIntent(ProductsIntent.ToggleSortMode)
+                },
+                onDeleteAllClick = {
+                    onIntent(ProductsIntent.DeleteAllProducts)
+                },
+                onDeleteCheckClick = {
+                    onIntent(ProductsIntent.DeleteCheckedProducts)
+                }
+            )
+
+            // Основной контент
+            val isPlaceholderVisible = state.items.isEmpty() && !state.isBottomSheetOpen
 
             when (isPlaceholderVisible) {
                 true -> ItemListPlaceholder(Modifier.fillMaxSize())
@@ -158,7 +148,6 @@ fun AddItemScreen(
                     }
                 }
             }
-        }
 
             // Bottom Sheet
             if (state.isBottomSheetOpen) {
@@ -204,7 +193,10 @@ fun AddItemScreen(
             AppFloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(end = AppDimensions.paddingMedium, bottom = AppDimensions.paddingExtraBig),
+                    .padding(
+                        end = AppDimensions.paddingMedium,
+                        bottom = AppDimensions.paddingExtraBig
+                    ),
                 onClick = { onIntent(ProductsIntent.ToggleBottomSheet) },
                 iconRes = painterResource(Res.drawable.ic_add_56)
             )

@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.core.presentation.components
+package io.dimasla4ee.shoppinglist.core.presentation.components.topbar
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -6,13 +6,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import org.jetbrains.compose.resources.DrawableResource
+import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
