@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.app.data.database
+package io.dimasla4ee.shoppinglist.core.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -7,13 +7,13 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import io.dimasla4ee.shoppinglist.core.domain.storage.TokenStorage
 import kotlinx.coroutines.flow.first
 
-class TokenDataSource(
+class TokenStorageImpl(
     private val dataStore: DataStore<Preferences>
 ) : TokenStorage {
-    companion object {
-        private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
 
-        private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
+    private companion object {
+        val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
+        val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
     }
 
     override suspend fun saveTokens(

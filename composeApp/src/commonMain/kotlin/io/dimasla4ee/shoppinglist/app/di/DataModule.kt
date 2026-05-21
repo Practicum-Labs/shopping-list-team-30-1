@@ -7,9 +7,13 @@ import io.dimasla4ee.shoppinglist.core.data.network.api.AuthApi
 import io.dimasla4ee.shoppinglist.core.data.network.client.KtorfitNetworkClient
 import io.dimasla4ee.shoppinglist.core.data.network.client.NetworkClient
 import io.dimasla4ee.shoppinglist.core.data.repository.AuthRepositoryImpl
+import io.dimasla4ee.shoppinglist.core.data.repository.SettingsRepositoryImpl
+import io.dimasla4ee.shoppinglist.core.data.repository.TokenStorageImpl
 import io.dimasla4ee.shoppinglist.core.database.dao.ShoppingListDao
 import io.dimasla4ee.shoppinglist.core.database.db.ShoppingListDatabase
 import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
+import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
+import io.dimasla4ee.shoppinglist.core.domain.storage.TokenStorage
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.data.ShoppingListsRepositoryImpl
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsRepository
 import io.ktor.client.HttpClient
@@ -18,6 +22,8 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private const val BASE_URL = "https://practicumopbackend-production.up.railway.app/"
@@ -82,6 +88,9 @@ val dataModule = module {
             tokenStorage = get()
         )
     }
+
+    singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
+    singleOf(::TokenStorageImpl) bind TokenStorage::class
 }
 
 /**

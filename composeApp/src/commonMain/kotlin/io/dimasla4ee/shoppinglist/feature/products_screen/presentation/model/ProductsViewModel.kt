@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 class ProductsViewModel(
     val getSortModeUseCase: GetSortModeUseCase,
     val setSortModeUseCase: SetSortModeUseCase
-) : MviViewModel<ProductsIntent, AddProductUiState, ProductsEffect>(
-    initialState = AddProductUiState()
+) : MviViewModel<ProductsIntent, ProductsState, ProductsEffect>(
+    initialState = ProductsState()
 ) {
 
     private var listId: Long = 0
@@ -27,7 +27,7 @@ class ProductsViewModel(
         }
     }
 
-    override fun reduce(intent: ProductsIntent, current: AddProductUiState): AddProductUiState {
+    override fun reduce(intent: ProductsIntent, current: ProductsState): ProductsState {
         return when (intent) {
 
             is ProductsIntent.ChangeName ->
@@ -69,7 +69,16 @@ class ProductsViewModel(
                 current.copy(items = reordered)
             }
 
+            ProductsIntent.ToggleMenuBottomSheet -> {
+                current.copy(
+                    isMenuBottomSheetOpen = !current.isMenuBottomSheetOpen
+                )
+            }
+
             ProductsIntent.ToggleSortMode,
+            is ProductsIntent.ChangeSortMode,
+            ProductsIntent.DeleteCheckedProducts,
+            ProductsIntent.DeleteAllProducts,
             ProductsIntent.AddItem,
             is ProductsIntent.ToggleItemChecked -> current
         }
@@ -99,6 +108,30 @@ class ProductsViewModel(
                         amount = "",
                         unit = MeasurementUnit.PIECE,
                         isBottomSheetOpen = false
+                    )
+                }
+            }
+
+            ProductsIntent.DeleteAllProducts -> {
+                updateState {
+                    it.copy(
+                        items = emptyList(),
+                        isMenuBottomSheetOpen = false
+                    )
+                }
+            }
+
+            is ProductsIntent.ChangeSortMode -> {
+                setSortModeUseCase(listId, intent.mode)
+            }
+
+            ProductsIntent.DeleteCheckedProducts -> {
+                updateState { current ->
+                    current.copy(
+                        items = current.items.filter { item ->
+                            !item.isChecked
+                        },
+                        isMenuBottomSheetOpen = false
                     )
                 }
             }

@@ -111,6 +111,9 @@
     <string name="btm_menu_sorting">Сортировка</string>
     <string name="btm_menu_delete_all">Удалить все</string>
     <string name="btm_menu_clear_purchased_items">Очистить купленные</string>
+    <string name="sort_alphabetical">По алфавиту</string>
+    <string name="sort_custom">Пользовательская</string>
+
 
     <!-- Content description для SearchTopBar -->
     <string name="clear_icon_search_top_bar">Очистить</string>

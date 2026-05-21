@@ -109,6 +109,8 @@
     <string name="btm_menu_sorting">Sort</string>
     <string name="btm_menu_delete_all">Delete all</string>
     <string name="btm_menu_clear_purchased_items">Clear purchased items</string>
+    <string name="sort_alphabetical">Alphabetical</string>
+    <string name="sort_custom">Custom</string>
 
     <!-- Content description для SearchTopBar -->
     <string name="clear_icon_search_top_bar">Clear</string>

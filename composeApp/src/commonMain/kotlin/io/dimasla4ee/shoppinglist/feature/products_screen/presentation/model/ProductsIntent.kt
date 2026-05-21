@@ -3,6 +3,7 @@ package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.mvi.MviIntent
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 
 sealed interface ProductsIntent : MviIntent {
 
@@ -23,4 +24,10 @@ sealed interface ProductsIntent : MviIntent {
     ) : ProductsIntent
 
     data object ToggleSortMode : ProductsIntent
+
+    data object ToggleMenuBottomSheet : ProductsIntent
+    data object DeleteAllProducts : ProductsIntent
+    data object DeleteCheckedProducts : ProductsIntent
+
+    data class ChangeSortMode(val mode: SortMode) : ProductsIntent
 }

@@ -4,11 +4,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import io.dimasla4ee.shoppinglist.core.config.DatabaseConfig
 import io.dimasla4ee.shoppinglist.app.data.dataStore.createDataStore
-import io.dimasla4ee.shoppinglist.app.data.repository.SettingsRepositoryJVM
+import io.dimasla4ee.shoppinglist.core.config.DatabaseConfig
 import io.dimasla4ee.shoppinglist.core.database.db.ShoppingListDatabase
-import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
 import org.koin.dsl.module
 import java.io.File
 
@@ -35,9 +33,4 @@ actual val platformDataModule = module {
             }
         }
     }
-
-    single<SettingsRepository> {
-        SettingsRepositoryJVM(get())
-    }
-
 }

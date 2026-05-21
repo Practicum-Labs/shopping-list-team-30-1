@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.feature.products_screen.ui
+package io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size

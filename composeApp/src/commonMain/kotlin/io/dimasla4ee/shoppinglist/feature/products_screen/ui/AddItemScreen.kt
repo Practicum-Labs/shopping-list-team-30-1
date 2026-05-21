@@ -48,8 +48,11 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
-import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.AddProductUiState
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.AddProductBottomSheet
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.SortSelector
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -69,7 +72,7 @@ private const val BOTTOM_SHEET_HEIGHT_FRACTION = 0.5f
 @Composable
 fun AddItemScreen(
     listName: String,
-    state: AddProductUiState,
+    state: ProductsState,
     onMenuClick: () -> Unit,
     onIntent: (ProductsIntent) -> Unit,
     modifier: Modifier = Modifier,
@@ -104,6 +107,23 @@ fun AddItemScreen(
     Box(
         modifier = modifier.fillMaxSize()
     ) {
+
+        ProductsMenuBottomSheet(
+            visible = state.isMenuBottomSheetOpen,
+            sortMode = state.sortMode,
+            onDismiss = {
+                onIntent(ProductsIntent.ToggleMenuBottomSheet)
+            },
+            onSortClick = {
+                onIntent(ProductsIntent.ToggleSortMode)
+            },
+            onDeleteAllClick = {
+                onIntent(ProductsIntent.DeleteAllProducts)
+            },
+            onDeleteCheckClick = {
+                onIntent(ProductsIntent.DeleteCheckedProducts)
+            }
+        )
         // Основной контент
         Column(
             modifier = Modifier
@@ -137,14 +157,11 @@ fun AddItemScreen(
                         label = stringResource(
                             Res.string.content_menu
                         ),
-                        onClick = onMenuClick
+                        onClick = {
+                            onIntent(ProductsIntent.ToggleMenuBottomSheet)
+                        }
                     )
                 )
-            )
-
-            SortModeIndicator(
-                sortMode = state.sortMode,
-                onToggle = { onIntent(ProductsIntent.ToggleSortMode) }
             )
 
             Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
