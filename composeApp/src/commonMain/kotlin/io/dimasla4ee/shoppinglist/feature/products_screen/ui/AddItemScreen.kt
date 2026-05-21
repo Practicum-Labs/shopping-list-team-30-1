@@ -131,10 +131,11 @@ fun AddItemScreen(
         }
     ) { paddingValues ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            // Основной контент
             val isPlaceholderVisible = state.items.isEmpty() && !state.isBottomSheetOpen
 
             when (isPlaceholderVisible) {
@@ -157,13 +158,7 @@ fun AddItemScreen(
                     }
                 }
             }
-        }
 
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
             // Затемнение
             AnimatedVisibility(
                 visible = state.isBottomSheetOpen,
@@ -181,7 +176,7 @@ fun AddItemScreen(
             // Bottom Sheet
             if (state.isBottomSheetOpen) {
                 ModalBottomSheet(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = AppDimensions.paddingVerySmall)
                         .onGloballyPositioned { coordinates ->

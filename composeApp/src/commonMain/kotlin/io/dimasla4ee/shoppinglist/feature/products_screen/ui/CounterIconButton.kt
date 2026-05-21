@@ -26,7 +26,7 @@ fun CounterIconButton(
     enabled: Boolean = true
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .padding(top = AppDimensions.paddingExtraSmall)
             .size(AppDimensions.topAppIconSize),
         contentAlignment = Alignment.Center
@@ -42,7 +42,7 @@ fun CounterIconButton(
                 MaterialTheme.colorScheme.surfaceVariant
             },
 
-            modifier = modifier.size(AppDimensions.areaOfIcon)
+            modifier = Modifier.size(AppDimensions.areaOfIcon)
         ) {
             Box(
                 contentAlignment = Alignment.Center
