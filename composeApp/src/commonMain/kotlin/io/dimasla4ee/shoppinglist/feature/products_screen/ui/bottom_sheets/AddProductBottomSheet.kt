@@ -56,7 +56,7 @@ fun AddProductBottomSheet(
             .padding(AppDimensions.paddingSmallPlus)
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppDimensions.paddingVerySmall)
         ) {
