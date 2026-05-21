@@ -24,9 +24,7 @@ fun AddItemRoute(
     AddItemScreen(
         listName = listName,
         state = state,
-        onIntent = {
-            viewModel.dispatch(it)
-        },
+        onIntent = { viewModel.dispatch(it) },
         onMenuClick = onMenuClick,
         onBackClick = onBackClick
     )

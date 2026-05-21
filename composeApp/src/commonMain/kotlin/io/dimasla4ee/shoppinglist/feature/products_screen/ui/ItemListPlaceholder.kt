@@ -27,12 +27,9 @@ fun ItemListPlaceholder(
 ) {
     // Основной контент экрана
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primaryContainer),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Image(
             painter = painterResource(Res.drawable.img_product_list),
             contentDescription = null
