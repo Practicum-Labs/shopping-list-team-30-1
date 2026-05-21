@@ -27,6 +27,8 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
+import io.dimasla4ee.shoppinglist.feature.welcome_screen.presentation.WelcomeEffect
+import io.dimasla4ee.shoppinglist.feature.welcome_screen.presentation.WelcomeViewModel
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
