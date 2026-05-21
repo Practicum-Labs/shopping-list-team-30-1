@@ -40,4 +40,5 @@ sealed interface ProductsIntent : MviIntent {
     data object DeleteCheckedProducts : ProductsIntent
 
     data class ChangeSortMode(val mode: SortMode) : ProductsIntent
+    data class EditProduct(val product: Product) : ProductsIntent
 }

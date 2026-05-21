@@ -118,6 +118,15 @@ class ProductsViewModel(
                 )
             }
 
+            is ProductsIntent.EditProduct -> {
+                current.copy(
+                    isBottomSheetOpen = !current.isBottomSheetOpen,
+                    name = intent.product.name,
+                    amount = intent.product.amount,
+                    unit = intent.product.unit
+                )
+            }
+
             ProductsIntent.ToggleSortMode,
             is ProductsIntent.ChangeSortMode,
             ProductsIntent.DeleteCheckedProducts,
