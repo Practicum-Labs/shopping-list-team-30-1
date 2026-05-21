@@ -122,7 +122,7 @@ class ProductsViewModel(
                 current.copy(
                     isBottomSheetOpen = !current.isBottomSheetOpen,
                     name = intent.product.name,
-                    amount = intent.product.amount,
+                    amount = intent.product.amount.toString(),
                     unit = intent.product.unit
                 )
             }

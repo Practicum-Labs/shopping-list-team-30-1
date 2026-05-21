@@ -17,6 +17,7 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.presentation.mappers.toStringResource
+import io.dimasla4ee.shoppinglist.core.utils.toFormattedString
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -25,7 +26,6 @@ fun ShoppingListItem(
     onCheckedChange: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -33,10 +33,8 @@ fun ShoppingListItem(
                 horizontal = 16.dp,
                 vertical = 8.dp
             ),
-
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         CircleCheckButton(
             checked = item.isChecked,
             onClick = onCheckedChange
@@ -45,7 +43,6 @@ fun ShoppingListItem(
         Column(
             modifier = Modifier.padding(start = 8.dp)
         ) {
-
             Text(
                 text = item.name,
                 style = MaterialTheme.typography.bodyLarge,
@@ -55,6 +52,11 @@ fun ShoppingListItem(
                     null
                 }
             )
+
+            if (item.amount == 0f) return@Column
+
+            val amount = item.amount.toFormattedString()
+            val unit = stringResource(item.unit.toStringResource())
 
             Text(
                 text = "${item.amount} ${
