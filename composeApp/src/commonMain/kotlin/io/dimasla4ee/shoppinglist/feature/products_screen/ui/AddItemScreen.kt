@@ -205,7 +205,7 @@ fun AddItemScreen(
             // Bottom Sheet
             if (state.isBottomSheetOpen) {
                 ModalBottomSheet(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = AppDimensions.paddingVerySmall)
                         .onGloballyPositioned { coordinates ->
