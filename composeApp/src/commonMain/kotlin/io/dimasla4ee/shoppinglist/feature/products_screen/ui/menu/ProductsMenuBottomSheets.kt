@@ -30,7 +30,7 @@ fun ProductsMenuBottomSheet(
     visible: Boolean,
     sortMode: SortMode,
     onDismiss: () -> Unit,
-    onSortClick: () -> Unit,
+    onSortClick: (SortMode) -> Unit,
     onDeleteAllClick: () -> Unit,
     onDeleteCheckClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -47,13 +47,11 @@ fun ProductsMenuBottomSheet(
 
             Column(modifier = modifier.fillMaxWidth()) {
 
-                MenuItem(
-                    icon = painterResource(Res.drawable.ic_swap_vert_24),
-                    text = when (sortMode) {
-                        SortMode.CUSTOM -> stringResource(Res.string.sort_custom)
-                        SortMode.ALPHABETICAL -> stringResource(Res.string.sort_alphabetical)
-                    },
-                    onClick = onSortClick
+                SortSelector(
+                    sortMode = sortMode,
+                    onSortSelect = { mode ->
+                        onSortClick(mode)
+                    }
                 )
 
                 MenuItem(

@@ -44,6 +44,8 @@ class ProductsViewModel(
                 current.copy(amount = (count + 1).toString())
             }
 
+
+
             ProductsIntent.DecreaseCount -> {
                 val count = current.amount.toIntOrNull() ?: 0
                 current.copy(amount = (count - 1).coerceAtLeast(0).toString())
@@ -75,7 +77,9 @@ class ProductsViewModel(
                 )
             }
 
+
             ProductsIntent.ToggleSortMode,
+            is ProductsIntent.ChangeSortMode,
             ProductsIntent.DeleteCheckedProducts,
             ProductsIntent.DeleteAllProducts,
             ProductsIntent.AddItem,
@@ -118,6 +122,10 @@ class ProductsViewModel(
                         isMenuBottomSheetOpen = false
                     )
                 }
+            }
+
+            is ProductsIntent.ChangeSortMode -> {
+                setSortModeUseCase(listId, intent.mode)
             }
 
             ProductsIntent.DeleteCheckedProducts -> {

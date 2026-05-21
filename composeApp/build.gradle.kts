@@ -93,6 +93,8 @@ kotlin {
 
             implementation(libs.reorderable)
 
+            implementation(compose.materialIconsExtended)
+
             api(libs.androidx.datastore)
             api(libs.androidx.datastore.preferences)
         }

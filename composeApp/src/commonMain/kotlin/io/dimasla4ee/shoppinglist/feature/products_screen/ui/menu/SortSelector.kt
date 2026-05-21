@@ -8,10 +8,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,19 +25,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.dimasla4ee.shoppinglist.app.ui.theme.Green500
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.ic_add_circle_24
-import shoppinglist.composeapp.generated.resources.ic_check_24
+import shoppinglist.composeapp.generated.resources.btm_menu_sorting
 import shoppinglist.composeapp.generated.resources.ic_drag_pan_24
 import shoppinglist.composeapp.generated.resources.ic_sort_by_alpha_24
 import shoppinglist.composeapp.generated.resources.ic_swap_vert_24
+import shoppinglist.composeapp.generated.resources.sort_alphabetical
+import shoppinglist.composeapp.generated.resources.sort_custom
 
 @Composable
 fun SortSelector(
     sortMode: SortMode,
-    onSortSelected: (SortMode) -> Unit,
+    onSortSelect: (SortMode) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -68,24 +75,26 @@ fun SortSelector(
             ) {
 
                 Text(
-                    text = "Сортировка",
+                    text = stringResource(Res.string.btm_menu_sorting),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
                 Text(
-                    text = when(sortMode) {
-                        SortMode.CUSTOM -> "Пользовательская"
-                        SortMode.ALPHABETICAL -> "По алфавиту"
+                    text = when (sortMode) {
+                        SortMode.CUSTOM -> stringResource(Res.string.sort_custom)
+                        SortMode.ALPHABETICAL -> stringResource(Res.string.sort_alphabetical)
                     },
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (expanded) {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    } else {
+                        Green500
+                    }
                 )
             }
 
             Icon(
-                painter = painterResource(
-                    Res.drawable.ic_add_circle_24
-                ),
+                imageVector = Icons.Rounded.KeyboardArrowRight,
                 contentDescription = null
             )
         }
@@ -99,7 +108,7 @@ fun SortSelector(
 
             DropdownMenuItem(
                 text = {
-                    Text("По алфавиту")
+                    Text(stringResource(Res.string.sort_alphabetical))
                 },
 
                 leadingIcon = {
@@ -112,25 +121,25 @@ fun SortSelector(
                 },
 
                 trailingIcon = {
-                    if (sortMode == SortMode.ALPHABETICAL) {
-                        Icon(
-                            painter = painterResource(
-                                Res.drawable.ic_check_24
-                            ),
-                            contentDescription = null
+                    RadioButton(
+                        selected = sortMode == SortMode.ALPHABETICAL,
+                        onClick = null,
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = MaterialTheme.colorScheme.secondary,
+                            unselectedColor = MaterialTheme.colorScheme.secondary
                         )
-                    }
+                    )
                 },
 
                 onClick = {
                     expanded = false
-                    onSortSelected(SortMode.ALPHABETICAL)
+                    onSortSelect(SortMode.ALPHABETICAL)
                 }
             )
 
             DropdownMenuItem(
                 text = {
-                    Text("Пользовательская")
+                    Text(stringResource(Res.string.sort_custom))
                 },
 
                 leadingIcon = {
@@ -143,19 +152,19 @@ fun SortSelector(
                 },
 
                 trailingIcon = {
-                    if (sortMode == SortMode.CUSTOM) {
-                        Icon(
-                            painter = painterResource(
-                                Res.drawable.ic_check_24
-                            ),
-                            contentDescription = null
+                    RadioButton(
+                        selected = sortMode == SortMode.CUSTOM,
+                        onClick = null,
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = MaterialTheme.colorScheme.secondary,
+                            unselectedColor = MaterialTheme.colorScheme.secondary
                         )
-                    }
+                    )
                 },
 
                 onClick = {
                     expanded = false
-                    onSortSelected(SortMode.CUSTOM)
+                    onSortSelect(SortMode.CUSTOM)
                 }
             )
         }
