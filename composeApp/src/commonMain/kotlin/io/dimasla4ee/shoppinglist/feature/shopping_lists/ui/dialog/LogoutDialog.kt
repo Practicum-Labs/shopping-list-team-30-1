@@ -22,8 +22,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.button_cancel
-import shoppinglist.composeapp.generated.resources.button_delete
-import shoppinglist.composeapp.generated.resources.dialog_delete_all_lists
+import shoppinglist.composeapp.generated.resources.button_logout
+import shoppinglist.composeapp.generated.resources.dialog_logout_title
 import shoppinglist.composeapp.generated.resources.ic_warning_24
 
 @Composable
@@ -48,14 +48,14 @@ fun LogoutDialog(
                 )
 
                 Text(
-                    text = "Вы уверены, что хотите выйти из аккаунта?",
+                    text = stringResource(Res.string.dialog_logout_title),
                     style = MaterialTheme.typography.titleLarge
                 )
             }
         },
         confirmButton = {
             DialogButton(
-                text = "Выйти",
+                text = stringResource(Res.string.button_logout),
                 onClick = onConfirm,
                 colors = deleteDialogButtonDelete()
             )

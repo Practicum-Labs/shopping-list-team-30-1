@@ -30,6 +30,11 @@ import io.dimasla4ee.shoppinglist.utils.OrientationProvider
 import io.dimasla4ee.shoppinglist.utils.ScreenOrientation
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.action_delete_all
+import shoppinglist.composeapp.generated.resources.action_login
+import shoppinglist.composeapp.generated.resources.action_logout
+import shoppinglist.composeapp.generated.resources.action_search
+import shoppinglist.composeapp.generated.resources.action_theme
 import shoppinglist.composeapp.generated.resources.ic_delete_list_24
 import shoppinglist.composeapp.generated.resources.ic_login_24
 import shoppinglist.composeapp.generated.resources.ic_logout_24
@@ -128,12 +133,12 @@ fun ShoppingListsScreen(
                 title = stringResource(Res.string.screen_title),
                 onSearchClick = ActionItem(
                     iconRes = Res.drawable.ic_search_24,
-                    label = "Search",
+                    label = stringResource(Res.string.action_search),
                     onClick = { onIntent(ShoppingListsIntent.SearchClick) }
                 ),
                 onDeleteAllClick = ActionItem(
                     iconRes = Res.drawable.ic_delete_list_24,
-                    label = "Delete",
+                    label = stringResource(Res.string.action_delete_all),
                     onClick = { onIntent(ShoppingListsIntent.DeleteAllClick) }
                 ),
                 onThemeSwitch = ActionItem(
@@ -142,7 +147,7 @@ fun ShoppingListsScreen(
                         ThemeMode.LIGHT -> Res.drawable.ic_theme_24
                         ThemeMode.DARK -> Res.drawable.ic_theme_light_24
                     },
-                    label = "Theme",
+                    label = stringResource(Res.string.action_theme),
                     onClick = onThemeToggle
                 ),
                 onAuthorizationClick = ActionItem(
@@ -150,7 +155,9 @@ fun ShoppingListsScreen(
                         true -> Res.drawable.ic_logout_24
                         false -> Res.drawable.ic_login_24
                     },
-                    label = "Authorization",
+                    label = stringResource(
+                        if (state.isAuthorized) Res.string.action_logout else Res.string.action_login
+                    ),
                     onClick = { onIntent(ShoppingListsIntent.AuthorizationClicked) }
                 ),
                 onAddListClick = if (state.isFabVisible) {
