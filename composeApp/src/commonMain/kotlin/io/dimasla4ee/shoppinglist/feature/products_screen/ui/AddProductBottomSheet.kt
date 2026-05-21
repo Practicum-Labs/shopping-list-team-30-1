@@ -22,12 +22,14 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.content_minus
 import shoppinglist.composeapp.generated.resources.hint_item
 import shoppinglist.composeapp.generated.resources.hint_new_item
 import shoppinglist.composeapp.generated.resources.hint_quantity
+import shoppinglist.composeapp.generated.resources.ic_fab_check_56
 import shoppinglist.composeapp.generated.resources.ic_minus_24
 import shoppinglist.composeapp.generated.resources.ic_plus_24
 
@@ -44,75 +46,92 @@ fun AddProductBottomSheet(
     onUnitChange: (MeasurementUnit) -> Unit,
     onIncreaseClick: () -> Unit,
     onDecreaseClick: () -> Unit,
+    onFabClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(AppDimensions.paddingMedium)
+            .padding(AppDimensions.paddingSmallPlus)
     ) {
-        OutlinedTextField(
-            value = name,
-            onValueChange = onNameChange,
-            textStyle = MaterialTheme.typography.bodyLarge,
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(AppDimensions.paddingVerySmall)
+        ) {
+            OutlinedTextField(
+                value = name,
+                onValueChange = onNameChange,
+                textStyle = MaterialTheme.typography.bodyLarge,
 
-            colors = shoppingListTextFieldColors(),
+                colors = shoppingListTextFieldColors(),
 
-            label = { Text(stringResource(Res.string.hint_item)) },
-            placeholder = { Text(stringResource(Res.string.hint_new_item)) },
-            modifier = Modifier.fillMaxWidth()
-        )
+                label = { Text(stringResource(Res.string.hint_item)) },
+                placeholder = { Text(stringResource(Res.string.hint_new_item)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(AppDimensions.spacerMedium))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Количество
+                OutlinedTextField(
+                    value = amount,
+                    onValueChange = { value ->
+                        onCountChange(value)
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    colors = shoppingListTextFieldColors(),
+                    label = {
+                        Text(
+                            text = stringResource(Res.string.hint_quantity),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    },
+                    modifier = Modifier.weight(HALF_WEIGHT)
+                )
+
+                Spacer(modifier = Modifier.width(AppDimensions.spacerMedium))
+
+                // Единицы
+                UnitDropdownField(
+                    selectedUnit = unit,
+                    onUnitSelect = onUnitChange,
+                    modifier = Modifier.weight(HALF_WEIGHT),
+                )
+
+                Spacer(modifier = Modifier.width(AppDimensions.spacerMedium))
+
+                // Кнопки
+                CounterIconButton(
+                    icon = Res.drawable.ic_minus_24,
+                    contentDescription = stringResource(Res.string.content_minus),
+                    onClick = onDecreaseClick,
+                    enabled = (amount.toIntOrNull() ?: 0) > 0
+                )
+
+                CounterIconButton(
+                    icon = Res.drawable.ic_plus_24,
+                    contentDescription = stringResource(Res.string.content_minus),
+                    onClick = onIncreaseClick
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(AppDimensions.spacerMedium))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Количество
-            OutlinedTextField(
-                value = amount,
-                onValueChange = { value ->
-                    onCountChange(value)
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                textStyle = MaterialTheme.typography.bodyLarge,
-                colors = shoppingListTextFieldColors(),
-                label = {
-                    Text(
-                        text = stringResource(Res.string.hint_quantity),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                modifier = Modifier.weight(HALF_WEIGHT)
-            )
-
-            Spacer(modifier = Modifier.width(AppDimensions.spacerMedium))
-
-            // Единицы
-            UnitDropdownField(
-                selectedUnit = unit,
-                onUnitSelect = onUnitChange,
-                modifier = Modifier.weight(HALF_WEIGHT),
-            )
-
-            Spacer(modifier = Modifier.width(AppDimensions.spacerMedium))
-
-            // Кнопки
-            CounterIconButton(
-                icon = Res.drawable.ic_minus_24,
-                contentDescription = stringResource(Res.string.content_minus),
-                onClick = onDecreaseClick,
-                enabled = (amount.toIntOrNull() ?: 0) > 0
-            )
-
-            CounterIconButton(
-                icon = Res.drawable.ic_plus_24,
-                contentDescription = stringResource(Res.string.content_minus),
-                onClick = onIncreaseClick
-            )
-        }
+        AppFloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(bottom = AppDimensions.paddingBigPlus),
+            onClick = onFabClick,
+            iconRes = painterResource(Res.drawable.ic_fab_check_56)
+        )
     }
 }
 
@@ -147,6 +166,7 @@ private fun AddProductBottomSheetPreview() {
             onUnitChange = {},
             onIncreaseClick = {},
             onDecreaseClick = {},
+            onFabClick = {}
         )
     }
 }

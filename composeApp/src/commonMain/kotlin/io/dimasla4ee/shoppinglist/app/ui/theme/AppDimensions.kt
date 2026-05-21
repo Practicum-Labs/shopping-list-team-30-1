@@ -12,8 +12,10 @@ object AppDimensions {
     val paddingLarge = 44.dp
     val paddingExtraBig = 32.dp
     val paddingVeryBig = 24.dp
+    val paddingBigPlus = 22.dp
     val paddingBig = 18.dp
     val paddingMedium = 16.dp
+    val paddingSmallPlus = 10.dp
     val paddingSmall = 8.dp
     val paddingVerySmall = 6.dp
     val paddingExtraSmall = 4.dp

@@ -1,20 +1,12 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,7 +14,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,15 +23,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -61,7 +46,6 @@ import shoppinglist.composeapp.generated.resources.content_menu
 import shoppinglist.composeapp.generated.resources.ic_add_56
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
 import shoppinglist.composeapp.generated.resources.ic_drag_pan_24
-import shoppinglist.composeapp.generated.resources.ic_fab_check_56
 import shoppinglist.composeapp.generated.resources.ic_menu_24
 import shoppinglist.composeapp.generated.resources.ic_sort_by_alpha_24
 
@@ -75,23 +59,7 @@ fun AddItemScreen(
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null
 ) {
-    val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-
     val sheetState = rememberModalBottomSheetState()
-
-    var sheetHeight by remember { mutableIntStateOf(0) }
-
-    val density = LocalDensity.current
-
-    val fabBottomPadding by animateDpAsState(
-        targetValue = if (state.isBottomSheetOpen) {
-            with(density) {
-                sheetHeight.toDp() + AppDimensions.paddingExtraBig - bottomPadding
-            }
-        } else {
-            AppDimensions.paddingExtraBig
-        }
-    )
 
     val hapticFeedback = LocalHapticFeedback.current
     val lazyListState = rememberLazyListState()
@@ -131,9 +99,7 @@ fun AddItemScreen(
         }
     ) { paddingValues ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier = modifier.padding(paddingValues)
         ) {
             // Основной контент
             val isPlaceholderVisible = state.items.isEmpty() && !state.isBottomSheetOpen
@@ -159,29 +125,13 @@ fun AddItemScreen(
                 }
             }
 
-            // Затемнение
-            AnimatedVisibility(
-                visible = state.isBottomSheetOpen,
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.32f))
-                        .clickable { onIntent(ProductsIntent.ToggleBottomSheet) }
-                )
-            }
-
             // Bottom Sheet
             if (state.isBottomSheetOpen) {
                 ModalBottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppDimensions.paddingVerySmall)
-                        .onGloballyPositioned { coordinates ->
-                            sheetHeight = coordinates.size.height
-                        },
+                        .navigationBarsPadding()
+                        .padding(horizontal = AppDimensions.paddingVerySmall),
                     onDismissRequest = { onIntent(ProductsIntent.ToggleBottomSheet) },
                     sheetState = sheetState,
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -209,37 +159,27 @@ fun AddItemScreen(
                         onCountChange = { onIntent(ProductsIntent.ChangeCount(it)) },
                         onUnitChange = { onIntent(ProductsIntent.ChangeUnit(it)) },
                         onIncreaseClick = { onIntent(ProductsIntent.IncreaseCount) },
-                        onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) }
+                        onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) },
+                        onFabClick = { onIntent(ProductsIntent.AddItem) }
                     )
                 }
             }
 
             // FAB
-            FloatingActionButton(
-                onClick = {
-                    if (state.isBottomSheetOpen) {
-                        onIntent(ProductsIntent.AddItem)
-                    } else {
-                        onIntent(ProductsIntent.ToggleBottomSheet)
-                    }
-                },
+            AppFloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .imePadding()
-                    .padding(end = AppDimensions.paddingMedium, bottom = fabBottomPadding),
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(
-                    painter = painterResource(
-                        if (state.isBottomSheetOpen) {
-                            Res.drawable.ic_fab_check_56
-                        } else {
-                            Res.drawable.ic_add_56
-                        }
-                    ),
-                    contentDescription = null
-                )
-            }
+                    .padding(end = AppDimensions.paddingMedium, bottom = AppDimensions.paddingExtraBig),
+                onClick = { onIntent(ProductsIntent.ToggleBottomSheet) },
+                iconRes = painterResource(Res.drawable.ic_add_56)
+            )
+
+            SortModeIndicator(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                sortMode = state.sortMode,
+                onToggle = { onIntent(ProductsIntent.ToggleSortMode) }
+            )
+
         }
     }
 }
