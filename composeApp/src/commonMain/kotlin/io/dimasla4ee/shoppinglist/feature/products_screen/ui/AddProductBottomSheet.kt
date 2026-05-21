@@ -6,11 +6,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,7 +38,7 @@ import shoppinglist.composeapp.generated.resources.ic_plus_24
 private const val HALF_WEIGHT = 0.5f
 
 @Composable
-fun AddProductBottomSheet(
+fun     AddProductBottomSheet(
     name: String,
     unit: MeasurementUnit?,
     amount: String,
@@ -49,8 +52,17 @@ fun AddProductBottomSheet(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(AppDimensions.paddingMedium)
+            .padding(AppDimensions.paddingMedium),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Surface(
+            modifier = Modifier.size(AppDimensions.BottomSheet.handlerSize),
+            shape = CircleShape,
+            color = MaterialTheme.colorScheme.outlineVariant
+        ) {}
+
+        Spacer(modifier = Modifier.height(AppDimensions.spacerMedium))
+
         OutlinedTextField(
             value = name,
             onValueChange = onNameChange,
