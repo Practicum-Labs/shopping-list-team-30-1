@@ -31,6 +31,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.btm_menu_sorting
+import shoppinglist.composeapp.generated.resources.ic_arrow_bs
 import shoppinglist.composeapp.generated.resources.ic_drag_pan_24
 import shoppinglist.composeapp.generated.resources.ic_sort_by_alpha_24
 import shoppinglist.composeapp.generated.resources.ic_swap_vert_24
@@ -94,7 +95,7 @@ fun SortSelector(
             }
 
             Icon(
-                imageVector = Icons.Rounded.KeyboardArrowRight,
+                painter = painterResource(Res.drawable.ic_arrow_bs),
                 contentDescription = null
             )
         }

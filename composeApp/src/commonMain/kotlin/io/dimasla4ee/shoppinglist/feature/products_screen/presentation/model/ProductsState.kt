@@ -11,8 +11,9 @@ data class ProductsState(
     val unit: MeasurementUnit = MeasurementUnit.PIECE,
     val items: List<Product> = emptyList(),
     val sortMode: SortMode = SortMode.CUSTOM,
+
     val isBottomSheetOpen: Boolean = false,
-    val isMenuBottomSheetOpen: Boolean = false
+    val isMenuBottomSheetOpen: Boolean = false,
 ) : MviState {
     val sortedItems: List<Product>
         get() = when (sortMode) {

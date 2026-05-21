@@ -114,10 +114,8 @@ fun AddItemScreen(
             onDismiss = {
                 onIntent(ProductsIntent.ToggleMenuBottomSheet)
             },
-            onSortClick = { mode ->
-                onIntent(
-                    ProductsIntent.ChangeSortMode(mode)
-                )
+            onSortClick = {
+                onIntent(ProductsIntent.ToggleSortMode)
             },
             onDeleteAllClick = {
                 onIntent(ProductsIntent.DeleteAllProducts)

@@ -44,8 +44,6 @@ class ProductsViewModel(
                 current.copy(amount = (count + 1).toString())
             }
 
-
-
             ProductsIntent.DecreaseCount -> {
                 val count = current.amount.toIntOrNull() ?: 0
                 current.copy(amount = (count - 1).coerceAtLeast(0).toString())
@@ -76,7 +74,6 @@ class ProductsViewModel(
                     isMenuBottomSheetOpen = !current.isMenuBottomSheetOpen
                 )
             }
-
 
             ProductsIntent.ToggleSortMode,
             is ProductsIntent.ChangeSortMode,

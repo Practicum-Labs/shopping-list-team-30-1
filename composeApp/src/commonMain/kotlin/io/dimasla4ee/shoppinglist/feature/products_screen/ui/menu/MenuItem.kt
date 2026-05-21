@@ -18,10 +18,11 @@ import androidx.compose.ui.unit.dp
 fun MenuItem(
     icon: Painter,
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(horizontal = 20.dp, vertical = 16.dp),
