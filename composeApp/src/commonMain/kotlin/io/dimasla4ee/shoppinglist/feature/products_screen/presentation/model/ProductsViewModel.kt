@@ -6,10 +6,13 @@ import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.SetSortModeUseC
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractor
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.state.ProductDialog
 import kotlinx.coroutines.launch
 
 class ProductsViewModel(
+    private val productInteractor: ProductInteractor,
     val getSortModeUseCase: GetSortModeUseCase,
     val setSortModeUseCase: SetSortModeUseCase
 ) : MviViewModel<ProductsIntent, ProductsState, ProductsEffect>(
@@ -18,12 +21,37 @@ class ProductsViewModel(
 
     private var listId: Long = 0
 
-    fun getSortMode(listId: Long) {
+    fun init(listId: Long) {
         this.listId = listId
+
+        observeProducts()
+        observeSortMode()
+    }
+
+    private fun observeProducts() {
         viewModelScope.launch {
-            getSortModeUseCase(listId).collect { mode ->
-                updateState { it.copy(sortMode = mode) }
-            }
+            productInteractor
+                .getProductsOfList(listId)
+                .collect { products ->
+                    updateState {
+                        it.copy(
+                            items = products
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun observeSortMode() {
+        viewModelScope.launch {
+            getSortModeUseCase(listId)
+                .collect { mode ->
+                    updateState {
+                        it.copy(
+                            sortMode = mode
+                        )
+                    }
+                }
         }
     }
 
@@ -54,6 +82,21 @@ class ProductsViewModel(
                     isBottomSheetOpen = !current.isBottomSheetOpen
                 )
 
+            ProductsIntent.ShowDeleteAllDialog ->
+                current.copy(
+                    dialog = ProductDialog.DeleteAll
+                )
+
+            ProductsIntent.ShowDeleteCheckedDialog ->
+                current.copy(
+                    dialog = ProductDialog.DeleteCheckedProducts
+                )
+
+            ProductsIntent.DismissDialog ->
+                current.copy(
+                    dialog = ProductDialog.None
+                )
+
             is ProductsIntent.ReorderProduct -> {
                 if (current.sortMode != SortMode.CUSTOM) return current
 
@@ -80,36 +123,18 @@ class ProductsViewModel(
             ProductsIntent.DeleteCheckedProducts,
             ProductsIntent.DeleteAllProducts,
             ProductsIntent.AddItem,
-            is ProductsIntent.ToggleItemChecked -> current
+            is ProductsIntent.ToggleItemChecked,
+            ProductsIntent.ConfirmDeleteAll,
+            ProductsIntent.ConfirmDeleteChecked,
+            is ProductsIntent.ReorderProduct -> current
         }
-
     }
 
     override suspend fun handleIntent(intent: ProductsIntent) {
         when (intent) {
 
             ProductsIntent.AddItem -> {
-                val currentState = state.value
-
-                if (currentState.name.isBlank()) return
-
-                val newItem = Product(
-                    id = System.currentTimeMillis(),
-                    name = currentState.name,
-                    amount = currentState.amount,
-                    unit = currentState.unit,
-                    position = currentState.items.size
-                )
-
-                updateState {
-                    it.copy(
-                        items = it.items + newItem,
-                        name = "",
-                        amount = "",
-                        unit = MeasurementUnit.PIECE,
-                        isBottomSheetOpen = false
-                    )
-                }
+                handleAddItem()
             }
 
             ProductsIntent.DeleteAllProducts -> {
@@ -137,24 +162,123 @@ class ProductsViewModel(
             }
 
             is ProductsIntent.ToggleItemChecked -> {
-                val products = state.value.items.toMutableList().apply {
-                    remove(intent.product)
-                    add(intent.product.copy(isChecked = !intent.product.isChecked))
-                }
-
-                updateState { it.copy(items = products) }
+                handleToggleChecked(intent.product)
             }
 
             ProductsIntent.ToggleSortMode -> {
-                val currentMode = state.value.sortMode
-                val newMode = when (currentMode) {
-                    SortMode.CUSTOM -> SortMode.ALPHABETICAL
-                    SortMode.ALPHABETICAL -> SortMode.CUSTOM
-                }
-                setSortModeUseCase(listId, newMode)
+                handleToggleSortMode()
+            }
+
+            ProductsIntent.ConfirmDeleteAll -> {
+                handleDeleteAll()
+            }
+
+            ProductsIntent.ConfirmDeleteChecked -> {
+                handleDeleteChecked()
+            }
+
+            is ProductsIntent.ReorderProduct -> {
+                handleReorder(intent)
             }
 
             else -> Unit
+        }
+    }
+
+    private suspend fun handleAddItem() {
+        val currentState = state.value
+        if (currentState.name.isBlank()) return
+        productInteractor.addProduct(
+            Product(
+                id = 0,
+                listId = listId,
+                name = currentState.name.trim(),
+                amount = currentState.amount.toFloatOrNull() ?: 0f,
+                unit = currentState.unit,
+                isChecked = false,
+                position = currentState.items.size
+            )
+        )
+
+        updateState {
+            it.copy(
+                name = "",
+                amount = "",
+                unit = MeasurementUnit.PIECE,
+                isBottomSheetOpen = false
+            )
+        }
+    }
+
+    private suspend fun handleToggleChecked(
+        product: Product
+    ) {
+        productInteractor.updateProduct(
+            product.copy(
+                isChecked = !product.isChecked
+            )
+        )
+    }
+
+    private suspend fun handleToggleSortMode() {
+        val currentMode = state.value.sortMode
+        val newMode = when (currentMode) {
+            SortMode.CUSTOM -> SortMode.ALPHABETICAL
+            SortMode.ALPHABETICAL -> SortMode.CUSTOM
+        }
+
+        setSortModeUseCase(
+            listId = listId,
+            mode = newMode
+        )
+    }
+
+    private suspend fun handleDeleteAll() {
+        productInteractor.deleteAllProducts(
+            listId
+        )
+
+        updateState {
+            it.copy(
+                dialog = ProductDialog.None
+            )
+        }
+    }
+
+    private suspend fun handleDeleteChecked() {
+        productInteractor.deleteCheckedProducts(
+            listId
+        )
+
+        updateState {
+            it.copy(
+                dialog = ProductDialog.None
+            )
+        }
+    }
+
+    private suspend fun handleReorder(
+        intent: ProductsIntent.ReorderProduct
+    ) {
+        if (state.value.sortMode != SortMode.CUSTOM) {
+            return
+        }
+
+        val currentItems =
+            state.value.items.toMutableList()
+        val movedItem =
+            currentItems.removeAt(intent.fromIndex)
+        currentItems.add(
+            intent.toIndex,
+            movedItem
+        )
+
+        currentItems.forEachIndexed { index, product ->
+            productInteractor.updateProduct(
+                product.copy(
+                    position = index
+                )
+            )
         }
     }
 }

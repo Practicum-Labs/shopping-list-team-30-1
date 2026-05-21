@@ -25,6 +25,16 @@ sealed interface ProductsIntent : MviIntent {
 
     data object ToggleSortMode : ProductsIntent
 
+    data object ShowDeleteAllDialog : ProductsIntent
+
+    data object ShowDeleteCheckedDialog : ProductsIntent
+
+    data object DismissDialog : ProductsIntent
+
+    data object ConfirmDeleteAll : ProductsIntent
+
+    data object ConfirmDeleteChecked : ProductsIntent
+
     data object ToggleMenuBottomSheet : ProductsIntent
     data object DeleteAllProducts : ProductsIntent
     data object DeleteCheckedProducts : ProductsIntent

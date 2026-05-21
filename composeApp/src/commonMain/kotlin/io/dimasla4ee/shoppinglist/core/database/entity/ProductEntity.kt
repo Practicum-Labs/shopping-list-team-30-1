@@ -21,5 +21,7 @@ data class ProductEntity(
     val name: String,
     val amount: Float,
     val unit: MeasurementUnit,
+    val isChecked: Boolean = false,
+    val position: Int = 0,
     val addedAtMillis: Long = System.currentTimeMillis()
 )
