@@ -86,8 +86,8 @@ class ProductsViewModel(
 
                 val newItem = Product(
                     id = System.currentTimeMillis(),
-                    name = currentState.name,
-                    amount = currentState.amount,
+                    name = currentState.name.trim(),
+                    amount = currentState.amount.trim(),
                     unit = currentState.unit,
                     position = currentState.items.size
                 )
