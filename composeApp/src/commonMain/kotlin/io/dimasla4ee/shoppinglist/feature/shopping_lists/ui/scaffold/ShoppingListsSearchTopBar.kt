@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.core.presentation.components
+package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
-import io.dimasla4ee.shoppinglist.app.ui.theme.appTopBarColors
+import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBarDefaults
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -31,7 +31,7 @@ import shoppinglist.composeapp.generated.resources.back_icon_search_top_bar
 import shoppinglist.composeapp.generated.resources.clear_icon_search_top_bar
 import shoppinglist.composeapp.generated.resources.hint_search_list
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
-import shoppinglist.composeapp.generated.resources.ic_close_search_24
+import shoppinglist.composeapp.generated.resources.ic_close_24
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,7 +65,7 @@ fun ShoppingListsScaffoldSearch(
         topBar = {
 
             TopAppBar(
-                colors = appTopBarColors(),
+                colors = AppTopBarDefaults.shoppingListsTopBarColors(),
 
                 navigationIcon = {
                     IconButton(
@@ -117,7 +117,7 @@ fun ShoppingListsScaffoldSearch(
                                     onClick = onClear
                                 ) {
                                     Icon(
-                                        painter = painterResource(Res.drawable.ic_close_search_24),
+                                        painter = painterResource(Res.drawable.ic_close_24),
                                         contentDescription = stringResource(Res.string.clear_icon_search_top_bar),
                                         tint = MaterialTheme.colorScheme.onTertiary
                                     )

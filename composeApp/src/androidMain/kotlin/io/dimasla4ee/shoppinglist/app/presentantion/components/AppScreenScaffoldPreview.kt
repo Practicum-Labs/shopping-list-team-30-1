@@ -12,9 +12,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
+import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
-import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListsScaffold
-import io.dimasla4ee.shoppinglist.core.presentation.components.TopBarAction
+import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
+import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold.ShoppingListsScaffold
+import org.jetbrains.compose.resources.stringResource
+import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.ic_delete_list_24
+import shoppinglist.composeapp.generated.resources.ic_search_24
+import shoppinglist.composeapp.generated.resources.ic_system_theme_24
+import shoppinglist.composeapp.generated.resources.ic_theme_24
+import shoppinglist.composeapp.generated.resources.ic_theme_light_24
+import shoppinglist.composeapp.generated.resources.screen_title
 
 @Composable
 private fun PreviewContainer(
@@ -22,23 +32,28 @@ private fun PreviewContainer(
 ) {
     ShoppingListTheme {
         ShoppingListsScaffold(
-            title = "Мои списки",
-
-            action1 = TopBarAction(
-                contentDescription = "Search",
+            title = stringResource(Res.string.screen_title),
+            onSearchClick = ActionItem(
+                iconRes = Res.drawable.ic_search_24,
+                label = "Search",
+                onClick = { }
+            ),
+            onDeleteAllClick = ActionItem(
+                iconRes = Res.drawable.ic_delete_list_24,
+                label = "Delete",
+                onClick = { }
+            ),
+            onThemeSwitch = ActionItem(
+                iconRes = when (LocalThemeMode.current) {
+                    ThemeMode.SYSTEM -> Res.drawable.ic_system_theme_24
+                    ThemeMode.LIGHT -> Res.drawable.ic_theme_24
+                    ThemeMode.DARK -> Res.drawable.ic_theme_light_24
+                },
+                label = "Theme",
                 onClick = {}
             ),
-            action2 = TopBarAction(
-                contentDescription = "Delete",
-                onClick = {}
-            ),
-            action3 = TopBarAction(
-                contentDescription = "Theme",
-                onClick = {}
-            ),
 
-            onFabClick = {},
-
+            onAddListClick = {},
             content = content
         )
     }
