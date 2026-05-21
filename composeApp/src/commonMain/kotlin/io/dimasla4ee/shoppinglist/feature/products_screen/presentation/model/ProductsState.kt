@@ -18,9 +18,9 @@ data class ProductsState(
     val dialog: ProductDialog = ProductDialog.None,
     val isMenuBottomSheetOpen: Boolean = false,
 ) : MviState {
-    val sortedItems: List<Product>
+    val displayedItems: List<Product>
         get() = when (sortMode) {
-            SortMode.CUSTOM -> items.sortedBy { it.position }
+            SortMode.CUSTOM -> items
             SortMode.ALPHABETICAL -> items.sortedBy { it.name.lowercase() }
         }
 }

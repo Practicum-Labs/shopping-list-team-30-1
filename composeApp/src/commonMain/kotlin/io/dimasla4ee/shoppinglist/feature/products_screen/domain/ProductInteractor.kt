@@ -9,7 +9,7 @@ interface ProductInteractor {
 
     suspend fun addProduct(product: Product)
 
-    suspend fun updateProduct(product: Product)
+    suspend fun updateProducts(products: List<Product>)
 
     suspend fun deleteProduct(product: Product)
 

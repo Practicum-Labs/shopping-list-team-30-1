@@ -128,23 +128,26 @@ fun AddItemScreen(
             // Основной контент
             val isPlaceholderVisible = state.items.isEmpty() && !state.isBottomSheetOpen
 
-            when (isPlaceholderVisible) {
-                true -> ItemListPlaceholder(Modifier.fillMaxSize())
-                false -> LazyColumn(
-                    state = lazyListState,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(
-                        items = state.sortedItems,
-                        key = { item -> item.id }
-                    ) { item ->
-                        ReorderableShoppingItem(
-                            item = item,
-                            state = reorderableLazyListState,
-                            hapticFeedback = hapticFeedback,
-                            onCheckedChange = { onIntent(ProductsIntent.ToggleItemChecked(item)) },
-                            showDragHandle = isCustomSort
-                        )
+                when (isPlaceholderVisible) {
+                    true -> ItemListPlaceholder(Modifier.fillMaxSize())
+                    false -> LazyColumn(
+                        state = lazyListState,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(
+                            items = state.displayedItems,
+                            key = { item -> item.id }
+                        ) { item ->
+                            ReorderableShoppingItem(
+                                item = item,
+                                state = reorderableLazyListState,
+                                hapticFeedback = hapticFeedback,
+                                onCheckedChange = { onIntent(ProductsIntent.ToggleItemChecked(item)) },
+                                onLongPress = { onIntent(ProductsIntent.EditProduct(item)) },
+                                onDragStop = { onIntent(ProductsIntent.CommitReorder) },
+                                showDragHandle = isCustomSort
+                            )
+                        }
                     }
                 }
             }

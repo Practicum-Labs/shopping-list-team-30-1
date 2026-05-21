@@ -4,7 +4,8 @@ import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import kotlinx.coroutines.flow.Flow
 
 class ProductInteractorImpl(
-    private val repository: ProductRepository) : ProductInteractor {
+    private val repository: ProductRepository
+) : ProductInteractor {
 
     override fun getProductsOfList(listId: Long): Flow<List<Product>> {
         return repository.getProductsOfList(listId)
@@ -14,8 +15,8 @@ class ProductInteractorImpl(
         repository.addProduct(product)
     }
 
-    override suspend fun updateProduct(product: Product) {
-        repository.updateProduct(product)
+    override suspend fun updateProducts(products: List<Product>) {
+        repository.updateProducts(products)
     }
 
     override suspend fun deleteProduct(product: Product) {

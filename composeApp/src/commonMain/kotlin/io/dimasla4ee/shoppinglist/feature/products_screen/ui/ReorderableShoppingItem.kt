@@ -30,6 +30,7 @@ fun LazyItemScope.ReorderableShoppingItem(
     hapticFeedback: HapticFeedback,
     onCheckedChange: () -> Unit,
     onLongPress: () -> Unit,
+    onDragStop: () -> Unit,
     modifier: Modifier = Modifier,
     showDragHandle: Boolean = true
 ) {
@@ -70,9 +71,8 @@ fun LazyItemScope.ReorderableShoppingItem(
                             )
                         },
                         onDragStopped = {
-                            hapticFeedback.performHapticFeedback(
-                                HapticFeedbackType.GestureEnd
-                            )
+                            onDragStop()
+                            hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureEnd)
                         }
                     ),
                     onClick = {}

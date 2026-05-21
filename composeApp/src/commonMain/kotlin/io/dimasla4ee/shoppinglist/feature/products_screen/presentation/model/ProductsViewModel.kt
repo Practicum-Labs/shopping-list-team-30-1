@@ -100,7 +100,7 @@ class ProductsViewModel(
             is ProductsIntent.ReorderProduct -> {
                 if (current.sortMode != SortMode.CUSTOM) return current
 
-                val items = current.items.toMutableList()
+                val items = current.displayedItems.toMutableList()
                 val moved = items.removeAt(intent.fromIndex)
                 items.add(intent.toIndex, moved)
 
@@ -182,7 +182,7 @@ class ProductsViewModel(
     private suspend fun handleToggleChecked(
         product: Product
     ) {
-        productInteractor.updateProduct(
+        productInteractor.addProduct(
             product.copy(
                 isChecked = !product.isChecked
             )
@@ -228,10 +228,6 @@ class ProductsViewModel(
 
     private suspend fun handleCommitReorder() {
         val items = state.value.items
-        items.forEachIndexed { index, product ->
-            productInteractor.updateProduct(
-                product.copy(position = index)
-            )
-        }
+        productInteractor.updateProducts(items)
     }
 }
