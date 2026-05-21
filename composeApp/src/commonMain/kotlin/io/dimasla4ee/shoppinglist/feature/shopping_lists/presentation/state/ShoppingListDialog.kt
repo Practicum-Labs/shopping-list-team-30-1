@@ -17,4 +17,6 @@ sealed class ShoppingListDialog {
     ) : ShoppingListDialog()
 
     data object DeleteAll : ShoppingListDialog()
+
+    data object Logout : ShoppingListDialog()
 }

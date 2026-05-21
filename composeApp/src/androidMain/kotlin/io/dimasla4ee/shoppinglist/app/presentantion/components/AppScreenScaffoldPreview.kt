@@ -20,6 +20,7 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold.ShoppingLis
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_delete_list_24
+import shoppinglist.composeapp.generated.resources.ic_login_24
 import shoppinglist.composeapp.generated.resources.ic_search_24
 import shoppinglist.composeapp.generated.resources.ic_system_theme_24
 import shoppinglist.composeapp.generated.resources.ic_theme_24
@@ -54,7 +55,12 @@ private fun PreviewContainer(
             ),
 
             onAddListClick = {},
-            content = content
+            content = content,
+            onAuthorizationClick = ActionItem(
+                iconRes = Res.drawable.ic_login_24,
+                label = null,
+                onClick = { }
+            ),
         )
     }
 }

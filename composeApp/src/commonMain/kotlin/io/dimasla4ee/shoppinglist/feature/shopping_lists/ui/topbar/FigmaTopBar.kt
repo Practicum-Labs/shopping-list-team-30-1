@@ -14,9 +14,15 @@ fun FigmaTopBar(
     modifier: Modifier = Modifier,
     onSearchClick: ActionItem? = null,
     onDeleteAllClick: ActionItem? = null,
-    onThemeSwitch: ActionItem? = null
+    onThemeSwitch: ActionItem? = null,
+    onAuthorizationClick: ActionItem
 ) {
-    val actions: List<ActionItem> = listOfNotNull(onSearchClick, onDeleteAllClick, onThemeSwitch)
+    val actions: List<ActionItem> = listOfNotNull(
+        onSearchClick,
+        onDeleteAllClick,
+        onThemeSwitch,
+        onAuthorizationClick
+    )
 
     AppTopBar(
         title = title,

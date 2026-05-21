@@ -121,4 +121,34 @@
         <item>По алфавиту</item>
         <item>Пользовательская</item>
     </string-array>
+
+    <!-- Существующие строки остаются, добавляем новые: -->
+
+    <!-- Диалог выхода из аккаунта -->
+    <string name="dialog_logout_title">Вы уверены, что хотите выйти из аккаунта?</string>
+    <string name="button_logout">Выйти</string>
+
+    <!-- Экран списков покупок -->
+    <string name="action_search">Поиск</string>
+    <string name="action_delete_all">Удалить все</string>
+    <string name="action_theme">Тема</string>
+    <string name="action_authorization">Авторизация</string>
+    <string name="action_login">Войти</string>
+    <string name="action_logout">Выйти</string>
+
+    <!-- Пустые состояния -->
+    <string name="empty_lists_title">Список покупок пуст</string>
+    <string name="empty_lists_description">Нажмите на кнопку + чтобы создать первый список</string>
+    <string name="empty_search_title">Ничего не найдено</string>
+    <string name="empty_search_description">Попробуйте изменить поисковый запрос</string>
+
+    <!-- Дополнительные подписи для диалогов -->
+    <string name="dialog_delete_all_lists_title">Удалить все списки?</string>
+    <string name="dialog_delete_all_lists_message">Это действие нельзя отменить. Все списки покупок будут удалены навсегда.</string>
+    <string name="dialog_delete_list_title">Удалить список?</string>
+    <string name="dialog_delete_list_message">Список "%s" будет удалён. Это действие нельзя отменить.</string>
+    <string name="dialog_create_list_title">Создать список</string>
+    <string name="dialog_create_list_hint">Название списка</string>
+    <string name="dialog_rename_list_title">Переименовать список</string>
+    <string name="dialog_rename_list_hint">Новое название</string>
 </resources>

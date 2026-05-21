@@ -35,7 +35,8 @@ fun DropdownMenuTopBar(
     onDeleteAllClick: ActionItem,
     onThemeSwitch: ActionItem,
     themeMode: ThemeMode,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAuthorizationClick: ActionItem
 ) {
     var menuIsExpanded by remember { mutableStateOf(false) }
 
@@ -69,6 +70,22 @@ fun DropdownMenuTopBar(
                 onDismissRequest = { menuIsExpanded = false }
             ) {
                 DropdownMenuItem(
+                    text = { Text(onAuthorizationClick.label ?: "") },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(onAuthorizationClick.iconRes ?: Res.drawable.ic_menu_24),
+                            contentDescription = null
+                        )
+                    },
+                    onClick = {
+                        menuIsExpanded = false
+                        onAuthorizationClick.onClick()
+                    }
+                )
+
+                HorizontalDivider()
+
+                DropdownMenuItem(
                     text = { Text("Удалить всё") },
                     leadingIcon = {
                         Icon(
@@ -83,6 +100,7 @@ fun DropdownMenuTopBar(
                         onDeleteAllClick.onClick()
                     }
                 )
+
                 HorizontalDivider()
 
                 ThemeMode.entries.forEach {
