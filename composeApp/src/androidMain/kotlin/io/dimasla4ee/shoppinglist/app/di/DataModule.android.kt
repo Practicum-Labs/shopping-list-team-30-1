@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import io.dimasla4ee.shoppinglist.app.data.database.SettingsDataSource
+import io.dimasla4ee.shoppinglist.app.data.database.TokenDataSource
 import io.dimasla4ee.shoppinglist.app.data.repository.SettingsRepositoryImpl
 import io.dimasla4ee.shoppinglist.core.config.DatabaseConfig
 import io.dimasla4ee.shoppinglist.app.data.datastore.createDataStore
@@ -33,5 +34,9 @@ actual val platformDataModule = module {
 
     single<SettingsRepository> {
         SettingsRepositoryImpl(get())
+    }
+
+    single {
+        TokenDataSource(get())
     }
 }

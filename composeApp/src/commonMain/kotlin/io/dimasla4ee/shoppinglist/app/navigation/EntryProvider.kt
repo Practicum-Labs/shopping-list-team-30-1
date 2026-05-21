@@ -21,6 +21,8 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
+import io.dimasla4ee.shoppinglist.feature.welcome_screen.presentation.WelcomeEffect
+import io.dimasla4ee.shoppinglist.feature.welcome_screen.presentation.WelcomeViewModel
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
@@ -30,6 +32,32 @@ fun entryProvider(
     onThemeToggle: () -> Unit,
 ) = entryProvider<NavKey> {
     entry<Route.Welcome> {
+        val viewModel =
+            koinViewModel<WelcomeViewModel>()
+
+        LaunchedEffect(viewModel) {
+
+            viewModel.effects.collect { effect ->
+
+                when (effect) {
+
+                    WelcomeEffect.NavigateToMain -> {
+
+                        topLevelBackStack.replaceStack(
+                            Route.ShoppingLists
+                        )
+                    }
+
+                    WelcomeEffect.NavigateToAuth -> {
+
+                        topLevelBackStack.replaceStack(
+                            Route.Authorization
+                        )
+                    }
+                }
+            }
+        }
+
         WelcomeScreen(
             onGoToShopping = { topLevelBackStack.add(Route.Authorization) },
             modifier = Modifier.fillMaxSize()

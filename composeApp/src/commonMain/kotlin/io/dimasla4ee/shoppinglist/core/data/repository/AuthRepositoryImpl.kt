@@ -7,55 +7,66 @@ import io.dimasla4ee.shoppinglist.core.data.network.dto.Request
 import io.dimasla4ee.shoppinglist.core.domain.model.Response
 import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
+import io.dimasla4ee.shoppinglist.core.domain.storage.TokenStorage
 
 class AuthRepositoryImpl(
-    private val networkClient: NetworkClient
+    private val networkClient: NetworkClient,
+    private val tokenStorage: TokenStorage
 ) : AuthRepository {
 
     override suspend fun register(
         email: String,
         password: String
     ): DomainResult<Response.RegisterResponse, NetworkError> {
-        val request = Request.RegisterRequest(email = email, password = password)
-        return networkClient
-            .doRequest<Response.RegisterResponse>(request)
-            .toDomainResult { response ->
-                Response.RegisterResponse(
-                    userId = response.userId,
-                    accessToken = response.accessToken,
-                    refreshToken = response.refreshToken
-                )
-            }
+        val request = Request.RegisterRequest(email, password)
+
+        val result = networkClient.doRequest<Response.RegisterResponse>(request)
+
+        return result.toDomainResult { response ->
+            tokenStorage.saveTokens(
+                accessToken = response.accessToken,
+                refreshToken = response.refreshToken
+            )
+
+            response
+        }
     }
 
     override suspend fun login(
         email: String,
         password: String
     ): DomainResult<Response.UserAuthResponse, NetworkError> {
-        val request = Request.UserAuthRequest(email = email, password = password)
-        return networkClient
-            .doRequest<Response.UserAuthResponse>(request)
-            .toDomainResult { response ->
-                Response.UserAuthResponse(
-                    userId = response.userId,
-                    accessToken = response.accessToken,
-                    refreshToken = response.refreshToken
-                )
-            }
+
+        val request = Request.UserAuthRequest(email, password)
+
+        val result = networkClient.doRequest<Response.UserAuthResponse>(request)
+
+        return result.toDomainResult { response ->
+            tokenStorage.saveTokens(
+                accessToken = response.accessToken,
+                refreshToken = response.refreshToken
+            )
+
+            response
+        }
     }
 
     override suspend fun refresh(
         refreshToken: String
     ): DomainResult<Response.RefreshTokenResponse, NetworkError> {
-        val request = Request.RefreshTokenRequest(refreshToken = refreshToken)
-        return networkClient
-            .doRequest<Response.RefreshTokenResponse>(request)
-            .toDomainResult { response ->
-                Response.RefreshTokenResponse(
-                    accessToken = response.accessToken,
-                    refreshToken = response.refreshToken
-                )
-            }
+
+        val request = Request.RefreshTokenRequest(refreshToken)
+
+        val result = networkClient.doRequest<Response.RefreshTokenResponse>(request)
+
+        return result.toDomainResult { response ->
+            tokenStorage.saveTokens(
+                accessToken = response.accessToken,
+                refreshToken = response.refreshToken
+            )
+
+            response
+        }
     }
 
     override suspend fun recoverPassword(): DomainResult<Response.RecoverPasswordResponse, NetworkError> {
@@ -89,7 +100,7 @@ class AuthRepositoryImpl(
      * @param mapper маппинг из сетевого DTO в доменную модель.
      */
     private suspend fun <T : Response, D> Result<T>.toDomainResult(
-        mapper: (T) -> D
+        mapper: suspend (T) -> D
     ): DomainResult<D, NetworkError> {
         return fold(
             onSuccess = { response ->
@@ -99,5 +110,17 @@ class AuthRepositoryImpl(
                 DomainResult.Error(throwable.toNetworkError())
             }
         )
+    }
+
+    override suspend fun getAccessToken(): String? {
+        return tokenStorage.getAccessToken()
+    }
+
+    override suspend fun getRefreshToken(): String? {
+        return tokenStorage.getRefreshToken()
+    }
+
+    override suspend fun clearTokens() {
+        tokenStorage.clearTokens()
     }
 }
