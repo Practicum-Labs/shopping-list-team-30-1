@@ -7,7 +7,7 @@ import io.dimasla4ee.shoppinglist.core.database.entity.ProductEntity
 import io.dimasla4ee.shoppinglist.core.database.entity.ShoppingListEntity
 
 @Database(
-    version = 2,
+    version = 3,
     entities = [ShoppingListEntity::class, ProductEntity::class]
 )
 abstract class ShoppingListDatabase : RoomDatabase() {
