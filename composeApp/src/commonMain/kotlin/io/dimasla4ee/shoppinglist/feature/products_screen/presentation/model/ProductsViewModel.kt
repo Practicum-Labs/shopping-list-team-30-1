@@ -3,7 +3,6 @@ package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 import androidx.lifecycle.viewModelScope
 import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.GetSortModeUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.SetSortModeUseCase
-import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractor
@@ -13,12 +12,11 @@ import kotlinx.coroutines.launch
 
 class ProductsViewModel(
     private val productInteractor: ProductInteractor,
-    val getSortModeUseCase: GetSortModeUseCase,
-    val setSortModeUseCase: SetSortModeUseCase
+    private val getSortModeUseCase: GetSortModeUseCase,
+    private val setSortModeUseCase: SetSortModeUseCase
 ) : MviViewModel<ProductsIntent, ProductsState, ProductsEffect>(
     initialState = ProductsState()
 ) {
-
     private var listId: Long = 0
 
     fun init(listId: Long) {
@@ -28,192 +26,132 @@ class ProductsViewModel(
         observeSortMode()
     }
 
-    private fun observeProducts() {
-        viewModelScope.launch {
-            productInteractor
-                .getProductsOfList(listId)
-                .collect { products ->
-                    updateState {
-                        it.copy(
-                            items = products
-                        )
-                    }
-                }
-        }
+    private fun observeProducts() = viewModelScope.launch {
+        productInteractor
+            .getProductsOfList(listId)
+            .collect { products ->
+                updateState { it.copy(items = products) }
+            }
     }
 
-    private fun observeSortMode() {
-        viewModelScope.launch {
-            getSortModeUseCase(listId)
-                .collect { mode ->
-                    updateState {
-                        it.copy(
-                            sortMode = mode
-                        )
-                    }
-                }
-        }
+    private fun observeSortMode() = viewModelScope.launch {
+        getSortModeUseCase(listId)
+            .collect { mode ->
+                updateState { it.copy(sortMode = mode) }
+            }
     }
 
-    override fun reduce(intent: ProductsIntent, current: ProductsState): ProductsState {
-        return when (intent) {
-
-            is ProductsIntent.ChangeName ->
-                current.copy(name = intent.name)
-
-            is ProductsIntent.ChangeCount ->
-                current.copy(amount = intent.amount)
-
-            is ProductsIntent.ChangeUnit ->
-                current.copy(unit = intent.unit)
-
-            is ProductsIntent.IncreaseCount -> {
-                val count = current.amount.toIntOrNull() ?: 0
-                current.copy(amount = (count + 1).toString())
-            }
-
-            ProductsIntent.DecreaseCount -> {
-                val count = current.amount.toIntOrNull() ?: 0
-                current.copy(amount = (count - 1).coerceAtLeast(0).toString())
-            }
-
-            ProductsIntent.ToggleBottomSheet ->
-                current.copy(
-                    isBottomSheetOpen = !current.isBottomSheetOpen
-                )
-
-            ProductsIntent.ShowDeleteAllDialog ->
-                current.copy(
-                    dialog = ProductDialog.DeleteAll
-                )
-
-            ProductsIntent.ShowDeleteCheckedDialog ->
-                current.copy(
-                    dialog = ProductDialog.DeleteCheckedProducts
-                )
-
-            ProductsIntent.DismissDialog ->
-                current.copy(
-                    dialog = ProductDialog.None
-                )
-
-            is ProductsIntent.ReorderProduct -> {
-                if (current.sortMode != SortMode.CUSTOM) return current
-
-                val items = current.items.toMutableList()
-                items.removeAt(intent.fromIndex).let { movedItem ->
-                    items.add(intent.toIndex, movedItem)
-                }
-
-                val reordered = items.mapIndexed { index, product ->
-                    product.copy(position = index)
-                }
-
-                current.copy(items = reordered)
-            }
-
-            ProductsIntent.ToggleMenuBottomSheet -> {
-                current.copy(
-                    isMenuBottomSheetOpen = !current.isMenuBottomSheetOpen
-                )
-            }
-
-            ProductsIntent.ToggleSortMode,
-            is ProductsIntent.ChangeSortMode,
-            ProductsIntent.DeleteCheckedProducts,
-            ProductsIntent.DeleteAllProducts,
-            ProductsIntent.AddItem,
-            is ProductsIntent.ToggleItemChecked,
-            ProductsIntent.ConfirmDeleteAll,
-            ProductsIntent.ConfirmDeleteChecked,
-            is ProductsIntent.ReorderProduct -> current
+    override fun reduce(
+        intent: ProductsIntent,
+        current: ProductsState
+    ): ProductsState = when (intent) {
+        is ProductsIntent.UI.ChangeCount -> current.copy(amount = intent.amount)
+        is ProductsIntent.UI.ChangeName -> current.copy(name = intent.name)
+        is ProductsIntent.UI.ChangeUnit -> current.copy(unit = intent.unit)
+        is ProductsIntent.UI.ReorderProduct -> current.reduceReorderProduct(intent)
+        ProductsIntent.UI.DismissDialog -> current.copy(dialog = ProductDialog.None)
+        ProductsIntent.UI.DecreaseCount -> {
+            val amount = current.amount.toIntOrZero()
+            current.copy(amount = (amount - 1).coerceAtLeast(0).toString())
         }
+
+        is ProductsIntent.UI.EditProduct -> current.reduceEditProduct(intent)
+        ProductsIntent.UI.IncreaseCount ->
+            current.copy(amount = (current.amount.toIntOrZero() + 1).toString())
+
+        ProductsIntent.UI.ShowDeleteAllDialog ->
+            current.copy(dialog = ProductDialog.DeleteAll)
+
+        ProductsIntent.UI.ShowDeleteCheckedDialog ->
+            current.copy(dialog = ProductDialog.DeleteCheckedProducts)
+
+        ProductsIntent.UI.ToggleBottomSheet ->
+            current.copy(isBottomSheetOpen = !current.isBottomSheetOpen)
+
+        ProductsIntent.UI.ToggleMenuBottomSheet ->
+            current.copy(isMenuBottomSheetOpen = !current.isMenuBottomSheetOpen)
+
+        is ProductsIntent.Action -> current
     }
 
-    override suspend fun handleIntent(intent: ProductsIntent) {
-        when (intent) {
+    override suspend fun handleIntent(intent: ProductsIntent) = when (intent) {
+        ProductsIntent.Action.AddItem -> handleAddItem()
+        is ProductsIntent.Action.ChangeSortMode -> setSortModeUseCase(listId, intent.mode)
+        ProductsIntent.Action.CommitReorder -> handleCommitReorder()
+        ProductsIntent.Action.DeleteAllProducts -> handleDeleteAll()
+        ProductsIntent.Action.DeleteCheckedProducts -> handleDeleteChecked()
+        is ProductsIntent.Action.DeleteProduct -> handleDeleteProduct()
+        is ProductsIntent.Action.ToggleItemChecked -> handleToggleChecked(intent.product)
+        ProductsIntent.Action.ToggleSortMode -> handleToggleSortMode()
 
-            ProductsIntent.AddItem -> {
-                handleAddItem()
-            }
-
-            ProductsIntent.DeleteAllProducts -> {
-                updateState {
-                    it.copy(
-                        items = emptyList(),
-                        isMenuBottomSheetOpen = false
-                    )
-                }
-            }
-
-            is ProductsIntent.ChangeSortMode -> {
-                setSortModeUseCase(listId, intent.mode)
-            }
-
-            ProductsIntent.DeleteCheckedProducts -> {
-                updateState { current ->
-                    current.copy(
-                        items = current.items.filter { item ->
-                            !item.isChecked
-                        },
-                        isMenuBottomSheetOpen = false
-                    )
-                }
-            }
-
-            is ProductsIntent.ToggleItemChecked -> {
-                handleToggleChecked(intent.product)
-            }
-
-            ProductsIntent.ToggleSortMode -> {
-                handleToggleSortMode()
-            }
-
-            ProductsIntent.ConfirmDeleteAll -> {
-                handleDeleteAll()
-            }
-
-            ProductsIntent.ConfirmDeleteChecked -> {
-                handleDeleteChecked()
-            }
-
-            is ProductsIntent.ReorderProduct -> {
-                handleReorder(intent)
-            }
-
-            else -> Unit
-        }
+        is ProductsIntent.UI -> Unit
     }
 
-    private suspend fun handleAddItem() {
-        val currentState = state.value
-        if (currentState.name.isBlank()) return
-        productInteractor.addProduct(
-            Product(
-                id = 0,
-                listId = listId,
-                name = currentState.name.trim(),
-                amount = currentState.amount.toFloatOrNull() ?: 0f,
-                unit = currentState.unit,
-                isChecked = false,
-                position = currentState.items.size
-            )
-        )
-
+    private fun clearState() {
         updateState {
             it.copy(
+                id = null,
                 name = "",
                 amount = "",
-                unit = MeasurementUnit.PIECE,
+                unit = null,
+                position = null,
                 isBottomSheetOpen = false
             )
         }
     }
 
+    private fun ProductsState.reduceEditProduct(
+        intent: ProductsIntent.UI.EditProduct
+    ) = copy(
+        id = intent.product.id,
+        isBottomSheetOpen = !isBottomSheetOpen,
+        name = intent.product.name,
+        amount = intent.product.amount.toString(),
+        unit = intent.product.unit
+    )
+
+    private fun ProductsState.reduceReorderProduct(
+        intent: ProductsIntent.UI.ReorderProduct
+    ): ProductsState = when (sortMode) {
+        SortMode.ALPHABETICAL -> this
+        SortMode.CUSTOM -> copy(
+            items = displayedItems.toMutableList().apply {
+                val moved = removeAt(intent.fromIndex)
+                add(intent.toIndex, moved)
+            }.mapIndexed { index, product -> product.copy(position = index) }
+        )
+    }
+
+    private suspend fun handleDeleteProduct() {
+        state.value.items.find { it.id == state.value.id }?.let { product ->
+            productInteractor.deleteProduct(product)
+        }
+        clearState()
+    }
+
+    private suspend fun handleAddItem() {
+        val currentState = state.value
+
+        if (currentState.name.isBlank()) return
+        productInteractor.addProduct(
+            Product(
+                id = currentState.id ?: System.currentTimeMillis(),
+                listId = listId,
+                name = currentState.name.trim(),
+                amount = currentState.amount.toFloatOrNull() ?: 0f,
+                unit = currentState.unit,
+                isChecked = false,
+                position = currentState.position ?: currentState.items.size
+            )
+        )
+
+        clearState()
+    }
+
     private suspend fun handleToggleChecked(
         product: Product
     ) {
-        productInteractor.updateProduct(
+        productInteractor.addProduct(
             product.copy(
                 isChecked = !product.isChecked
             )
@@ -234,51 +172,31 @@ class ProductsViewModel(
     }
 
     private suspend fun handleDeleteAll() {
-        productInteractor.deleteAllProducts(
-            listId
-        )
+        productInteractor.deleteAllProducts(listId)
 
         updateState {
             it.copy(
-                dialog = ProductDialog.None
+                dialog = ProductDialog.None,
+                isMenuBottomSheetOpen = false
             )
         }
     }
 
     private suspend fun handleDeleteChecked() {
-        productInteractor.deleteCheckedProducts(
-            listId
-        )
+        productInteractor.deleteCheckedProducts(listId)
 
         updateState {
             it.copy(
-                dialog = ProductDialog.None
+                dialog = ProductDialog.None,
+                isMenuBottomSheetOpen = false
             )
         }
     }
 
-    private suspend fun handleReorder(
-        intent: ProductsIntent.ReorderProduct
-    ) {
-        if (state.value.sortMode != SortMode.CUSTOM) {
-            return
-        }
-
-        val currentItems =
-            state.value.items.toMutableList()
-        val movedItem =
-            currentItems.removeAt(intent.fromIndex)
-        currentItems.add(
-            intent.toIndex,
-            movedItem
-        )
-
-        currentItems.forEachIndexed { index, product ->
-            productInteractor.updateProduct(
-                product.copy(
-                    position = index
-                )
-            )
-        }
+    private suspend fun handleCommitReorder() {
+        val items = state.value.items
+        productInteractor.updateProducts(items)
     }
+
+    private fun String.toIntOrZero(): Int = toIntOrNull() ?: 0
 }

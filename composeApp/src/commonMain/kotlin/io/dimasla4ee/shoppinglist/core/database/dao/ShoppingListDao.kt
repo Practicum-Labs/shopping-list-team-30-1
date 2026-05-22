@@ -25,11 +25,14 @@ interface ShoppingListDao {
     @Query("SELECT * FROM ProductEntity ORDER BY addedAtMillis DESC")
     fun getProducts(): Flow<List<ProductEntity>>
 
-    @Query("SELECT * FROM ProductEntity WHERE listId = :listId ORDER BY addedAtMillis DESC")
+    @Query("SELECT * FROM ProductEntity WHERE listId = :listId ORDER BY position ASC")
     fun getProductsOfList(listId: Long): Flow<List<ProductEntity>>
 
     @Delete
     suspend fun deleteShoppingList(shoppingListEntity: ShoppingListEntity)
+
+    @Update
+    suspend fun updateProducts(products: List<ProductEntity>)
 
     @Delete
     suspend fun deleteProduct(productEntity: ProductEntity)
@@ -37,13 +40,10 @@ interface ShoppingListDao {
     @Query("DELETE FROM ShoppingListEntity")
     suspend fun deleteAllShoppingLists()
 
-    @Update
-    suspend fun updateProduct(productEntity: ProductEntity)
-
     @Query("DELETE FROM ProductEntity WHERE listId = :listId")
     suspend fun deleteAllProductsOfList(listId: Long)
 
-    @Query("DELETE FROM ProductEntity WHERE listId = :listId AND isChecked = 1")
+    @Query("DELETE FROM ProductEntity WHERE listId = :listId AND isChecked = true")
     suspend fun deleteCheckedProducts(listId: Long)
 
 }

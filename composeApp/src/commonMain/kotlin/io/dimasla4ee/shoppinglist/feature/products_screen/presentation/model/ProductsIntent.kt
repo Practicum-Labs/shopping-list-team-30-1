@@ -6,38 +6,29 @@ import io.dimasla4ee.shoppinglist.core.mvi.MviIntent
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 
 sealed interface ProductsIntent : MviIntent {
+    sealed interface Action : ProductsIntent {
+        data object AddItem : Action
+        data object DeleteAllProducts : Action
+        data object DeleteCheckedProducts : Action
+        data object CommitReorder : Action
+        data object DeleteProduct: Action
+        data class ChangeSortMode(val mode: SortMode) : Action
+        data class ToggleItemChecked(val product: Product) : Action
+        data object ToggleSortMode : Action
+    }
 
-    data class ChangeName(val name: String) : ProductsIntent
-    data class ChangeCount(val amount: String) : ProductsIntent
-    data class ChangeUnit(val unit: MeasurementUnit) : ProductsIntent
-
-    data object IncreaseCount : ProductsIntent
-    data object DecreaseCount : ProductsIntent
-    data object AddItem : ProductsIntent
-
-    data object ToggleBottomSheet : ProductsIntent
-    data class ToggleItemChecked(val product: Product) : ProductsIntent
-
-    data class ReorderProduct(
-        val fromIndex: Int,
-        val toIndex: Int
-    ) : ProductsIntent
-
-    data object ToggleSortMode : ProductsIntent
-
-    data object ShowDeleteAllDialog : ProductsIntent
-
-    data object ShowDeleteCheckedDialog : ProductsIntent
-
-    data object DismissDialog : ProductsIntent
-
-    data object ConfirmDeleteAll : ProductsIntent
-
-    data object ConfirmDeleteChecked : ProductsIntent
-
-    data object ToggleMenuBottomSheet : ProductsIntent
-    data object DeleteAllProducts : ProductsIntent
-    data object DeleteCheckedProducts : ProductsIntent
-
-    data class ChangeSortMode(val mode: SortMode) : ProductsIntent
+    sealed interface UI : ProductsIntent {
+        data class ChangeName(val name: String) : UI
+        data class ChangeCount(val amount: String) : UI
+        data class ChangeUnit(val unit: MeasurementUnit) : UI
+        data object IncreaseCount : UI
+        data object DecreaseCount : UI
+        data object ToggleBottomSheet : UI
+        data class ReorderProduct(val fromIndex: Int, val toIndex: Int) : UI
+        data object ShowDeleteAllDialog : UI
+        data object ShowDeleteCheckedDialog : UI
+        data object DismissDialog : UI
+        data object ToggleMenuBottomSheet : UI
+        data class EditProduct(val product: Product) : UI
+    }
 }

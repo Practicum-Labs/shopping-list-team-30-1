@@ -26,6 +26,7 @@ val Brown700 = Color(0xFF211A14)
 val Brown800 = Color(0xFF19120C)
 val Brown900 = Color(0xFF241200)
 
+val Gray200 = Color(0xFFCAC4D0)
 val Gray300 = Color(0xFFD4C4B5)
 val Gray400 = Color(0xFFB0A092)
 val Gray500 = Color(0xFF827568)

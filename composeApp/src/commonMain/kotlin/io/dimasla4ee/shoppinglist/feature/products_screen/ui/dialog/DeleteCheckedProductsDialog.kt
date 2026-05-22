@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
@@ -49,7 +50,8 @@ fun DeleteCheckedProductsDialog(
 
                 Text(
                     text = stringResource(Res.string.dialog_delete_all_purchased_items),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center
                 )
             }
         },

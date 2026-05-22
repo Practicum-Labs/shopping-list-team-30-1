@@ -26,8 +26,8 @@ class ProductRepositoryImpl(
         dao.addProduct(product.toEntity())
     }
 
-    override suspend fun updateProduct(product: Product) {
-        dao.updateProduct(product.toEntity())
+    override suspend fun updateProducts(products: List<Product>) {
+        dao.updateProducts(products.map { it.toEntity() })
     }
 
     override suspend fun deleteProduct(product: Product) {

@@ -36,9 +36,12 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
-import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsState
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.state.ProductDialog
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.AddProductBottomSheet
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteAllProductsDialog
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteCheckedProductsDialog
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -57,7 +60,6 @@ import shoppinglist.composeapp.generated.resources.ic_sort_by_alpha_24
 fun AddItemScreen(
     listName: String,
     state: ProductsState,
-    onMenuClick: () -> Unit,
     onIntent: (ProductsIntent) -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null
@@ -68,7 +70,7 @@ fun AddItemScreen(
     val lazyListState = rememberLazyListState()
     val reorderableLazyListState = rememberReorderableLazyListState(lazyListState) { from, to ->
         onIntent(
-            ProductsIntent.ReorderProduct(
+            ProductsIntent.UI.ReorderProduct(
                 fromIndex = from.index,
                 toIndex = to.index
             )
@@ -78,6 +80,7 @@ fun AddItemScreen(
     val isCustomSort = state.sortMode == SortMode.CUSTOM
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             AppTopBar(
                 title = listName,
@@ -95,12 +98,33 @@ fun AddItemScreen(
                     ActionItem(
                         iconRes = Res.drawable.ic_menu_24,
                         label = stringResource(Res.string.content_menu),
-                        onClick = { onIntent(ProductsIntent.ToggleMenuBottomSheet) }
+                        onClick = { onIntent(ProductsIntent.UI.ToggleMenuBottomSheet) }
                     )
                 )
             )
+        },
+        floatingActionButton = {
+            AppFloatingActionButton(
+                modifier = Modifier.padding(AppDimensions.paddingMedium),
+                onClick = { onIntent(ProductsIntent.UI.ToggleBottomSheet) },
+                iconRes = painterResource(Res.drawable.ic_add_56)
+            )
         }
     ) { paddingValues ->
+
+        when (state.dialog) {
+            ProductDialog.DeleteAll -> DeleteAllProductsDialog(
+                onDismiss = { onIntent(ProductsIntent.UI.DismissDialog) },
+                onConfirm = { onIntent(ProductsIntent.Action.DeleteAllProducts) }
+            )
+
+            ProductDialog.DeleteCheckedProducts -> DeleteCheckedProductsDialog(
+                onDismiss = { onIntent(ProductsIntent.UI.DismissDialog) },
+                onConfirm = { onIntent(ProductsIntent.Action.DeleteCheckedProducts) }
+            )
+
+            ProductDialog.None -> Unit
+        }
 
         Box(
             modifier = Modifier
@@ -111,17 +135,15 @@ fun AddItemScreen(
             ProductsMenuBottomSheet(
                 visible = state.isMenuBottomSheetOpen,
                 sortMode = state.sortMode,
-                onDismiss = {
-                    onIntent(ProductsIntent.ToggleMenuBottomSheet)
-                },
-                onSortClick = {
-                    onIntent(ProductsIntent.ToggleSortMode)
-                },
+                onDismiss = { onIntent(ProductsIntent.UI.ToggleMenuBottomSheet) },
+                onSortClick = { onIntent(ProductsIntent.Action.ToggleSortMode) },
                 onDeleteAllClick = {
-                    onIntent(ProductsIntent.DeleteAllProducts)
+                    onIntent(ProductsIntent.UI.ShowDeleteAllDialog)
+                    onIntent(ProductsIntent.UI.ToggleMenuBottomSheet)
                 },
                 onDeleteCheckClick = {
-                    onIntent(ProductsIntent.DeleteCheckedProducts)
+                    onIntent(ProductsIntent.UI.ShowDeleteCheckedDialog)
+                    onIntent(ProductsIntent.UI.ToggleMenuBottomSheet)
                 }
             )
 
@@ -135,78 +157,69 @@ fun AddItemScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(
-                        items = state.sortedItems,
+                        items = state.displayedItems,
                         key = { item -> item.id }
                     ) { item ->
                         ReorderableShoppingItem(
                             item = item,
                             state = reorderableLazyListState,
                             hapticFeedback = hapticFeedback,
-                            onCheckedChange = { onIntent(ProductsIntent.ToggleItemChecked(item)) },
+                            onCheckedChange = {
+                                onIntent(
+                                    ProductsIntent.Action.ToggleItemChecked(
+                                        item
+                                    )
+                                )
+                            },
+                            onLongPress = { onIntent(ProductsIntent.UI.EditProduct(item)) },
+                            onDragStop = { onIntent(ProductsIntent.Action.CommitReorder) },
                             showDragHandle = isCustomSort
                         )
                     }
                 }
             }
+        }
 
-            // Bottom Sheet
-            if (state.isBottomSheetOpen) {
-                ModalBottomSheet(
+        // Bottom Sheet
+        if (state.isBottomSheetOpen) {
+            ModalBottomSheet(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(horizontal = AppDimensions.paddingVerySmall),
+                onDismissRequest = { onIntent(ProductsIntent.UI.ToggleBottomSheet) },
+                sheetState = sheetState,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                dragHandle = null,
+                shape = AppDimensions.BottomSheet.topCornerRadius
+            ) {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .navigationBarsPadding()
-                        .padding(horizontal = AppDimensions.paddingVerySmall),
-                    onDismissRequest = { onIntent(ProductsIntent.ToggleBottomSheet) },
-                    sheetState = sheetState,
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    dragHandle = null,
-                    shape = AppDimensions.BottomSheet.topCornerRadius
+                        .padding(top = AppDimensions.paddingMedium),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = AppDimensions.paddingMedium),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Surface(
-                            modifier = Modifier.size(AppDimensions.BottomSheet.handlerSize),
-                            shape = CircleShape,
-                            color = MaterialTheme.colorScheme.outlineVariant
-                        ) {}
-                    }
-
-                    AddProductBottomSheet(
-                        name = state.name,
-                        amount = state.amount,
-                        unit = state.unit,
-                        onNameChange = { onIntent(ProductsIntent.ChangeName(it)) },
-                        onCountChange = { onIntent(ProductsIntent.ChangeCount(it)) },
-                        onUnitChange = { onIntent(ProductsIntent.ChangeUnit(it)) },
-                        onIncreaseClick = { onIntent(ProductsIntent.IncreaseCount) },
-                        onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) },
-                        onFabClick = { onIntent(ProductsIntent.AddItem) }
-                    )
+                    Surface(
+                        modifier = Modifier.size(AppDimensions.BottomSheet.handlerSize),
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.outlineVariant
+                    ) {}
                 }
+
+                AddProductBottomSheet(
+                    editMode = state.id in state.items.map { it.id },
+                    name = state.name,
+                    amount = state.amount,
+                    unit = state.unit,
+                    onNameChange = { onIntent(ProductsIntent.UI.ChangeName(it)) },
+                    onCountChange = { onIntent(ProductsIntent.UI.ChangeCount(it)) },
+                    onUnitChange = { onIntent(ProductsIntent.UI.ChangeUnit(it)) },
+                    onIncreaseClick = { onIntent(ProductsIntent.UI.IncreaseCount) },
+                    onDecreaseClick = { onIntent(ProductsIntent.UI.DecreaseCount) },
+                    onApplyClick = { onIntent(ProductsIntent.Action.AddItem) },
+                    onDeleteClick = { onIntent(ProductsIntent.Action.DeleteProduct) }
+                )
             }
-
-            // FAB
-            AppFloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(
-                        end = AppDimensions.paddingMedium,
-                        bottom = AppDimensions.paddingExtraBig
-                    ),
-                onClick = { onIntent(ProductsIntent.ToggleBottomSheet) },
-                iconRes = painterResource(Res.drawable.ic_add_56)
-            )
-
-            SortModeIndicator(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                sortMode = state.sortMode,
-                onToggle = { onIntent(ProductsIntent.ToggleSortMode) }
-            )
-
         }
     }
 }
@@ -257,8 +270,7 @@ private fun AddItemScreenPreview() {
         AddItemRoute(
             listId = 0,
             listName = "Bobs",
-            onBackClick = {},
-            onMenuClick = {}
+            onBackClick = {}
         )
     }
 }

@@ -20,9 +20,6 @@ import shoppinglist.composeapp.generated.resources.btm_menu_clear_purchased_item
 import shoppinglist.composeapp.generated.resources.btm_menu_delete_all
 import shoppinglist.composeapp.generated.resources.ic_clear_24
 import shoppinglist.composeapp.generated.resources.ic_delete_24
-import shoppinglist.composeapp.generated.resources.ic_swap_vert_24
-import shoppinglist.composeapp.generated.resources.sort_alphabetical
-import shoppinglist.composeapp.generated.resources.sort_custom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,20 +35,15 @@ fun ProductsMenuBottomSheet(
 
     if (visible) {
         ModalBottomSheet(
-            modifier = modifier
-                .padding(horizontal = 6.dp),
+            modifier = modifier.padding(horizontal = 6.dp),
             onDismissRequest = onDismiss,
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onSecondary
         ) {
-
             Column(modifier = modifier.fillMaxWidth()) {
-
                 SortSelector(
                     sortMode = sortMode,
-                    onSortSelect = { mode ->
-                        onSortClick(mode)
-                    }
+                    onSortSelect = { mode -> onSortClick(mode) }
                 )
 
                 MenuItem(
