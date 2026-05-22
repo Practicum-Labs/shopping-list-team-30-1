@@ -60,3 +60,9 @@
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+
+########################################
+# Management
+########################################
+
+-dontwarn java.lang.management.*

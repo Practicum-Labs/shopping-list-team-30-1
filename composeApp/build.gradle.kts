@@ -61,7 +61,7 @@ kotlin {
 
             implementation(libs.koin.android)
 
-            implementation("me.gosimple:nbvcxz:1.5.1")
+            implementation(libs.nbvcxz)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -106,9 +106,9 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
 
-            implementation("me.gosimple:nbvcxz:1.5.1")
+            implementation(libs.nbvcxz)
 
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.2")
+            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }
@@ -133,7 +133,7 @@ android {
     signingConfigs {
         create("release") {
             if (keystorePropertiesFile.exists()) {
-                storeFile = file(keystoreProperties["STORE_FILE"] as String)
+                storeFile = rootProject.file(keystoreProperties["STORE_FILE"] as String)
                 storePassword = keystoreProperties["STORE_PASSWORD"] as String
                 keyAlias = keystoreProperties["KEY_ALIAS"] as String
                 keyPassword = keystoreProperties["KEY_PASSWORD"] as String
