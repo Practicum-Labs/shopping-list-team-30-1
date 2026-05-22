@@ -191,6 +191,7 @@ fun AddItemScreen(
                 }
 
                 AddProductBottomSheet(
+                    editMode = state.id in state.items.map { it.id },
                     name = state.name,
                     amount = state.amount,
                     unit = state.unit,
@@ -199,7 +200,8 @@ fun AddItemScreen(
                     onUnitChange = { onIntent(ProductsIntent.ChangeUnit(it)) },
                     onIncreaseClick = { onIntent(ProductsIntent.IncreaseCount) },
                     onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) },
-                    onFabClick = { onIntent(ProductsIntent.AddItem) }
+                    onApplyClick = { onIntent(ProductsIntent.AddItem) },
+                    onDeleteClick = { onIntent(ProductsIntent.DeleteProduct)}
                 )
             }
         }

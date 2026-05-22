@@ -1,5 +1,6 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +31,7 @@ import shoppinglist.composeapp.generated.resources.content_minus
 import shoppinglist.composeapp.generated.resources.hint_item
 import shoppinglist.composeapp.generated.resources.hint_new_item
 import shoppinglist.composeapp.generated.resources.hint_quantity
+import shoppinglist.composeapp.generated.resources.ic_delete_24
 import shoppinglist.composeapp.generated.resources.ic_fab_check_56
 import shoppinglist.composeapp.generated.resources.ic_minus_24
 import shoppinglist.composeapp.generated.resources.ic_plus_24
@@ -47,7 +49,9 @@ fun AddProductBottomSheet(
     onUnitChange: (MeasurementUnit) -> Unit,
     onIncreaseClick: () -> Unit,
     onDecreaseClick: () -> Unit,
-    onFabClick: () -> Unit,
+    onApplyClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    editMode: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -126,13 +130,26 @@ fun AddProductBottomSheet(
 
         Spacer(modifier = Modifier.height(AppDimensions.spacerMedium))
 
-        AppFloatingActionButton(
+        Row(
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(bottom = AppDimensions.paddingBigPlus),
-            onClick = onFabClick,
-            iconRes = painterResource(Res.drawable.ic_fab_check_56)
-        )
+            horizontalArrangement = Arrangement.spacedBy(AppDimensions.paddingMedium)
+        ) {
+            if (editMode) {
+                AppFloatingActionButton(
+                    onClick = onDeleteClick,
+                    iconRes = painterResource(Res.drawable.ic_delete_24),
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError
+                )
+            }
+
+            AppFloatingActionButton(
+                onClick = onApplyClick,
+                iconRes = painterResource(Res.drawable.ic_fab_check_56)
+            )
+        }
     }
 }
 
@@ -160,14 +177,16 @@ private fun AddProductBottomSheetPreview() {
     ShoppingListTheme {
         AddProductBottomSheet(
             name = "",
-            amount = "",
             unit = MeasurementUnit.PIECE,
+            amount = "",
             onNameChange = {},
             onCountChange = {},
             onUnitChange = {},
             onIncreaseClick = {},
             onDecreaseClick = {},
-            onFabClick = {}
+            onApplyClick = {},
+            onDeleteClick = {},
+            editMode = false
         )
     }
 }

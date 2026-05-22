@@ -3,7 +3,6 @@ package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 import androidx.lifecycle.viewModelScope
 import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.GetSortModeUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.SetSortModeUseCase
-import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractor
@@ -127,6 +126,7 @@ class ProductsViewModel(
                 )
             }
 
+            is ProductsIntent.DeleteProduct,
             ProductsIntent.CommitReorder,
             ProductsIntent.ToggleSortMode,
             is ProductsIntent.ChangeSortMode,
@@ -134,6 +134,19 @@ class ProductsViewModel(
             ProductsIntent.DeleteAllProducts,
             ProductsIntent.AddItem,
             is ProductsIntent.ToggleItemChecked -> current
+        }
+    }
+
+    private fun clearState() {
+        updateState {
+            it.copy(
+                id = null,
+                name = "",
+                amount = "",
+                unit = null,
+                position = null,
+                isBottomSheetOpen = false
+            )
         }
     }
 
@@ -147,6 +160,13 @@ class ProductsViewModel(
             ProductsIntent.ToggleSortMode -> handleToggleSortMode()
             is ProductsIntent.ReorderProduct -> Unit
             ProductsIntent.CommitReorder -> handleCommitReorder()
+            is ProductsIntent.DeleteProduct -> {
+                state.value.items.find { it.id == state.value.id }?.let { product ->
+                    productInteractor.deleteProduct(product)
+                }
+                clearState()
+            }
+
             else -> Unit
         }
     }
@@ -167,16 +187,7 @@ class ProductsViewModel(
             )
         )
 
-        updateState {
-            it.copy(
-                id = null,
-                name = "",
-                amount = "",
-                unit = MeasurementUnit.PIECE,
-                position = null,
-                isBottomSheetOpen = false
-            )
-        }
+        clearState()
     }
 
     private suspend fun handleToggleChecked(
