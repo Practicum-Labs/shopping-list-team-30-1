@@ -17,25 +17,16 @@ fun SignInScreen(
 ) {
     AuthorizationScreen(
         modifier = modifier.fillMaxSize(),
-        onBackClick = { TODO("Navigate back")}
+        onBackClick = { onIntent(SignInIntent.Action.BackClicked) }
     ) {
         SignInContent(
             state = state,
-            onShowPassword = {
-                onIntent(SignInIntent.PasswordVisibilityToggleClicked)
-            },
-            onSignIn = {
-                onIntent(SignInIntent.SignInClicked)
-            },
-            onForgotPassword = {
-                onIntent(SignInIntent.ForgotPasswordClicked)
-            },
-            onRegistration = {
-                onIntent(SignInIntent.SignUpClicked)
-            },
-            onContinueAsGuest = {
-                onIntent(SignInIntent.ContinueAsGuestClicked)
-            },
+            onShowPassword =
+                { onIntent(SignInIntent.UI.PasswordVisibilityToggleClicked) },
+            onSignIn = { onIntent(SignInIntent.Action.SignInClicked) },
+            onForgotPassword = { onIntent(SignInIntent.Action.ForgotPasswordClicked) },
+            onRegistration = { onIntent(SignInIntent.Action.SignUpClicked) },
+            onContinueAsGuest = { onIntent(SignInIntent.Action.ContinueAsGuestClicked) },
             modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
         )
     }

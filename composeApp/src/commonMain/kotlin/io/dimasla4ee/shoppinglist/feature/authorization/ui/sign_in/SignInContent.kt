@@ -102,6 +102,7 @@ fun SignInContent(
                 .appDefaultFormSize()
                 .height(SignInDimensions.ButtonHeight),
             onClick = onSignIn,
+            enabled = state.isSignInAllowed,
             shape = RoundedCornerShape(SignInDimensions.ButtonCornerRadius)
         ) {
             Text(stringResource(Res.string.authorization_sign_in))

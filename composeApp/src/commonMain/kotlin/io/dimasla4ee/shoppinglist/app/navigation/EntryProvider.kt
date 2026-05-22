@@ -136,13 +136,14 @@ fun entryProvider(
                         topLevelBackStack.removeLast()
                     }
 
-                    SignInEffect.NavigateToRecoverPassword -> {
+                    SignInEffect.NavigateToRecoverPassword ->
                         topLevelBackStack.add(Route.PasswordRecovery)
-                    }
 
-                    SignInEffect.NavigateToRegister -> {
+                    SignInEffect.NavigateToRegister ->
                         topLevelBackStack.add(Route.Registration)
-                    }
+
+                    SignInEffect.NavigateBack ->
+                        topLevelBackStack.removeLast()
                 }
             }
         }

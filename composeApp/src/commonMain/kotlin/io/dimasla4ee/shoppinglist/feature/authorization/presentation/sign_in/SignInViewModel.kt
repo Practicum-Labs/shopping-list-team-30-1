@@ -15,27 +15,25 @@ class SignInViewModel(
         intent: SignInIntent,
         current: SignInState
     ): SignInState = when (intent) {
-        SignInIntent.PasswordVisibilityToggleClicked -> {
+        SignInIntent.UI.PasswordVisibilityToggleClicked -> {
             current.copy(
                 isPasswordVisible = !current.isPasswordVisible
             )
         }
 
-        SignInIntent.ForgotPasswordClicked,
-        SignInIntent.SignInClicked,
-        SignInIntent.SignUpClicked,
-        SignInIntent.ContinueAsGuestClicked -> current
+        is SignInIntent.Action -> current
     }
 
     override suspend fun handleIntent(intent: SignInIntent) {
         val currentState = state.value
 
         val effect = when (intent) {
-            SignInIntent.ForgotPasswordClicked -> SignInEffect.NavigateToRecoverPassword
-            SignInIntent.SignInClicked -> handleSignIn(currentState) ?: return
-            SignInIntent.SignUpClicked -> SignInEffect.NavigateToRegister
-            SignInIntent.PasswordVisibilityToggleClicked -> return
-            SignInIntent.ContinueAsGuestClicked -> SignInEffect.NavigateToMain
+            is SignInIntent.UI -> return
+            SignInIntent.Action.ForgotPasswordClicked -> SignInEffect.NavigateToRecoverPassword
+            SignInIntent.Action.SignInClicked -> handleSignIn(currentState) ?: return
+            SignInIntent.Action.SignUpClicked -> SignInEffect.NavigateToRegister
+            SignInIntent.Action.ContinueAsGuestClicked -> SignInEffect.NavigateToMain
+            SignInIntent.Action.BackClicked -> SignInEffect.NavigateBack
         }
         emitEffect(effect)
     }
