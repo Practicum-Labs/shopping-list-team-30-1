@@ -38,6 +38,7 @@ import shoppinglist.composeapp.generated.resources.ic_plus_24
 
 
 private const val HALF_WEIGHT = 0.5f
+private const val MAX_LENGTH_QUANTITY = 7
 
 @Composable
 fun AddProductBottomSheet(
@@ -86,7 +87,7 @@ fun AddProductBottomSheet(
                 OutlinedTextField(
                     value = amount,
                     onValueChange = { value ->
-                        onCountChange(value)
+                        if (value.length <= MAX_LENGTH_QUANTITY) onCountChange(value)
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = MaterialTheme.typography.bodyLarge,

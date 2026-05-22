@@ -16,7 +16,7 @@ data class ProductsState(
     val sortMode: SortMode = SortMode.CUSTOM,
     val isBottomSheetOpen: Boolean = false,
     val dialog: ProductDialog = ProductDialog.None,
-    val isMenuBottomSheetOpen: Boolean = false,
+    val isMenuBottomSheetOpen: Boolean = false
 ) : MviState {
     val displayedItems: List<Product>
         get() = when (sortMode) {
