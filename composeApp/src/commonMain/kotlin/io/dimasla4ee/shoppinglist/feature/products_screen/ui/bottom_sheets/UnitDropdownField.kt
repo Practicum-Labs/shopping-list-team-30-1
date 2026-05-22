@@ -1,11 +1,9 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -28,6 +26,8 @@ import shoppinglist.composeapp.generated.resources.hint_units
 import shoppinglist.composeapp.generated.resources.ic_trailing_down_48
 import shoppinglist.composeapp.generated.resources.ic_trailing_up_48
 
+private const val MAX_LENGTH_UNIT = 5
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UnitDropdownField(
@@ -46,8 +46,10 @@ fun UnitDropdownField(
         OutlinedTextField(
             value = textValue,
             onValueChange = { newText ->
-                textValue = newText
-                onUnitSelect(textValue)
+                if (newText.length <= MAX_LENGTH_UNIT) {
+                    textValue = newText
+                    onUnitSelect(textValue)
+                }
             },
             label = {
                 Text(
