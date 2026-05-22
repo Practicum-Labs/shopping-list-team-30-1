@@ -12,6 +12,8 @@ import org.jetbrains.compose.resources.painterResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.ic_main_logo_78
 
+const val SIZE_FRACTION = 0.5f
+
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier
@@ -21,7 +23,7 @@ fun SplashScreen(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier.fillMaxSize(0.5f),
+            modifier = Modifier.fillMaxSize(SIZE_FRACTION),
             painter = painterResource(Res.drawable.ic_main_logo_78),
             tint = contentColorFor(MaterialTheme.colorScheme.background),
             contentDescription = null

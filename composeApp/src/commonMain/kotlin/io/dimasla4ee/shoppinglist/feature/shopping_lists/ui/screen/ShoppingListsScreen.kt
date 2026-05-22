@@ -98,25 +98,21 @@ fun ShoppingListsScreen(
                             lists = visibleLists,
                             onEvent = { event ->
                                 val intent = when (event) {
-                                    is ShoppingListCardEvent.Click -> {
+                                    is ShoppingListCardEvent.Click ->
                                         ShoppingListsIntent.ListClicked(event.item)
-                                    }
 
-                                    is ShoppingListCardEvent.Edit -> {
+                                    is ShoppingListCardEvent.Edit ->
                                         ShoppingListsIntent.EditClicked(event.item)
-                                    }
 
-                                    is ShoppingListCardEvent.Copy -> {
+                                    is ShoppingListCardEvent.Copy ->
                                         ShoppingListsIntent.CopyClicked(event.item)
-                                    }
 
-                                    is ShoppingListCardEvent.ChangeIcon -> {
+                                    is ShoppingListCardEvent.ChangeIcon ->
                                         ShoppingListsIntent.ChangeIconClicked(event.item)
-                                    }
 
-                                    is ShoppingListCardEvent.Delete -> {
+                                    is ShoppingListCardEvent.Delete ->
                                         ShoppingListsIntent.DeleteClicked(event.item)
-                                    }
+
                                 }
                                 onIntent(intent)
                             },
@@ -159,7 +155,7 @@ fun ShoppingListsScreen(
                     label = stringResource(
                         if (isAuthorized) Res.string.action_logout else Res.string.action_login
                     ),
-                    onClick = { onIntent(ShoppingListsIntent.AuthorizationClicked) }
+                    onClick = { onIntent(ShoppingListsIntent.AuthorizationClicked(isAuthorized)) }
                 ),
                 onAddListClick = if (state.isFabVisible) {
                     { onIntent(ShoppingListsIntent.FabClick) }
@@ -183,25 +179,20 @@ fun ShoppingListsScreen(
                         lists = visibleLists,
                         onEvent = { event ->
                             val intent = when (event) {
-                                is ShoppingListCardEvent.Click -> {
+                                is ShoppingListCardEvent.Click ->
                                     ShoppingListsIntent.ListClicked(event.item)
-                                }
 
-                                is ShoppingListCardEvent.Edit -> {
+                                is ShoppingListCardEvent.Edit ->
                                     ShoppingListsIntent.EditClicked(event.item)
-                                }
 
-                                is ShoppingListCardEvent.Copy -> {
+                                is ShoppingListCardEvent.Copy ->
                                     ShoppingListsIntent.CopyClicked(event.item)
-                                }
 
-                                is ShoppingListCardEvent.ChangeIcon -> {
+                                is ShoppingListCardEvent.ChangeIcon ->
                                     ShoppingListsIntent.ChangeIconClicked(event.item)
-                                }
 
-                                is ShoppingListCardEvent.Delete -> {
+                                is ShoppingListCardEvent.Delete ->
                                     ShoppingListsIntent.DeleteClicked(event.item)
-                                }
                             }
                             onIntent(intent)
                         },

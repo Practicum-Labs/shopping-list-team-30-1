@@ -30,11 +30,13 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
+const val SPLASH_SCREEN_DELAY = 1000L
 fun entryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>,
     sessionViewModel: SessionViewModel,
@@ -47,6 +49,7 @@ fun entryProvider(
         SplashScreen(modifier = Modifier.fillMaxSize())
 
         LaunchedEffect(Unit) {
+            delay(SPLASH_SCREEN_DELAY)
             splashViewModel.dispatch(SplashIntent.Initialize)
 
             splashViewModel.effects.collect { effect ->
@@ -80,7 +83,6 @@ fun entryProvider(
         val isAuthorized = sessionState.refreshToken != null
 
         LaunchedEffect(Unit) {
-
             viewModel.dispatch(
                 ShoppingListsIntent.ObserveLists
             )
@@ -115,7 +117,6 @@ fun entryProvider(
     }
 
     entry<Route.ProductsList> { route ->
-
         AddItemRoute(
             listId = route.listId,
             listName = route.listName,

@@ -1,6 +1,7 @@
 package io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation
 
 import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.RemoveSortModeUseCase
+import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.state.ShoppingListDialog
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class ShoppingListsViewModel(
     private val interactor: ShoppingListsInteractor,
+    private val authRepository: AuthRepository,
     private val removeSortModeUseCase: RemoveSortModeUseCase
 ) : MviViewModel<ShoppingListsIntent, ShoppingListsState, ShoppingListsEffect>(
     initialState = ShoppingListsState()
@@ -243,11 +245,23 @@ class ShoppingListsViewModel(
                 handleListClicked(intent)
             }
 
+            is ShoppingListsIntent.AuthorizationClicked -> with(intent) {
+                when (isAuthorized) {
+                    true -> updateState { it.copy(dialog = ShoppingListDialog.Logout) }
+                    false -> emitEffect(ShoppingListsEffect.NavigateToAuthorization)
+                }
+            }
+
+            is ShoppingListsIntent.LogoutClick -> {
+                authRepository.clearTokens()
+                dispatch(ShoppingListsIntent.DialogDismiss)
+            }
+
             else -> Unit
         }
     }
 
-    private suspend fun handleObserveLists() {
+    private fun handleObserveLists() {
         observeLists()
     }
 

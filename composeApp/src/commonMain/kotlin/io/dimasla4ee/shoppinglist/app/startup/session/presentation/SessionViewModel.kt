@@ -8,7 +8,7 @@ class SessionViewModel(
 ) : MviViewModel<SessionIntent, SessionState, SessionEffect>(
     initialState = SessionState()
 ) {
-
+    
     override fun reduce(
         intent: SessionIntent,
         current: SessionState
