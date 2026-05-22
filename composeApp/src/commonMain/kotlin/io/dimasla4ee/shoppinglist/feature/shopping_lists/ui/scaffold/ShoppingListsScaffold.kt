@@ -6,19 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
-import io.dimasla4ee.shoppinglist.core.utils.TestOnlyPurpose
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.fab.FabMenuFloatingActionButton
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.fab.FigmaFloatingActionButton
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.topbar.DropdownMenuTopBar
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.topbar.FigmaTopBar
 
-enum class ShoppingListsScreenVariant {
-    FIGMA,
-    FAB_MENU,
-    DROPDOWN_MENU
-}
-
-@OptIn(TestOnlyPurpose::class)
 @Composable
 fun ShoppingListsScaffold(
     title: String,
