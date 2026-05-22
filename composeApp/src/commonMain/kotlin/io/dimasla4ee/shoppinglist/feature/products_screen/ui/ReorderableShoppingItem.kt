@@ -18,9 +18,11 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.AppIconButton
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.AppIconButtonDefaults
+import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.ReorderableLazyListState
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.cd_edit
 import shoppinglist.composeapp.generated.resources.ic_drag_handle_24
 
 @Composable
@@ -38,7 +40,7 @@ fun LazyItemScope.ReorderableShoppingItem(
         modifier = modifier.combinedClickable(
             onLongClick = onLongPress,
             onClick = onCheckedChange,
-            onLongClickLabel = "Редактировать"
+            onLongClickLabel = stringResource(Res.string.cd_edit)
         ),
         state = state,
         key = item.id

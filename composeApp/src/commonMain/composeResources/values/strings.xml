@@ -76,9 +76,11 @@
 
     <!-- Действия со списком покупок -->
     <string name="cd_edit_shopping_list">Редактировать список покупок</string>
+    <string name="cd_edit">Редактировать</string>
     <string name="cd_copy_shopping_list">Копировать список покупок</string>
     <string name="cd_change_shopping_list_icon">Изменить иконку списка покупок</string>
     <string name="cd_delete_shopping_list">Удалить список покупок</string>
+    <string name="cd_delete_list">Удалить список</string>
 
     <!-- Действия с паролем -->
     <string name="cd_show_password">Показать пароль</string>
@@ -109,6 +111,7 @@
 
     <!-- Нижнее меню -->
     <string name="btm_menu_sorting">Сортировка</string>
+    <string name="btm_menu">Меню</string>
     <string name="btm_menu_delete_all">Удалить все</string>
     <string name="btm_menu_clear_purchased_items">Очистить купленные</string>
     <string name="sort_alphabetical">По алфавиту</string>

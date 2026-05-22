@@ -25,6 +25,7 @@ class CheckSessionUseCase(
                     is DomainResult.Success -> {
                         true
                     }
+
                     is DomainResult.Error -> {
                         authRepository.clearTokens()
                         false

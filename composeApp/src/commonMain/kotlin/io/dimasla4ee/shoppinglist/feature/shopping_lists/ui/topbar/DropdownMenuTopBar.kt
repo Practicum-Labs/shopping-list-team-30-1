@@ -22,7 +22,10 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBarDefaults
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.btm_menu
+import shoppinglist.composeapp.generated.resources.btm_menu_delete_all
 import shoppinglist.composeapp.generated.resources.ic_delete_24
 import shoppinglist.composeapp.generated.resources.ic_menu_24
 import shoppinglist.composeapp.generated.resources.ic_search_24
@@ -61,7 +64,7 @@ fun DropdownMenuTopBar(
             IconButton(onClick = { menuIsExpanded = !menuIsExpanded }) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_menu_24),
-                    contentDescription = "More options"
+                    contentDescription = stringResource(Res.string.btm_menu)
                 )
             }
 
@@ -73,7 +76,9 @@ fun DropdownMenuTopBar(
                     text = { Text(onAuthorizationClick.label ?: "") },
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(onAuthorizationClick.iconRes ?: Res.drawable.ic_menu_24),
+                            painter = painterResource(
+                                onAuthorizationClick.iconRes ?: Res.drawable.ic_menu_24
+                            ),
                             contentDescription = null
                         )
                     },
@@ -86,7 +91,7 @@ fun DropdownMenuTopBar(
                 HorizontalDivider()
 
                 DropdownMenuItem(
-                    text = { Text("Удалить всё") },
+                    text = { Text(stringResource(Res.string.btm_menu_delete_all)) },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(

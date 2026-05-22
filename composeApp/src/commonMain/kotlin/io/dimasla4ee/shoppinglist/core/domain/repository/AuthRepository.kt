@@ -1,8 +1,8 @@
 package io.dimasla4ee.shoppinglist.core.domain.repository
 
+import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
 import io.dimasla4ee.shoppinglist.core.domain.model.Response
-import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 
 interface AuthRepository {
 

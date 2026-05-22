@@ -12,12 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun addDialogButtons() = ButtonDefaults.buttonColors(
-    containerColor = LocalAppColors.current.buttonAddDialogContainer,
-    contentColor = LocalAppColors.current.buttonAddDialogText
-)
-
-@Composable
 fun deleteDialogButtonDelete() = ButtonDefaults.buttonColors(
     containerColor = LocalAppColors.current.buttonDeleteContainer,
     contentColor = LocalAppColors.current.buttonDeleteText
@@ -50,12 +44,6 @@ fun dialogTextFieldColors() = TextFieldDefaults.colors(
     unfocusedIndicatorColor = MaterialTheme.colorScheme.secondary,
     // текст
     focusedTextColor = MaterialTheme.colorScheme.onSecondary
-)
-
-@Composable
-fun appRadioButtonColors() = RadioButtonDefaults.colors(
-    selectedColor = MaterialTheme.colorScheme.error,
-    unselectedColor = MaterialTheme.colorScheme.onTertiary
 )
 
 object DialogStyle {

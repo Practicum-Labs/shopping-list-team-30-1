@@ -25,7 +25,7 @@ fun AddItemRoute(
 
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
-            when(effect) {
+            when (effect) {
                 ProductsEffect.NavigateBack -> onBackClick()
             }
         }
