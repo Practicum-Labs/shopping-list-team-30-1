@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -13,6 +14,14 @@ import io.dimasla4ee.shoppinglist.app.navigation.Route.ProductsList
 import io.dimasla4ee.shoppinglist.app.navigation.Route.Registration
 import io.dimasla4ee.shoppinglist.app.navigation.Route.ShoppingLists
 import io.dimasla4ee.shoppinglist.app.navigation.Route.Welcome
+import io.dimasla4ee.shoppinglist.app.startup.session.domain.AppLaunchRepository
+import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionIntent
+import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionViewModel
+import io.dimasla4ee.shoppinglist.app.startup.session.splash.domain.SplashDestination
+import io.dimasla4ee.shoppinglist.app.startup.session.splash.presentation.SplashEffect
+import io.dimasla4ee.shoppinglist.app.startup.session.splash.presentation.SplashIntent
+import io.dimasla4ee.shoppinglist.app.startup.session.splash.presentation.SplashViewModel
+import io.dimasla4ee.shoppinglist.app.startup.session.splash.ui.SplashScreen
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordEffect
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordViewModel
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterEffect
@@ -29,23 +38,62 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingLi
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen.ShoppingListsScreen
 import io.dimasla4ee.shoppinglist.feature.welcome_screen.ui.WelcomeScreen
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 fun entryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>,
+    sessionViewModel: SessionViewModel,
     onThemeToggle: () -> Unit,
 ) = entryProvider<NavKey> {
-    entry<Welcome> {
+
+    entry<Route.Splash> {
+        val splashViewModel = koinViewModel<SplashViewModel>()
+        val state by splashViewModel.state.collectAsState()
+        SplashScreen(
+            modifier = Modifier.fillMaxSize()
+        )
+        LaunchedEffect(Unit) {
+            splashViewModel.dispatch(SplashIntent.Initialize)
+        }
+        LaunchedEffect(state.destination) {
+            when (state.destination) {
+
+                SplashDestination.Welcome -> {
+                    topLevelBackStack.replaceStack(Route.Welcome)
+                }
+
+                SplashDestination.ShoppingLists -> {
+                    topLevelBackStack.replaceStack(Route.ShoppingLists)
+                }
+
+                null -> Unit
+            }
+        }
+    }
+
+    entry<Route.Welcome> {
+        val appLaunchRepository = koinInject<AppLaunchRepository>()
+        val scope = rememberCoroutineScope()
+
         WelcomeScreen(
-            onGoToShopping = { topLevelBackStack.add(Authorization) },
+            onGoToShopping = {
+                scope.launch {
+                    appLaunchRepository.setLaunched()
+                }
+                topLevelBackStack.replaceStack(Route.ShoppingLists)
+            },
             modifier = Modifier.fillMaxSize()
         )
     }
 
     entry<ShoppingLists> {
         val viewModel: ShoppingListsViewModel = koinViewModel()
+        val sessionState by sessionViewModel.state.collectAsState()
 
         val state by viewModel.state.collectAsState()
+        val isAuthorized = sessionState.refreshToken != null
 
         LaunchedEffect(Unit) {
 
@@ -67,7 +115,7 @@ fun entryProvider(
                     }
 
                     is ShoppingListsEffect.NavigateToAuthorization -> {
-                        topLevelBackStack.replaceStack(Authorization)
+                        topLevelBackStack.add(Authorization)
                     }
                 }
             }
@@ -75,6 +123,7 @@ fun entryProvider(
 
         ShoppingListsScreen(
             state = state,
+            isAuthorized = isAuthorized,
             onIntent = viewModel::dispatch,
             onThemeToggle = onThemeToggle,
             modifier = Modifier.fillMaxSize()
@@ -90,7 +139,7 @@ fun entryProvider(
         )
     }
 
-    entry<Authorization> {
+    entry<Route.Authorization> {
         val viewModel = koinViewModel<SignInViewModel>()
         val state by viewModel.state.collectAsState()
 
@@ -98,15 +147,16 @@ fun entryProvider(
             viewModel.effects.collect { effect ->
                 when (effect) {
                     SignInEffect.NavigateToMain -> {
-                        topLevelBackStack.replaceStack(ShoppingLists)
+                        sessionViewModel.dispatch(SessionIntent.LoadSession)
+                        topLevelBackStack.removeLast()
                     }
 
                     SignInEffect.NavigateToRecoverPassword -> {
-                        topLevelBackStack.add(PasswordRecovery)
+                        topLevelBackStack.add(Route.PasswordRecovery)
                     }
 
                     SignInEffect.NavigateToRegister -> {
-                        topLevelBackStack.add(Registration)
+                        topLevelBackStack.add(Route.Registration)
                     }
                 }
             }
@@ -127,7 +177,8 @@ fun entryProvider(
             viewModel.effects.collect { effect ->
                 when (effect) {
                     RegisterEffect.NavigateToMain -> {
-                        topLevelBackStack.replaceStack(ShoppingLists)
+                        sessionViewModel.dispatch(SessionIntent.LoadSession)
+                        topLevelBackStack.removeLast()
                     }
 
                     RegisterEffect.NavigateToSignIn -> {

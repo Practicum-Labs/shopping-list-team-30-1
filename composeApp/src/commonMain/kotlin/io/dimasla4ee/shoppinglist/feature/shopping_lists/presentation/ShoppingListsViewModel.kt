@@ -72,13 +72,6 @@ class ShoppingListsViewModel(
             reduceSheetDismiss(current)
         }
 
-        is ShoppingListsIntent.LogoutClick -> {
-            current.copy(
-                isAuthorized = false,
-                dialog = ShoppingListDialog.None
-            )
-        }
-
         else -> current
     }
 
@@ -248,14 +241,6 @@ class ShoppingListsViewModel(
 
             is ShoppingListsIntent.ListClicked -> {
                 handleListClicked(intent)
-            }
-
-            is ShoppingListsIntent.AuthorizationClicked -> {
-                val currentState = state.value
-                when (currentState.isAuthorized) {
-                    true -> updateState { it.copy(dialog = ShoppingListDialog.Logout) }
-                    false -> emitEffect(ShoppingListsEffect.NavigateToAuthorization)
-                }
             }
 
             else -> Unit

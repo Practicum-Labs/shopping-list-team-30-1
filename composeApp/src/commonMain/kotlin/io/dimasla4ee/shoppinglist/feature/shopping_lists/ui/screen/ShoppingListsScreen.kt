@@ -47,6 +47,7 @@ import shoppinglist.composeapp.generated.resources.screen_title
 @Composable
 fun ShoppingListsScreen(
     state: ShoppingListsState,
+    isAuthorized: Boolean,
     onIntent: (ShoppingListsIntent) -> Unit,
     onThemeToggle: () -> Unit,
     modifier: Modifier = Modifier
@@ -151,12 +152,12 @@ fun ShoppingListsScreen(
                     onClick = onThemeToggle
                 ),
                 onAuthorizationClick = ActionItem(
-                    iconRes = when (state.isAuthorized) {
+                    iconRes = when (isAuthorized) {
                         true -> Res.drawable.ic_logout_24
                         false -> Res.drawable.ic_login_24
                     },
                     label = stringResource(
-                        if (state.isAuthorized) Res.string.action_logout else Res.string.action_login
+                        if (isAuthorized) Res.string.action_logout else Res.string.action_login
                     ),
                     onClick = { onIntent(ShoppingListsIntent.AuthorizationClicked) }
                 ),
@@ -278,6 +279,7 @@ private fun ShoppingListsScreenPreview(
     ShoppingListTheme {
         ShoppingListsScreen(
             state = state,
+            isAuthorized = true,
             onIntent = {},
             onThemeToggle = {}
         )
