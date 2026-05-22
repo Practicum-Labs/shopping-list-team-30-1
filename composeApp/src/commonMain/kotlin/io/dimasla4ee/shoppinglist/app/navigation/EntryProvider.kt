@@ -166,9 +166,8 @@ fun entryProvider(
                         topLevelBackStack.removeLast()
                     }
 
-                    RegisterEffect.NavigateToSignIn -> {
-                        topLevelBackStack.removeLast()
-                    }
+                    RegisterEffect.NavigateToSignIn -> topLevelBackStack.removeLast()
+                    RegisterEffect.NavigateBack -> topLevelBackStack.removeLast()
                 }
             }
         }

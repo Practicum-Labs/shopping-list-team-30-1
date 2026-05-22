@@ -16,7 +16,8 @@ fun SignInScreen(
     modifier: Modifier = Modifier
 ) {
     AuthorizationScreen(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        onBackClick = { TODO("Navigate back")}
     ) {
         SignInContent(
             state = state,

@@ -16,7 +16,8 @@ fun RecoverPasswordScreen(
     modifier: Modifier = Modifier
 ) {
     AuthorizationScreen(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        onBackClick = { TODO("Navigate back")}
     ) {
         RecoverPasswordContent(
             state = state,

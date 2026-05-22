@@ -17,17 +17,17 @@ class RegisterViewModel(
     ): RegisterState = when (intent) {
         is RegisterIntent.Action -> current
 
-        RegisterIntent.UI.PasswordVisibilityToggleClicked ->
-            current.reducePasswordVisibilityToggleClicked()
+        RegisterIntent.UI.PasswordVisibilityToggled ->
+            current.reducePasswordVisibilityToggled()
 
-        RegisterIntent.UI.ConfirmPasswordVisibilityToggleClicked ->
-            current.reduceConfirmPasswordVisibilityToggleClicked()
+        RegisterIntent.UI.ConfirmPasswordVisibilityToggled ->
+            current.reduceConfirmPasswordVisibilityToggled()
     }
 
-    private fun RegisterState.reducePasswordVisibilityToggleClicked(): RegisterState =
+    private fun RegisterState.reducePasswordVisibilityToggled(): RegisterState =
         copy(isPasswordVisible = !isPasswordVisible)
 
-    private fun RegisterState.reduceConfirmPasswordVisibilityToggleClicked(): RegisterState =
+    private fun RegisterState.reduceConfirmPasswordVisibilityToggled(): RegisterState =
         copy(isConfirmPasswordVisible = !isConfirmPasswordVisible)
 
     override suspend fun handleIntent(intent: RegisterIntent) {
@@ -36,8 +36,8 @@ class RegisterViewModel(
             is RegisterIntent.UI -> return
             RegisterIntent.Action.SignInClicked -> RegisterEffect.NavigateToSignIn
             RegisterIntent.Action.RegisterClicked -> handleRegister(currentState) ?: return
+            RegisterIntent.Action.BackClicked -> RegisterEffect.NavigateBack
         }
-
         emitEffect(effect)
     }
 
