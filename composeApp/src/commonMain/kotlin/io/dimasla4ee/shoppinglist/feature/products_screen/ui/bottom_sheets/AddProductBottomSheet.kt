@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
-import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AppFloatingActionButton
+import io.dimasla4ee.shoppinglist.core.presentation.components.AppFloatingActionButton
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -146,6 +146,7 @@ fun AddProductBottomSheet(
             }
 
             AppFloatingActionButton(
+                modifier = Modifier.padding(end = AppDimensions.paddingMedium),
                 onClick = onApplyClick,
                 iconRes = painterResource(Res.drawable.ic_fab_check_56)
             )

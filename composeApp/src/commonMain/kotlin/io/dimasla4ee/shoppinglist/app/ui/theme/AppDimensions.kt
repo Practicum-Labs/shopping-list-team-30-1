@@ -10,7 +10,6 @@ object AppDimensions {
 
     val paddingVeryLarge = 64.dp
     val paddingLarge = 44.dp
-    val paddingExtraBig = 32.dp
     val paddingVeryBig = 24.dp
     val paddingBigPlus = 22.dp
     val paddingBig = 18.dp
@@ -140,7 +139,6 @@ object AppDimensions {
     object BottomSheet {
         val topCornerRadius = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
         val handlerSize = DpSize(32.dp, 4.dp)
-        val handlerCornerRadius = 2.dp
     }
 
     object RegisterDimensions {
