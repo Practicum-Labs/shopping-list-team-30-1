@@ -44,15 +44,18 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteAllPro
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteCheckedProductsDialog
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteListDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.RenameListDialog
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.cd_edit_shopping_list
 import shoppinglist.composeapp.generated.resources.content_back
 import shoppinglist.composeapp.generated.resources.content_menu
 import shoppinglist.composeapp.generated.resources.ic_add_56
 import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
 import shoppinglist.composeapp.generated.resources.ic_drag_pan_24
+import shoppinglist.composeapp.generated.resources.ic_edit_24
 import shoppinglist.composeapp.generated.resources.ic_menu_24
 import shoppinglist.composeapp.generated.resources.ic_sort_by_alpha_24
 
@@ -96,6 +99,11 @@ fun AddItemScreen(
                 },
                 actions = listOf(
                     ActionItem(
+                        iconRes = Res.drawable.ic_edit_24,
+                        label = stringResource(Res.string.cd_edit_shopping_list),
+                        onClick = { onIntent(ProductsIntent.UI.ShowEditListDialog) }
+                    ),
+                    ActionItem(
                         iconRes = Res.drawable.ic_menu_24,
                         label = stringResource(Res.string.content_menu),
                         onClick = { onIntent(ProductsIntent.UI.ToggleMenuBottomSheet) }
@@ -129,6 +137,16 @@ fun AddItemScreen(
                 onConfirm = {
                     onIntent(ProductsIntent.UI.DismissDialog)
                     onIntent(ProductsIntent.Action.DeleteList)
+                }
+            )
+
+            is ProductDialog.EditList -> RenameListDialog(
+                newName = state.renameValue,
+                onRenameChange = { onIntent(ProductsIntent.UI.RenameValueChanged(it)) },
+                onDismiss = { onIntent(ProductsIntent.UI.DismissDialog) },
+                onConfirm = {
+                    onIntent(ProductsIntent.UI.DismissDialog)
+                    onIntent(ProductsIntent.Action.RenameList)
                 }
             )
 

@@ -32,7 +32,7 @@ fun AddItemRoute(
     }
 
     AddItemScreen(
-        listName = listName,
+        listName = state.listName.ifBlank { listName },
         state = state,
         onIntent = { viewModel.dispatch(it) },
         modifier = Modifier.fillMaxSize()
