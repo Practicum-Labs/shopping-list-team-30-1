@@ -70,7 +70,7 @@ fun AddItemScreen(
     val lazyListState = rememberLazyListState()
     val reorderableLazyListState = rememberReorderableLazyListState(lazyListState) { from, to ->
         onIntent(
-            ProductsIntent.ReorderProduct(
+            ProductsIntent.UI.ReorderProduct(
                 fromIndex = from.index,
                 toIndex = to.index
             )
@@ -98,7 +98,7 @@ fun AddItemScreen(
                     ActionItem(
                         iconRes = Res.drawable.ic_menu_24,
                         label = stringResource(Res.string.content_menu),
-                        onClick = { onIntent(ProductsIntent.ToggleMenuBottomSheet) }
+                        onClick = { onIntent(ProductsIntent.UI.ToggleMenuBottomSheet) }
                     )
                 )
             )
@@ -110,7 +110,7 @@ fun AddItemScreen(
                         end = AppDimensions.paddingMedium,
                         bottom = AppDimensions.paddingExtraBig
                     ),
-                onClick = { onIntent(ProductsIntent.ToggleBottomSheet) },
+                onClick = { onIntent(ProductsIntent.UI.ToggleBottomSheet) },
                 iconRes = painterResource(Res.drawable.ic_add_56)
             )
         }
@@ -118,13 +118,13 @@ fun AddItemScreen(
 
         when (state.dialog) {
             ProductDialog.DeleteAll -> DeleteAllProductsDialog(
-                onDismiss = { onIntent(ProductsIntent.DismissDialog) },
-                onConfirm = { onIntent(ProductsIntent.DeleteAllProducts) }
+                onDismiss = { onIntent(ProductsIntent.UI.DismissDialog) },
+                onConfirm = { onIntent(ProductsIntent.Action.DeleteAllProducts) }
             )
 
             ProductDialog.DeleteCheckedProducts -> DeleteCheckedProductsDialog(
-                onDismiss = { onIntent(ProductsIntent.DismissDialog) },
-                onConfirm = { onIntent(ProductsIntent.DeleteCheckedProducts) }
+                onDismiss = { onIntent(ProductsIntent.UI.DismissDialog) },
+                onConfirm = { onIntent(ProductsIntent.Action.DeleteCheckedProducts) }
             )
 
             ProductDialog.None -> Unit
@@ -139,15 +139,15 @@ fun AddItemScreen(
             ProductsMenuBottomSheet(
                 visible = state.isMenuBottomSheetOpen,
                 sortMode = state.sortMode,
-                onDismiss = { onIntent(ProductsIntent.ToggleMenuBottomSheet) },
-                onSortClick = { onIntent(ProductsIntent.ToggleSortMode) },
+                onDismiss = { onIntent(ProductsIntent.UI.ToggleMenuBottomSheet) },
+                onSortClick = { onIntent(ProductsIntent.Action.ToggleSortMode) },
                 onDeleteAllClick = {
-                    onIntent(ProductsIntent.ShowDeleteAllDialog)
-                    onIntent(ProductsIntent.ToggleMenuBottomSheet)
+                    onIntent(ProductsIntent.UI.ShowDeleteAllDialog)
+                    onIntent(ProductsIntent.UI.ToggleMenuBottomSheet)
                 },
                 onDeleteCheckClick = {
-                    onIntent(ProductsIntent.ShowDeleteCheckedDialog)
-                    onIntent(ProductsIntent.ToggleMenuBottomSheet)
+                    onIntent(ProductsIntent.UI.ShowDeleteCheckedDialog)
+                    onIntent(ProductsIntent.UI.ToggleMenuBottomSheet)
                 }
             )
 
@@ -168,9 +168,9 @@ fun AddItemScreen(
                             item = item,
                             state = reorderableLazyListState,
                             hapticFeedback = hapticFeedback,
-                            onCheckedChange = { onIntent(ProductsIntent.ToggleItemChecked(item)) },
-                            onLongPress = { onIntent(ProductsIntent.EditProduct(item)) },
-                            onDragStop = { onIntent(ProductsIntent.CommitReorder) },
+                            onCheckedChange = { onIntent(ProductsIntent.Action.ToggleItemChecked(item)) },
+                            onLongPress = { onIntent(ProductsIntent.UI.EditProduct(item)) },
+                            onDragStop = { onIntent(ProductsIntent.Action.CommitReorder) },
                             showDragHandle = isCustomSort
                         )
                     }
@@ -185,7 +185,7 @@ fun AddItemScreen(
                     .fillMaxWidth()
                     .navigationBarsPadding()
                     .padding(horizontal = AppDimensions.paddingVerySmall),
-                onDismissRequest = { onIntent(ProductsIntent.ToggleBottomSheet) },
+                onDismissRequest = { onIntent(ProductsIntent.UI.ToggleBottomSheet) },
                 sheetState = sheetState,
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 dragHandle = null,
@@ -209,13 +209,13 @@ fun AddItemScreen(
                     name = state.name,
                     amount = state.amount,
                     unit = state.unit,
-                    onNameChange = { onIntent(ProductsIntent.ChangeName(it)) },
-                    onCountChange = { onIntent(ProductsIntent.ChangeCount(it)) },
-                    onUnitChange = { onIntent(ProductsIntent.ChangeUnit(it)) },
-                    onIncreaseClick = { onIntent(ProductsIntent.IncreaseCount) },
-                    onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) },
-                    onApplyClick = { onIntent(ProductsIntent.AddItem) },
-                    onDeleteClick = { onIntent(ProductsIntent.DeleteProduct) }
+                    onNameChange = { onIntent(ProductsIntent.UI.ChangeName(it)) },
+                    onCountChange = { onIntent(ProductsIntent.UI.ChangeCount(it)) },
+                    onUnitChange = { onIntent(ProductsIntent.UI.ChangeUnit(it)) },
+                    onIncreaseClick = { onIntent(ProductsIntent.UI.IncreaseCount) },
+                    onDecreaseClick = { onIntent(ProductsIntent.UI.DecreaseCount) },
+                    onApplyClick = { onIntent(ProductsIntent.Action.AddItem) },
+                    onDeleteClick = { onIntent(ProductsIntent.Action.DeleteProduct) }
                 )
             }
         }
