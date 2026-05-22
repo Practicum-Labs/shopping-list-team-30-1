@@ -9,11 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.collections.listOf
 
 @Composable
 fun NavigationRoot(
+    sessionViewModel: SessionViewModel,
     onThemeToggle: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NavigationViewModel = koinViewModel()
@@ -25,7 +27,8 @@ fun NavigationRoot(
     ) {
         entryProvider(
             topLevelBackStack = topLevelBackStack,
-            onThemeToggle = onThemeToggle
+            onThemeToggle = onThemeToggle,
+            sessionViewModel = sessionViewModel
         )
     }
 

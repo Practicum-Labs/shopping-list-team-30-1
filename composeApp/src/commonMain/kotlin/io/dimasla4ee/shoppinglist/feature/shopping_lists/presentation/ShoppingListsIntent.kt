@@ -63,6 +63,6 @@ sealed interface ShoppingListsIntent : MviIntent {
         val item: ShoppingListItem
     ) : ShoppingListsIntent
 
-    data object AuthorizationClicked : ShoppingListsIntent
+    data class AuthorizationClicked(val isAuthorized: Boolean) : ShoppingListsIntent
     data object LogoutClick : ShoppingListsIntent
 }

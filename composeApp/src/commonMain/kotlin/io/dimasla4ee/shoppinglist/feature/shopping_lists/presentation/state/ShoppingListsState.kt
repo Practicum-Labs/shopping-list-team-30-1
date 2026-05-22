@@ -21,6 +21,5 @@ data class ShoppingListsState(
 
     val deleteTargetId: Long? = null,
 
-    val isFabVisible: Boolean = true,
-    val isAuthorized: Boolean = false
+    val isFabVisible: Boolean = true
 ) : MviState
