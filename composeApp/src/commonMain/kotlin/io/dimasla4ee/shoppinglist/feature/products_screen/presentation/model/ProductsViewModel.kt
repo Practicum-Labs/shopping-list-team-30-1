@@ -59,7 +59,7 @@ class ProductsViewModel(
 
         is ProductsIntent.UI.ChangeCount -> current.copy(amount = intent.amount)
         is ProductsIntent.UI.ChangeName -> current.copy(name = intent.name)
-        is ProductsIntent.UI.ChangeUnit -> current.copy(unit = intent.unit)
+        is ProductsIntent.UI.ChangeUnit -> current.reduceChangeUnit(intent)
         is ProductsIntent.UI.ReorderProduct -> current.reduceReorderProduct(intent)
         is ProductsIntent.UI.RenameValueChanged -> current.copy(renameValue = intent.name)
         ProductsIntent.UI.DismissDialog -> current.copy(dialog = ProductDialog.None)
@@ -122,7 +122,7 @@ class ProductsViewModel(
                 id = null,
                 name = "",
                 amount = "",
-                unit = null,
+                unit = "",
                 position = null,
                 isBottomSheetOpen = false
             )
@@ -160,7 +160,7 @@ class ProductsViewModel(
         isBottomSheetOpen = !isBottomSheetOpen,
         name = "",
         amount = "",
-        unit = null
+        unit = ""
     )
 
     private fun ProductsState.reduceReorderProduct(

@@ -1,6 +1,5 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model
 
-import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.mvi.MviIntent
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
@@ -23,8 +22,8 @@ sealed interface ProductsIntent : MviIntent {
     sealed interface UI : ProductsIntent {
         data class ChangeName(val name: String) : UI
         data class ChangeCount(val amount: String) : UI
+        data class ChangeUnit(val unit: String) : UI
         data class RenameValueChanged(val name: String): UI
-        data class ChangeUnit(val unit: MeasurementUnit) : UI
         data object IncreaseCount : UI
         data object DecreaseCount : UI
         data object ToggleBottomSheet : UI

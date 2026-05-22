@@ -20,7 +20,7 @@ data class ProductEntity(
     val listId: Long,
     val name: String,
     val amount: Float,
-    val unit: MeasurementUnit?,
+    val unit: String,
     val isChecked: Boolean = false,
     val position: Int = 0,
     val addedAtMillis: Long = System.currentTimeMillis()

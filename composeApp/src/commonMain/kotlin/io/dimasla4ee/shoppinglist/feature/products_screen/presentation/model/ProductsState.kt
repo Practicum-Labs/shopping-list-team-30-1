@@ -12,7 +12,7 @@ data class ProductsState(
     val name: String = "",
     val amount: String = "",
     val position: Int? = null,
-    val unit: MeasurementUnit? = null,
+    val unit: String = "",
     val items: List<Product> = emptyList(),
     val sortMode: SortMode = SortMode.CUSTOM,
     val isBottomSheetOpen: Boolean = false,

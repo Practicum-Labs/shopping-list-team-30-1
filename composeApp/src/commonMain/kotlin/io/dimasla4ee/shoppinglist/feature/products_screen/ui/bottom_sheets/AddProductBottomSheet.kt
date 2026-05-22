@@ -24,6 +24,7 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppFloatingActionButton
+import io.dimasla4ee.shoppinglist.core.presentation.mappers.toStringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -43,11 +44,11 @@ private const val MAX_LENGTH_QUANTITY = 7
 @Composable
 fun AddProductBottomSheet(
     name: String,
-    unit: MeasurementUnit?,
+    unit: String,
     amount: String,
     onNameChange: (String) -> Unit,
     onCountChange: (String) -> Unit,
-    onUnitChange: (MeasurementUnit) -> Unit,
+    onUnitChange: (String) -> Unit,
     onIncreaseClick: () -> Unit,
     onDecreaseClick: () -> Unit,
     onApplyClick: () -> Unit,
@@ -179,7 +180,7 @@ private fun AddProductBottomSheetPreview() {
     ShoppingListTheme {
         AddProductBottomSheet(
             name = "",
-            unit = MeasurementUnit.PIECE,
+            unit = stringResource(MeasurementUnit.PIECE.toStringResource()),
             amount = "",
             onNameChange = {},
             onCountChange = {},
