@@ -56,15 +56,10 @@ fun ShoppingListItem(
             if (item.amount == 0f) return@Column
 
             val amount = item.amount.toFormattedString()
-            val unit = stringResource(item.unit.toStringResource())
+            val unit = item.unit?.let { stringResource(it.toStringResource()) } ?: ""
 
             Text(
-                text = "${item.amount} ${
-                    item.unit?.let { unit ->
-                        stringResource(unit.toStringResource())
-                    } ?: ""
-                }",
-
+                text = "$amount $unit",
                 style = MaterialTheme.typography.bodyMedium
             )
         }

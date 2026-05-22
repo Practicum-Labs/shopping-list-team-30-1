@@ -36,8 +36,8 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
-import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsState
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.AddProductBottomSheet
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
 import org.jetbrains.compose.resources.painterResource
@@ -78,6 +78,7 @@ fun AddItemScreen(
     val isCustomSort = state.sortMode == SortMode.CUSTOM
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             AppTopBar(
                 title = listName,
@@ -98,6 +99,17 @@ fun AddItemScreen(
                         onClick = { onIntent(ProductsIntent.ToggleMenuBottomSheet) }
                     )
                 )
+            )
+        },
+        floatingActionButton = {
+            AppFloatingActionButton(
+                modifier = Modifier
+                    .padding(
+                        end = AppDimensions.paddingMedium,
+                        bottom = AppDimensions.paddingExtraBig
+                    ),
+                onClick = { onIntent(ProductsIntent.ToggleBottomSheet) },
+                iconRes = painterResource(Res.drawable.ic_add_56)
             )
         }
     ) { paddingValues ->
@@ -128,88 +140,68 @@ fun AddItemScreen(
             // Основной контент
             val isPlaceholderVisible = state.items.isEmpty() && !state.isBottomSheetOpen
 
-                when (isPlaceholderVisible) {
-                    true -> ItemListPlaceholder(Modifier.fillMaxSize())
-                    false -> LazyColumn(
-                        state = lazyListState,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        items(
-                            items = state.displayedItems,
-                            key = { item -> item.id }
-                        ) { item ->
-                            ReorderableShoppingItem(
-                                item = item,
-                                state = reorderableLazyListState,
-                                hapticFeedback = hapticFeedback,
-                                onCheckedChange = { onIntent(ProductsIntent.ToggleItemChecked(item)) },
-                                onLongPress = { onIntent(ProductsIntent.EditProduct(item)) },
-                                onDragStop = { onIntent(ProductsIntent.CommitReorder) },
-                                showDragHandle = isCustomSort
-                            )
-                        }
+            when (isPlaceholderVisible) {
+                true -> ItemListPlaceholder(Modifier.fillMaxSize())
+                false -> LazyColumn(
+                    state = lazyListState,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(
+                        items = state.displayedItems,
+                        key = { item -> item.id }
+                    ) { item ->
+                        ReorderableShoppingItem(
+                            item = item,
+                            state = reorderableLazyListState,
+                            hapticFeedback = hapticFeedback,
+                            onCheckedChange = { onIntent(ProductsIntent.ToggleItemChecked(item)) },
+                            onLongPress = { onIntent(ProductsIntent.EditProduct(item)) },
+                            onDragStop = { onIntent(ProductsIntent.CommitReorder) },
+                            showDragHandle = isCustomSort
+                        )
                     }
                 }
             }
+        }
 
-            // Bottom Sheet
-            if (state.isBottomSheetOpen) {
-                ModalBottomSheet(
+        // Bottom Sheet
+        if (state.isBottomSheetOpen) {
+            ModalBottomSheet(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(horizontal = AppDimensions.paddingVerySmall),
+                onDismissRequest = { onIntent(ProductsIntent.ToggleBottomSheet) },
+                sheetState = sheetState,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                dragHandle = null,
+                shape = AppDimensions.BottomSheet.topCornerRadius
+            ) {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .navigationBarsPadding()
-                        .padding(horizontal = AppDimensions.paddingVerySmall),
-                    onDismissRequest = { onIntent(ProductsIntent.ToggleBottomSheet) },
-                    sheetState = sheetState,
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    dragHandle = null,
-                    shape = AppDimensions.BottomSheet.topCornerRadius
+                        .padding(top = AppDimensions.paddingMedium),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = AppDimensions.paddingMedium),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Surface(
-                            modifier = Modifier.size(AppDimensions.BottomSheet.handlerSize),
-                            shape = CircleShape,
-                            color = MaterialTheme.colorScheme.outlineVariant
-                        ) {}
-                    }
-
-                    AddProductBottomSheet(
-                        name = state.name,
-                        amount = state.amount,
-                        unit = state.unit,
-                        onNameChange = { onIntent(ProductsIntent.ChangeName(it)) },
-                        onCountChange = { onIntent(ProductsIntent.ChangeCount(it)) },
-                        onUnitChange = { onIntent(ProductsIntent.ChangeUnit(it)) },
-                        onIncreaseClick = { onIntent(ProductsIntent.IncreaseCount) },
-                        onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) },
-                        onFabClick = { onIntent(ProductsIntent.AddItem) }
-                    )
+                    Surface(
+                        modifier = Modifier.size(AppDimensions.BottomSheet.handlerSize),
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.outlineVariant
+                    ) {}
                 }
+
+                AddProductBottomSheet(
+                    name = state.name,
+                    amount = state.amount,
+                    unit = state.unit,
+                    onNameChange = { onIntent(ProductsIntent.ChangeName(it)) },
+                    onCountChange = { onIntent(ProductsIntent.ChangeCount(it)) },
+                    onUnitChange = { onIntent(ProductsIntent.ChangeUnit(it)) },
+                    onIncreaseClick = { onIntent(ProductsIntent.IncreaseCount) },
+                    onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) },
+                    onFabClick = { onIntent(ProductsIntent.AddItem) }
+                )
             }
-
-            // FAB
-            AppFloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(
-                        end = AppDimensions.paddingMedium,
-                        bottom = AppDimensions.paddingExtraBig
-                    ),
-                onClick = { onIntent(ProductsIntent.ToggleBottomSheet) },
-                iconRes = painterResource(Res.drawable.ic_add_56)
-            )
-
-            SortModeIndicator(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                sortMode = state.sortMode,
-                onToggle = { onIntent(ProductsIntent.ToggleSortMode) }
-            )
-
         }
     }
 }
