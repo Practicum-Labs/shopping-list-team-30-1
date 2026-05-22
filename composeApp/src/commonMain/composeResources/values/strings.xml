@@ -46,6 +46,12 @@
     <string name="content_back">Назад</string>
     <string name="content_minus">Уменьшение</string>
     <string name="content_plus">Увеличение</string>
+    <string name="content_toggle_menu">Переключить меню</string>
+
+    <!-- Accessibility -->
+    <string name="state_expanded">Развернуто</string>
+    <string name="state_collapsed">Свернуто</string>
+
 
     <!-- Сообщение о пустом списке -->
     <string name="empty_list_message">В списке покупок пока пусто</string>

@@ -44,6 +44,11 @@
     <string name="content_back">Back</string>
     <string name="content_minus">Minus</string>
     <string name="content_plus">Plus</string>
+    <string name="content_toggle_menu">Toggle menu</string>
+
+    <!-- Accessibility -->
+    <string name="state_expanded">Expanded</string>
+    <string name="state_collapsed">Collapsed</string>
 
     <!-- Message about empty list -->
     <string name="empty_list_message">The shopping list is empty</string>
