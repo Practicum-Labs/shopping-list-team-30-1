@@ -185,7 +185,11 @@ class ProductsViewModel(
     private suspend fun handleAddItem() {
         val currentState = state.value
 
-        if (currentState.name.isBlank()) return
+        if (currentState.name.isBlank()) {
+            updateState { it.copy(isBottomSheetOpen = !it.isBottomSheetOpen) }
+            return
+        }
+
         productInteractor.addProduct(
             Product(
                 id = currentState.id ?: System.currentTimeMillis(),
