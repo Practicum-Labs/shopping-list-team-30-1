@@ -10,16 +10,20 @@ sealed interface ProductsIntent : MviIntent {
         data object AddItem : Action
         data object DeleteAllProducts : Action
         data object DeleteCheckedProducts : Action
+        data object DeleteList : Action
         data object CommitReorder : Action
-        data object DeleteProduct: Action
+        data object DeleteProduct : Action
         data class ChangeSortMode(val mode: SortMode) : Action
         data class ToggleItemChecked(val product: Product) : Action
         data object ToggleSortMode : Action
+        data object OnBackClick : Action
+        data object RenameList: Action
     }
 
     sealed interface UI : ProductsIntent {
         data class ChangeName(val name: String) : UI
         data class ChangeCount(val amount: String) : UI
+        data class RenameValueChanged(val name: String): UI
         data class ChangeUnit(val unit: MeasurementUnit) : UI
         data object IncreaseCount : UI
         data object DecreaseCount : UI
@@ -27,6 +31,8 @@ sealed interface ProductsIntent : MviIntent {
         data class ReorderProduct(val fromIndex: Int, val toIndex: Int) : UI
         data object ShowDeleteAllDialog : UI
         data object ShowDeleteCheckedDialog : UI
+        data object ShowDeleteListDialog : UI
+        data object ShowEditListDialog : UI
         data object DismissDialog : UI
         data object ToggleMenuBottomSheet : UI
         data class EditProduct(val product: Product) : UI

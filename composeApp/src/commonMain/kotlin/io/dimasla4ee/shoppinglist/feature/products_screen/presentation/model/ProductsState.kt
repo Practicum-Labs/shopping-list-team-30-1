@@ -7,6 +7,7 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.state.ProductDialog
 
 data class ProductsState(
+    val listName: String = "",
     val id: Long? = null,
     val name: String = "",
     val amount: String = "",
@@ -17,6 +18,7 @@ data class ProductsState(
     val isBottomSheetOpen: Boolean = false,
     val dialog: ProductDialog = ProductDialog.None,
     val isMenuBottomSheetOpen: Boolean = false,
+    val renameValue: String = ""
 ) : MviState {
     val displayedItems: List<Product>
         get() = when (sortMode) {

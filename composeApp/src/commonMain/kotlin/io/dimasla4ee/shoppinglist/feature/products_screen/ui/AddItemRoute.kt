@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsEffect
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -19,14 +20,21 @@ fun AddItemRoute(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(listId) {
-        viewModel.init(listId)
+        viewModel.init(listId, listName)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.collect { effect ->
+            when(effect) {
+                ProductsEffect.NavigateBack -> onBackClick()
+            }
+        }
     }
 
     AddItemScreen(
-        listName = listName,
+        listName = state.listName.ifBlank { listName },
         state = state,
         onIntent = { viewModel.dispatch(it) },
-        onBackClick = onBackClick,
         modifier = Modifier.fillMaxSize()
     )
 }
