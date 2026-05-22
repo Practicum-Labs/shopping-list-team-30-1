@@ -42,28 +42,18 @@ fun SortSelector(
     onSortSelect: (SortMode) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    var expanded by remember {
-        mutableStateOf(false)
-    }
+    var expanded by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
-                    expanded = true
-                }
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-
+                .clickable { expanded = true }
+                .padding(horizontal = 20.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Icon(
-                painter = painterResource(
-                    Res.drawable.ic_swap_vert_24
-                ),
+                painter = painterResource(Res.drawable.ic_swap_vert_24),
                 contentDescription = null
             )
 
@@ -72,7 +62,6 @@ fun SortSelector(
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-
                 Text(
                     text = stringResource(Res.string.btm_menu_sorting),
                     style = MaterialTheme.typography.bodyLarge
@@ -100,25 +89,16 @@ fun SortSelector(
 
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = {
-                expanded = false
-            }
+            onDismissRequest = { expanded = false }
         ) {
-
             DropdownMenuItem(
-                text = {
-                    Text(stringResource(Res.string.sort_alphabetical))
-                },
-
+                text = { Text(stringResource(Res.string.sort_alphabetical)) },
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(
-                            Res.drawable.ic_sort_by_alpha_24
-                        ),
+                        painter = painterResource(Res.drawable.ic_sort_by_alpha_24),
                         contentDescription = null
                     )
                 },
-
                 trailingIcon = {
                     RadioButton(
                         selected = sortMode == SortMode.ALPHABETICAL,
@@ -129,7 +109,6 @@ fun SortSelector(
                         )
                     )
                 },
-
                 onClick = {
                     expanded = false
                     onSortSelect(SortMode.ALPHABETICAL)
@@ -137,19 +116,13 @@ fun SortSelector(
             )
 
             DropdownMenuItem(
-                text = {
-                    Text(stringResource(Res.string.sort_custom))
-                },
-
+                text = { Text(stringResource(Res.string.sort_custom)) },
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(
-                            Res.drawable.ic_drag_pan_24
-                        ),
+                        painter = painterResource(Res.drawable.ic_drag_pan_24),
                         contentDescription = null
                     )
                 },
-
                 trailingIcon = {
                     RadioButton(
                         selected = sortMode == SortMode.CUSTOM,
@@ -160,7 +133,6 @@ fun SortSelector(
                         )
                     )
                 },
-
                 onClick = {
                     expanded = false
                     onSortSelect(SortMode.CUSTOM)
