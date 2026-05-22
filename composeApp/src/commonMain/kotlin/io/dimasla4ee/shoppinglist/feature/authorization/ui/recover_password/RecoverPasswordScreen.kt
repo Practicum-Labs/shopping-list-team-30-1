@@ -17,16 +17,12 @@ fun RecoverPasswordScreen(
 ) {
     AuthorizationScreen(
         modifier = modifier.fillMaxSize(),
-        onBackClick = { TODO("Navigate back")}
+        onBackClick = { onIntent(RecoverPasswordIntent.Action.BackClicked) }
     ) {
         RecoverPasswordContent(
             state = state,
-            onRecoverPassword = {
-                onIntent(RecoverPasswordIntent.RecoverPasswordClicked)
-            },
-            onCancel = {
-                onIntent(RecoverPasswordIntent.CancelClicked)
-            },
+            onRecoverPassword = { onIntent(RecoverPasswordIntent.Action.RecoverPasswordClicked) },
+            onCancel = { onIntent(RecoverPasswordIntent.Action.CancelClicked) },
             modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
         )
     }

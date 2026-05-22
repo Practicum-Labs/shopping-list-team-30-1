@@ -26,7 +26,6 @@ class SignInViewModel(
 
     override suspend fun handleIntent(intent: SignInIntent) {
         val currentState = state.value
-
         val effect = when (intent) {
             is SignInIntent.UI -> return
             SignInIntent.Action.ForgotPasswordClicked -> SignInEffect.NavigateToRecoverPassword

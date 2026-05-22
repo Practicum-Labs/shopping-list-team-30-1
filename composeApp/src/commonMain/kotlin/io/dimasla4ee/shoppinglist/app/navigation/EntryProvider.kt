@@ -187,9 +187,8 @@ fun entryProvider(
         LaunchedEffect(viewModel) {
             viewModel.effects.collect { effect ->
                 when (effect) {
-                    RecoverPasswordEffect.NavigateToSignIn -> {
-                        topLevelBackStack.removeLast()
-                    }
+                    RecoverPasswordEffect.NavigateToSignIn -> topLevelBackStack.removeLast()
+                    RecoverPasswordEffect.NavigateBack -> topLevelBackStack.removeLast()
                 }
             }
         }

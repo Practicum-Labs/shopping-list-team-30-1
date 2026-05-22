@@ -16,19 +16,17 @@ class RecoverPasswordViewModel(
         intent: RecoverPasswordIntent,
         current: RecoverPasswordState
     ): RecoverPasswordState = when (intent) {
-        RecoverPasswordIntent.RecoverPasswordClicked,
-        RecoverPasswordIntent.CancelClicked -> current
+        is RecoverPasswordIntent.Action -> current
     }
 
     override suspend fun handleIntent(intent: RecoverPasswordIntent) {
         val currentState = state.value
-
         val effect = when (intent) {
-            RecoverPasswordIntent.CancelClicked -> RecoverPasswordEffect.NavigateToSignIn
-            RecoverPasswordIntent.RecoverPasswordClicked -> handleRecoverPassword(currentState)
-                ?: return
+            RecoverPasswordIntent.Action.BackClicked -> RecoverPasswordEffect.NavigateBack
+            RecoverPasswordIntent.Action.CancelClicked -> RecoverPasswordEffect.NavigateToSignIn
+            RecoverPasswordIntent.Action.RecoverPasswordClicked ->
+                handleRecoverPassword(currentState) ?: return
         }
-
         emitEffect(effect)
     }
 
@@ -39,8 +37,6 @@ class RecoverPasswordViewModel(
         if (email.isBlank() || !current.isRecoverEnabled) return null
 
         val result = recoverPasswordUseCase.invoke()
-
-        AppLog.d("RecoverPasswordVM", result.toString())
 
         return when (result) {
             is DomainResult.Error<*> -> null
