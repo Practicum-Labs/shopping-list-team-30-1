@@ -20,7 +20,7 @@ sealed interface ProductsIntent : MviIntent {
     sealed interface UI : ProductsIntent {
         data class ChangeName(val name: String) : UI
         data class ChangeCount(val amount: String) : UI
-        data class ChangeUnit(val unit: MeasurementUnit) : UI
+        data class ChangeUnit(val unit: String) : UI
         data object IncreaseCount : UI
         data object DecreaseCount : UI
         data object ToggleBottomSheet : UI

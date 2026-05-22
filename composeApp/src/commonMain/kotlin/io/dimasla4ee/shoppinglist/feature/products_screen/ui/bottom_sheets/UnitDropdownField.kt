@@ -25,22 +25,24 @@ import shoppinglist.composeapp.generated.resources.hint_units
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UnitDropdownField(
-    selectedUnit: MeasurementUnit?,
-    onUnitSelect: (MeasurementUnit) -> Unit,
+    selectedUnit: String,
+    onUnitSelect: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+    var textValue by remember { mutableStateOf(selectedUnit) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
         modifier = modifier
     ) {
-
         OutlinedTextField(
-            value = selectedUnit?.let { unit -> stringResource(unit.toStringResource()) } ?: "",
-            onValueChange = {},
-            readOnly = true,
+            value = textValue,
+            onValueChange = { newText ->
+                textValue = newText
+                onUnitSelect(textValue)
+            },
             label = {
                 Text(
                     text = stringResource(Res.string.hint_units),
@@ -61,16 +63,13 @@ fun UnitDropdownField(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-
             MeasurementUnit.entries.forEach { currentUnit ->
-
+                val textUnit = stringResource(currentUnit.toStringResource())
                 DropdownMenuItem(
-                    text = {
-                        Text(stringResource(currentUnit.toStringResource()))
-                    },
-
+                    text = { Text(textUnit) },
                     onClick = {
-                        onUnitSelect(currentUnit)
+                        textValue = textUnit
+                        onUnitSelect(textValue)
                         expanded = false
                     }
                 )
@@ -84,7 +83,7 @@ fun UnitDropdownField(
 private fun UnitDropdownFieldPreview() {
     ShoppingListTheme {
         UnitDropdownField(
-            selectedUnit = MeasurementUnit.LITER,
+            selectedUnit = stringResource(MeasurementUnit.LITER.toStringResource()),
             onUnitSelect = {}
         )
     }

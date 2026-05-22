@@ -47,7 +47,7 @@ class ProductsViewModel(
     ): ProductsState = when (intent) {
         is ProductsIntent.UI.ChangeCount -> current.copy(amount = intent.amount)
         is ProductsIntent.UI.ChangeName -> current.copy(name = intent.name)
-        is ProductsIntent.UI.ChangeUnit -> current.copy(unit = intent.unit)
+        is ProductsIntent.UI.ChangeUnit -> current.reduceChangeUnit(intent)
         is ProductsIntent.UI.ReorderProduct -> current.reduceReorderProduct(intent)
         ProductsIntent.UI.DismissDialog -> current.copy(dialog = ProductDialog.None)
         ProductsIntent.UI.DecreaseCount -> {
@@ -92,12 +92,16 @@ class ProductsViewModel(
                 id = null,
                 name = "",
                 amount = "",
-                unit = null,
+                unit = "",
                 position = null,
                 isBottomSheetOpen = false
             )
         }
     }
+
+    private fun ProductsState.reduceChangeUnit(
+        intent: ProductsIntent.UI.ChangeUnit
+    ) = copy(unit = intent.unit)
 
     private fun ProductsState.reduceEditProduct(
         intent: ProductsIntent.UI.EditProduct
@@ -114,7 +118,7 @@ class ProductsViewModel(
         isBottomSheetOpen = !isBottomSheetOpen,
         name = "",
         amount = "",
-        unit = null
+        unit = ""
     )
 
     private fun ProductsState.reduceReorderProduct(
