@@ -65,8 +65,7 @@ class ProductsViewModel(
         ProductsIntent.UI.ShowDeleteCheckedDialog ->
             current.copy(dialog = ProductDialog.DeleteCheckedProducts)
 
-        ProductsIntent.UI.ToggleBottomSheet ->
-            current.copy(isBottomSheetOpen = !current.isBottomSheetOpen)
+        ProductsIntent.UI.ToggleBottomSheet -> current.reduceToggleBottomSheet()
 
         ProductsIntent.UI.ToggleMenuBottomSheet ->
             current.copy(isMenuBottomSheetOpen = !current.isMenuBottomSheetOpen)
@@ -108,6 +107,14 @@ class ProductsViewModel(
         name = intent.product.name,
         amount = intent.product.amount.toString(),
         unit = intent.product.unit
+    )
+
+    private fun ProductsState.reduceToggleBottomSheet() = copy(
+        id = null,
+        isBottomSheetOpen = !isBottomSheetOpen,
+        name = "",
+        amount = "",
+        unit = null
     )
 
     private fun ProductsState.reduceReorderProduct(
