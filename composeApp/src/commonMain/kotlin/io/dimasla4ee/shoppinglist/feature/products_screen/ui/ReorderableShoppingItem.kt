@@ -56,7 +56,7 @@ fun LazyItemScope.ReorderableShoppingItem(
                     onCheckedChange = onCheckedChange
                 )
 
-                if (!showDragHandle) return@ReorderableItem
+                if (!showDragHandle) return@Row
 
                 AppIconButton(
                     iconRes = Res.drawable.ic_drag_handle_24,
