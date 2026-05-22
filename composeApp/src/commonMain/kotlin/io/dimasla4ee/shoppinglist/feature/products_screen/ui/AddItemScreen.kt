@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
+import io.dimasla4ee.shoppinglist.core.presentation.components.AppFloatingActionButton
 import io.dimasla4ee.shoppinglist.core.presentation.components.topbar.AppTopBar
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode

@@ -5,11 +5,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
+import io.dimasla4ee.shoppinglist.core.presentation.components.AppFloatingActionButton
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.fab.FabMenuFloatingActionButton
-import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.fab.FigmaFloatingActionButton
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.topbar.DropdownMenuTopBar
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.topbar.FigmaTopBar
+import org.jetbrains.compose.resources.painterResource
+import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.ic_fab_24
 
 @Composable
 fun ShoppingListsScaffold(
@@ -54,8 +57,9 @@ fun ShoppingListsScaffold(
         },
         floatingActionButton = {
             when (screenVariant) {
-                ShoppingListsScreenVariant.FIGMA -> FigmaFloatingActionButton(
-                    onAddListClick = onAddListClick
+                ShoppingListsScreenVariant.FIGMA -> AppFloatingActionButton(
+                    iconRes = painterResource(Res.drawable.ic_fab_24),
+                    onClick = onAddListClick
                 )
 
                 ShoppingListsScreenVariant.FAB_MENU -> FabMenuFloatingActionButton(
@@ -63,8 +67,9 @@ fun ShoppingListsScaffold(
                     onAddListClick = onAddListClick
                 )
 
-                ShoppingListsScreenVariant.DROPDOWN_MENU -> FigmaFloatingActionButton(
-                    onAddListClick = onAddListClick
+                ShoppingListsScreenVariant.DROPDOWN_MENU -> AppFloatingActionButton(
+                    iconRes = painterResource(Res.drawable.ic_fab_24),
+                    onClick = onAddListClick
                 )
             }
         },
