@@ -2,6 +2,9 @@ import dev.detekt.gradle.Detekt
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
@@ -58,7 +61,7 @@ kotlin {
 
             implementation(libs.koin.android)
 
-            implementation("me.gosimple:nbvcxz:1.5.1")
+            implementation(libs.nbvcxz)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -103,9 +106,9 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
 
-            implementation("me.gosimple:nbvcxz:1.5.1")
+            implementation(libs.nbvcxz)
 
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.2")
+            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }
@@ -121,16 +124,48 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+
+    val keystoreProperties = Properties()
+    val keystorePropertiesFile = rootProject.file("keystore.properties")
+
+    if (keystorePropertiesFile.exists()) { keystoreProperties.load(FileInputStream(keystorePropertiesFile)) }
+
+    signingConfigs {
+        create("release") {
+            if (keystorePropertiesFile.exists()) {
+                storeFile = rootProject.file(keystoreProperties["STORE_FILE"] as String)
+                storePassword = keystoreProperties["STORE_PASSWORD"] as String
+                keyAlias = keystoreProperties["KEY_ALIAS"] as String
+                keyPassword = keystoreProperties["KEY_PASSWORD"] as String
+            }
+        }
+    }
+
+    buildTypes {
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+        }
+
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            if (keystorePropertiesFile.exists()) { signingConfig = signingConfigs.getByName("release") }
+        }
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
