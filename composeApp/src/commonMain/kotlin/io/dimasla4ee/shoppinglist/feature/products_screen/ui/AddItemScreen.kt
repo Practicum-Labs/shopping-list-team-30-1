@@ -105,11 +105,7 @@ fun AddItemScreen(
         },
         floatingActionButton = {
             AppFloatingActionButton(
-                modifier = Modifier
-                    .padding(
-                        end = AppDimensions.paddingMedium,
-                        bottom = AppDimensions.paddingExtraBig
-                    ),
+                modifier = Modifier.padding(AppDimensions.paddingMedium),
                 onClick = { onIntent(ProductsIntent.UI.ToggleBottomSheet) },
                 iconRes = painterResource(Res.drawable.ic_add_56)
             )
@@ -168,7 +164,13 @@ fun AddItemScreen(
                             item = item,
                             state = reorderableLazyListState,
                             hapticFeedback = hapticFeedback,
-                            onCheckedChange = { onIntent(ProductsIntent.Action.ToggleItemChecked(item)) },
+                            onCheckedChange = {
+                                onIntent(
+                                    ProductsIntent.Action.ToggleItemChecked(
+                                        item
+                                    )
+                                )
+                            },
                             onLongPress = { onIntent(ProductsIntent.UI.EditProduct(item)) },
                             onDragStop = { onIntent(ProductsIntent.Action.CommitReorder) },
                             showDragHandle = isCustomSort
