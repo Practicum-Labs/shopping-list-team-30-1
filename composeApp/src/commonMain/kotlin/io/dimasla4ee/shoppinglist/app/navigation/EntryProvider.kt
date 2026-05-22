@@ -8,16 +8,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
-import io.dimasla4ee.shoppinglist.app.navigation.Route.Authorization
-import io.dimasla4ee.shoppinglist.app.navigation.Route.PasswordRecovery
-import io.dimasla4ee.shoppinglist.app.navigation.Route.ProductsList
-import io.dimasla4ee.shoppinglist.app.navigation.Route.Registration
-import io.dimasla4ee.shoppinglist.app.navigation.Route.ShoppingLists
-import io.dimasla4ee.shoppinglist.app.navigation.Route.Welcome
 import io.dimasla4ee.shoppinglist.app.startup.session.domain.AppLaunchRepository
 import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionIntent
 import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionViewModel
-import io.dimasla4ee.shoppinglist.app.startup.session.splash.domain.SplashDestination
 import io.dimasla4ee.shoppinglist.app.startup.session.splash.presentation.SplashEffect
 import io.dimasla4ee.shoppinglist.app.startup.session.splash.presentation.SplashIntent
 import io.dimasla4ee.shoppinglist.app.startup.session.splash.presentation.SplashViewModel
@@ -50,25 +43,18 @@ fun entryProvider(
 
     entry<Route.Splash> {
         val splashViewModel = koinViewModel<SplashViewModel>()
-        val state by splashViewModel.state.collectAsState()
-        SplashScreen(
-            modifier = Modifier.fillMaxSize()
-        )
+
+        SplashScreen(modifier = Modifier.fillMaxSize())
+
         LaunchedEffect(Unit) {
             splashViewModel.dispatch(SplashIntent.Initialize)
-        }
-        LaunchedEffect(state.destination) {
-            when (state.destination) {
 
-                SplashDestination.Welcome -> {
-                    topLevelBackStack.replaceStack(Route.Welcome)
+            splashViewModel.effects.collect { effect ->
+                val destination = when (effect) {
+                    SplashEffect.NavigateToShoppingLists -> Route.ShoppingLists
+                    SplashEffect.NavigateToWelcome -> Route.Welcome
                 }
-
-                SplashDestination.ShoppingLists -> {
-                    topLevelBackStack.replaceStack(Route.ShoppingLists)
-                }
-
-                null -> Unit
+                topLevelBackStack.replaceStack(destination)
             }
         }
     }
@@ -79,16 +65,14 @@ fun entryProvider(
 
         WelcomeScreen(
             onGoToShopping = {
-                scope.launch {
-                    appLaunchRepository.setLaunched()
-                }
+                scope.launch { appLaunchRepository.setLaunched() }
                 topLevelBackStack.replaceStack(Route.ShoppingLists)
             },
             modifier = Modifier.fillMaxSize()
         )
     }
 
-    entry<ShoppingLists> {
+    entry<Route.ShoppingLists> {
         val viewModel: ShoppingListsViewModel = koinViewModel()
         val sessionState by sessionViewModel.state.collectAsState()
 
@@ -107,7 +91,7 @@ fun entryProvider(
                 when (effect) {
                     is ShoppingListsEffect.NavigateToProducts -> {
                         topLevelBackStack.add(
-                            ProductsList(
+                            Route.ProductsList(
                                 listId = effect.listId,
                                 listName = effect.listName
                             )
@@ -115,7 +99,7 @@ fun entryProvider(
                     }
 
                     is ShoppingListsEffect.NavigateToAuthorization -> {
-                        topLevelBackStack.add(Authorization)
+                        topLevelBackStack.add(Route.Authorization)
                     }
                 }
             }
@@ -130,7 +114,7 @@ fun entryProvider(
         )
     }
 
-    entry<ProductsList> { route ->
+    entry<Route.ProductsList> { route ->
 
         AddItemRoute(
             listId = route.listId,
@@ -169,7 +153,7 @@ fun entryProvider(
         )
     }
 
-    entry<Registration> {
+    entry<Route.Registration> {
         val viewModel = koinViewModel<RegisterViewModel>()
         val state by viewModel.state.collectAsState()
 
@@ -195,7 +179,7 @@ fun entryProvider(
         )
     }
 
-    entry<PasswordRecovery> {
+    entry<Route.PasswordRecovery> {
         val viewModel = koinViewModel<RecoverPasswordViewModel>()
         val state by viewModel.state.collectAsState()
 

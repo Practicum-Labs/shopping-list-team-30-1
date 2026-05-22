@@ -14,28 +14,16 @@ class SessionViewModel(
         current: SessionState
     ): SessionState = when (intent) {
         SessionIntent.LoadSession,
-        SessionIntent.RefreshSession -> {
-            current.copy(isLoading = true)
-        }
-        SessionIntent.Logout -> {
-            current.copy(isLoading = true)
-        }
+        SessionIntent.RefreshSession -> current.copy(isLoading = true)
+
+        SessionIntent.Logout -> current.copy(isLoading = true)
     }
 
     override suspend fun handleIntent(intent: SessionIntent) {
         when (intent) {
-
-            SessionIntent.LoadSession -> {
-                loadSession()
-            }
-
-            SessionIntent.RefreshSession -> {
-                loadSession()
-            }
-
-            SessionIntent.Logout -> {
-                logout()
-            }
+            SessionIntent.LoadSession -> loadSession()
+            SessionIntent.RefreshSession -> loadSession()
+            SessionIntent.Logout -> logout()
         }
     }
 
@@ -54,8 +42,6 @@ class SessionViewModel(
 
     private suspend fun logout() {
         authRepository.clearTokens()
-        updateState {
-            SessionState()
-        }
+        updateState { SessionState() }
     }
 }
