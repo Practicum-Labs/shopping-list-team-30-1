@@ -45,74 +45,56 @@ class ProductsViewModel(
         }
     }
 
+    private fun String.toIntOrZero(): Int = toIntOrNull() ?: 0
+
     override fun reduce(
         intent: ProductsIntent,
         current: ProductsState
     ): ProductsState = when (intent) {
-        is ProductsIntent.ChangeName ->
-            current.copy(name = intent.name)
-
-        is ProductsIntent.ChangeCount ->
-            current.copy(amount = intent.amount)
-
-        is ProductsIntent.ChangeUnit ->
-            current.copy(unit = intent.unit)
-
-        is ProductsIntent.IncreaseCount -> {
-            val count = current.amount.toIntOrNull() ?: 0
-            current.copy(amount = (count + 1).toString())
-        }
+        is ProductsIntent.ChangeName -> current.copy(name = intent.name)
+        is ProductsIntent.ChangeCount -> current.copy(amount = intent.amount)
+        is ProductsIntent.ChangeUnit -> current.copy(unit = intent.unit)
+        is ProductsIntent.IncreaseCount ->
+            current.copy(amount = (current.amount.toIntOrZero() + 1).toString())
 
         ProductsIntent.DecreaseCount -> {
-            val count = current.amount.toIntOrNull() ?: 0
-            current.copy(amount = (count - 1).coerceAtLeast(0).toString())
+            val amount = current.amount.toIntOrZero()
+            current.copy(amount = (amount - 1).coerceAtLeast(0).toString())
         }
 
-        ProductsIntent.ToggleBottomSheet -> current.copy(
-            isBottomSheetOpen = !current.isBottomSheetOpen
-        )
+        ProductsIntent.ToggleBottomSheet ->
+            current.copy(isBottomSheetOpen = !current.isBottomSheetOpen)
 
-        ProductsIntent.ShowDeleteAllDialog -> current.copy(
-            dialog = ProductDialog.DeleteAll
-        )
+        ProductsIntent.ShowDeleteAllDialog ->
+            current.copy(dialog = ProductDialog.DeleteAll)
 
-        ProductsIntent.ShowDeleteCheckedDialog -> current.copy(
-            dialog = ProductDialog.DeleteCheckedProducts
-        )
+        ProductsIntent.ShowDeleteCheckedDialog ->
+            current.copy(dialog = ProductDialog.DeleteCheckedProducts)
 
-        ProductsIntent.DismissDialog -> current.copy(
-            dialog = ProductDialog.None
-        )
+        ProductsIntent.DismissDialog ->
+            current.copy(dialog = ProductDialog.None)
 
         is ProductsIntent.ReorderProduct -> {
             if (current.sortMode != SortMode.CUSTOM) return current
 
-            val items = current.displayedItems.toMutableList()
-            val moved = items.removeAt(intent.fromIndex)
-            items.add(intent.toIndex, moved)
+            val items = current.displayedItems.toMutableList().apply {
+                val moved = removeAt(intent.fromIndex)
+                add(intent.toIndex, moved)
+            }.mapIndexed { index, product -> product.copy(position = index) }
 
-            current.copy(
-                items = items.mapIndexed { index, product ->
-                    product.copy(position = index)
-                }
-            )
+            current.copy(items = items)
         }
 
-        ProductsIntent.ToggleMenuBottomSheet -> {
-            current.copy(
-                isMenuBottomSheetOpen = !current.isMenuBottomSheetOpen
-            )
-        }
+        ProductsIntent.ToggleMenuBottomSheet ->
+            current.copy(isMenuBottomSheetOpen = !current.isMenuBottomSheetOpen)
 
-        is ProductsIntent.EditProduct -> {
-            current.copy(
-                id = intent.product.id,
-                isBottomSheetOpen = !current.isBottomSheetOpen,
-                name = intent.product.name,
-                amount = intent.product.amount.toString(),
-                unit = intent.product.unit
-            )
-        }
+        is ProductsIntent.EditProduct -> current.copy(
+            id = intent.product.id,
+            isBottomSheetOpen = !current.isBottomSheetOpen,
+            name = intent.product.name,
+            amount = intent.product.amount.toString(),
+            unit = intent.product.unit
+        )
 
         is ProductsIntent.DeleteProduct,
         ProductsIntent.CommitReorder,

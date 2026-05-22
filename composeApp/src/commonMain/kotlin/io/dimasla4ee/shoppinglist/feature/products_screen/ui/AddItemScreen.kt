@@ -38,7 +38,10 @@ import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsState
+import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.state.ProductDialog
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.AddProductBottomSheet
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteAllProductsDialog
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteCheckedProductsDialog
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -57,7 +60,6 @@ import shoppinglist.composeapp.generated.resources.ic_sort_by_alpha_24
 fun AddItemScreen(
     listName: String,
     state: ProductsState,
-    onMenuClick: () -> Unit,
     onIntent: (ProductsIntent) -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: (() -> Unit)? = null
@@ -114,6 +116,20 @@ fun AddItemScreen(
         }
     ) { paddingValues ->
 
+        when (state.dialog) {
+            ProductDialog.DeleteAll -> DeleteAllProductsDialog(
+                onDismiss = { onIntent(ProductsIntent.DismissDialog) },
+                onConfirm = { onIntent(ProductsIntent.DeleteAllProducts) }
+            )
+
+            ProductDialog.DeleteCheckedProducts -> DeleteCheckedProductsDialog(
+                onDismiss = { onIntent(ProductsIntent.DismissDialog) },
+                onConfirm = { onIntent(ProductsIntent.DeleteCheckedProducts) }
+            )
+
+            ProductDialog.None -> Unit
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -123,17 +139,15 @@ fun AddItemScreen(
             ProductsMenuBottomSheet(
                 visible = state.isMenuBottomSheetOpen,
                 sortMode = state.sortMode,
-                onDismiss = {
+                onDismiss = { onIntent(ProductsIntent.ToggleMenuBottomSheet) },
+                onSortClick = { onIntent(ProductsIntent.ToggleSortMode) },
+                onDeleteAllClick = {
+                    onIntent(ProductsIntent.ShowDeleteAllDialog)
                     onIntent(ProductsIntent.ToggleMenuBottomSheet)
                 },
-                onSortClick = {
-                    onIntent(ProductsIntent.ToggleSortMode)
-                },
-                onDeleteAllClick = {
-                    onIntent(ProductsIntent.DeleteAllProducts)
-                },
                 onDeleteCheckClick = {
-                    onIntent(ProductsIntent.DeleteCheckedProducts)
+                    onIntent(ProductsIntent.ShowDeleteCheckedDialog)
+                    onIntent(ProductsIntent.ToggleMenuBottomSheet)
                 }
             )
 
@@ -201,7 +215,7 @@ fun AddItemScreen(
                     onIncreaseClick = { onIntent(ProductsIntent.IncreaseCount) },
                     onDecreaseClick = { onIntent(ProductsIntent.DecreaseCount) },
                     onApplyClick = { onIntent(ProductsIntent.AddItem) },
-                    onDeleteClick = { onIntent(ProductsIntent.DeleteProduct)}
+                    onDeleteClick = { onIntent(ProductsIntent.DeleteProduct) }
                 )
             }
         }
@@ -254,8 +268,7 @@ private fun AddItemScreenPreview() {
         AddItemRoute(
             listId = 0,
             listName = "Bobs",
-            onBackClick = {},
-            onMenuClick = {}
+            onBackClick = {}
         )
     }
 }

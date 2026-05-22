@@ -13,7 +13,6 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AddItemRoute(
     listName: String,
     listId: Long,
-    onMenuClick: () -> Unit,
     onBackClick: () -> Unit,
     viewModel: ProductsViewModel = koinViewModel()
 ) {
@@ -27,7 +26,6 @@ fun AddItemRoute(
         listName = listName,
         state = state,
         onIntent = { viewModel.dispatch(it) },
-        onMenuClick = onMenuClick,
         onBackClick = onBackClick,
         modifier = Modifier.fillMaxSize()
     )
