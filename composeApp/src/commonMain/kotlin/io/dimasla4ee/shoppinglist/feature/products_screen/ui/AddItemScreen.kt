@@ -43,6 +43,7 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.AddPr
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteAllProductsDialog
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteCheckedProductsDialog
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteListDialog
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -61,8 +62,7 @@ fun AddItemScreen(
     listName: String,
     state: ProductsState,
     onIntent: (ProductsIntent) -> Unit,
-    modifier: Modifier = Modifier,
-    onBackClick: (() -> Unit)? = null
+    modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState()
 
@@ -85,13 +85,13 @@ fun AddItemScreen(
             AppTopBar(
                 title = listName,
                 navigationIcon = {
-                    if (onBackClick != null) {
-                        IconButton(onClick = onBackClick) {
-                            Icon(
-                                painter = painterResource(Res.drawable.ic_arrow_back_24),
-                                contentDescription = stringResource(Res.string.content_back)
-                            )
-                        }
+                    IconButton(
+                        onClick = { onIntent(ProductsIntent.Action.OnBackClick) }
+                    ) {
+                        Icon(
+                            painter = painterResource(Res.drawable.ic_arrow_back_24),
+                            contentDescription = stringResource(Res.string.content_back)
+                        )
                     }
                 },
                 actions = listOf(
@@ -123,6 +123,15 @@ fun AddItemScreen(
                 onConfirm = { onIntent(ProductsIntent.Action.DeleteCheckedProducts) }
             )
 
+            is ProductDialog.DeleteListDialog -> DeleteListDialog(
+                listName = state.dialog.name,
+                onDismiss = { onIntent(ProductsIntent.UI.DismissDialog) },
+                onConfirm = {
+                    onIntent(ProductsIntent.UI.DismissDialog)
+                    onIntent(ProductsIntent.Action.DeleteList)
+                }
+            )
+
             ProductDialog.None -> Unit
         }
 
@@ -143,6 +152,10 @@ fun AddItemScreen(
                 },
                 onDeleteCheckClick = {
                     onIntent(ProductsIntent.UI.ShowDeleteCheckedDialog)
+                    onIntent(ProductsIntent.UI.ToggleMenuBottomSheet)
+                },
+                onDeleteList = {
+                    onIntent(ProductsIntent.UI.ShowDeleteListDialog)
                     onIntent(ProductsIntent.UI.ToggleMenuBottomSheet)
                 }
             )

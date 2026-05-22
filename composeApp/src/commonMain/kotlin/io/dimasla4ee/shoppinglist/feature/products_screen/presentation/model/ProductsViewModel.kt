@@ -8,19 +8,23 @@ import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractor
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.state.ProductDialog
+import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
 import kotlinx.coroutines.launch
 
 class ProductsViewModel(
     private val productInteractor: ProductInteractor,
+    private val listsInteractor: ShoppingListsInteractor,
     private val getSortModeUseCase: GetSortModeUseCase,
     private val setSortModeUseCase: SetSortModeUseCase
 ) : MviViewModel<ProductsIntent, ProductsState, ProductsEffect>(
     initialState = ProductsState()
 ) {
     private var listId: Long = 0
+    private var listName: String = ""
 
-    fun init(listId: Long) {
+    fun init(listId: Long, listName: String) {
         this.listId = listId
+        this.listName = listName
 
         observeProducts()
         observeSortMode()
@@ -65,6 +69,9 @@ class ProductsViewModel(
         ProductsIntent.UI.ShowDeleteCheckedDialog ->
             current.copy(dialog = ProductDialog.DeleteCheckedProducts)
 
+        ProductsIntent.UI.ShowDeleteListDialog ->
+            current.copy(dialog = ProductDialog.DeleteListDialog(listName))
+
         ProductsIntent.UI.ToggleBottomSheet ->
             current.copy(isBottomSheetOpen = !current.isBottomSheetOpen)
 
@@ -80,6 +87,16 @@ class ProductsViewModel(
         ProductsIntent.Action.CommitReorder -> handleCommitReorder()
         ProductsIntent.Action.DeleteAllProducts -> handleDeleteAll()
         ProductsIntent.Action.DeleteCheckedProducts -> handleDeleteChecked()
+        ProductsIntent.Action.OnBackClick -> emitEffect(ProductsEffect.NavigateBack)
+        ProductsIntent.Action.DeleteList -> {
+            listsInteractor.getShoppingLists().collect { lists ->
+                lists.find { it.id == listId }?.let {
+                    listsInteractor.deleteShoppingList(it)
+                }
+                emitEffect(ProductsEffect.NavigateBack)
+            }
+        }
+
         is ProductsIntent.Action.DeleteProduct -> handleDeleteProduct()
         is ProductsIntent.Action.ToggleItemChecked -> handleToggleChecked(intent.product)
         ProductsIntent.Action.ToggleSortMode -> handleToggleSortMode()

@@ -7,4 +7,6 @@ sealed class ProductDialog {
     data object DeleteAll : ProductDialog()
 
     data object DeleteCheckedProducts : ProductDialog()
+
+    data class DeleteListDialog(val name: String) : ProductDialog()
 }
