@@ -39,7 +39,7 @@ import shoppinglist.composeapp.generated.resources.ic_plus_24
 
 
 private const val HALF_WEIGHT = 0.5f
-private const val MAX_LENGTH_QUANTITY = 7
+private const val MAX_LENGTH_QUANTITY = 15
 
 @Composable
 fun AddProductBottomSheet(
@@ -100,7 +100,8 @@ fun AddProductBottomSheet(
                             overflow = TextOverflow.Ellipsis
                         )
                     },
-                    modifier = Modifier.weight(HALF_WEIGHT)
+                    modifier = Modifier.weight(HALF_WEIGHT),
+                    singleLine = true
                 )
 
                 Spacer(modifier = Modifier.width(AppDimensions.spacerMedium))

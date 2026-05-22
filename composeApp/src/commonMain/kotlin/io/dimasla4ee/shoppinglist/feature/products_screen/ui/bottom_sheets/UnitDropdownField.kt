@@ -26,7 +26,7 @@ import shoppinglist.composeapp.generated.resources.hint_units
 import shoppinglist.composeapp.generated.resources.ic_trailing_down_48
 import shoppinglist.composeapp.generated.resources.ic_trailing_up_48
 
-private const val MAX_LENGTH_UNIT = 5
+private const val MAX_LENGTH_UNIT = 15
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,7 +73,8 @@ fun UnitDropdownField(
             colors = shoppingListTextFieldColors(),
             modifier = Modifier
 //                .menuAnchor()
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            singleLine = true
         )
 
         ExposedDropdownMenu(
