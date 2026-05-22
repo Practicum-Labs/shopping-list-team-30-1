@@ -32,7 +32,7 @@ class RegisterInfoProvider : PreviewParameterProvider<RegisterState> {
         return RegisterState(
             email = TextFieldState(email),
             password = TextFieldState(password),
-            isPasswordVisible = isPasswordVisible
+            isPasswordVisible = isPasswordVisible,
         )
     }
 }

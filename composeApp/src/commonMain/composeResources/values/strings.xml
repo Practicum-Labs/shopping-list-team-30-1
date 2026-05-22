@@ -12,6 +12,8 @@
     <string name="authorization_email_label">Email</string>
     <string name="authorization_password_hint">Введите пароль</string>
     <string name="authorization_password_label">Пароль</string>
+    <string name="authorization_password_confirm_hint">Повторите пароль</string>
+    <string name="authorization_password_confirm_label">Подтверждение пароля</string>
     <string name="authorization_button">Зарегистрироваться</string>
     <string name="authorization_have_account">Уже есть аккаунт?</string>
     <string name="authorization_sign_in">Войти</string>

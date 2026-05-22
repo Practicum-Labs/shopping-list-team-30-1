@@ -101,6 +101,7 @@ private fun AuthorizationScreenPreview(
                 RegisterContent(
                     state = screenType.state as RegisterState,
                     onShowPassword = {},
+                    onShowConfirmPassword = {},
                     onRegister = {},
                     onAuthorization = {},
                     modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)

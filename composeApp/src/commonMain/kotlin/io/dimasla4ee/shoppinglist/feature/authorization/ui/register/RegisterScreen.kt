@@ -20,15 +20,12 @@ fun RegisterScreen(
     ) {
         RegisterContent(
             state = state,
-            onShowPassword = {
-                onIntent(RegisterIntent.PasswordVisibilityToggleClicked)
-            },
-            onRegister = {
-                onIntent(RegisterIntent.RegisterClicked)
-            },
-            onAuthorization = {
-                onIntent(RegisterIntent.SignInClicked)
-            },
+            onShowPassword =
+                { onIntent(RegisterIntent.UI.PasswordVisibilityToggleClicked) },
+            onShowConfirmPassword =
+                { onIntent(RegisterIntent.UI.ConfirmPasswordVisibilityToggleClicked) },
+            onRegister = { onIntent(RegisterIntent.Action.RegisterClicked) },
+            onAuthorization = { onIntent(RegisterIntent.Action.SignInClicked) },
             modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
         )
     }

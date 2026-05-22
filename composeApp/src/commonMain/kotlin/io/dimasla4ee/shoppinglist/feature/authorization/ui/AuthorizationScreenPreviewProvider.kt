@@ -30,7 +30,6 @@ sealed class AuthorizationScreenType(
         state = RegisterState(
             email = TextFieldState("new_user@example.com"),
             password = TextFieldState("Str0ng!Pass"),
-            isPasswordVisible = false
         )
     )
 
