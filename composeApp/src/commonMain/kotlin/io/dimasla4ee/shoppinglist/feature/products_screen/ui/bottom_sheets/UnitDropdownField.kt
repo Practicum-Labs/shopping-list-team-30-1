@@ -1,10 +1,13 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,9 +21,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.presentation.mappers.toStringResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.hint_units
+import shoppinglist.composeapp.generated.resources.ic_trailing_down_48
+import shoppinglist.composeapp.generated.resources.ic_trailing_up_48
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +40,7 @@ fun UnitDropdownField(
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        onExpandedChange = {},
         modifier = modifier
     ) {
         OutlinedTextField(
@@ -51,11 +57,20 @@ fun UnitDropdownField(
                 )
             },
             trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded)
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(
+                        painter = if (expanded) {
+                            painterResource(Res.drawable.ic_trailing_up_48)
+                        } else {
+                            painterResource(Res.drawable.ic_trailing_down_48)
+                        },
+                        contentDescription = null
+                    )
+                }
             },
             colors = shoppingListTextFieldColors(),
             modifier = Modifier
-                .menuAnchor()
+//                .menuAnchor()
                 .fillMaxWidth()
         )
 
