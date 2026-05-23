@@ -1,3 +1,5 @@
+@file:Suppress("LongMethod")
+
 package io.dimasla4ee.shoppinglist.app.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,6 +38,7 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 const val SPLASH_SCREEN_DELAY = 1000L
+
 fun entryProvider(
     topLevelBackStack: TopLevelBackStack<NavKey>,
     sessionViewModel: SessionViewModel,

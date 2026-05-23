@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
+import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
@@ -52,213 +53,323 @@ fun ShoppingListsScreen(
     onThemeToggle: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val visibleLists = remember(
-        state.lists,
-        state.searchQuery
-    ) {
+    val visibleLists = remember(state.lists, state.searchQuery) {
         val query = state.searchQuery.trim()
-        state.lists.filter { it.name.contains(query, ignoreCase = true) }
+
+        state.lists.filter {
+            it.name.contains(query, ignoreCase = true)
+        }
     }
 
     OrientationProvider { orientation ->
+
         if (state.isSearchMode) {
-            ShoppingListsScaffoldSearch(
-                query = state.searchQuery,
-                onQueryChange = { onIntent(ShoppingListsIntent.SearchQueryChanged(it)) },
-                onBack = { onIntent(ShoppingListsIntent.SearchDismiss) },
-                onClear = { onIntent(ShoppingListsIntent.SearchQueryChanged("")) }
-            ) { padding ->
-                when {
-                    visibleLists.isEmpty() && state.searchQuery.isNotEmpty() -> {
-                        when (orientation) {
-                            ScreenOrientation.PORTRAIT -> ShoppingListsSearchEmptyPortrait(
-                                modifier = Modifier.padding(padding)
-                            )
-
-                            ScreenOrientation.LANDSCAPE -> ShoppingListsSearchEmptyLandscape(
-                                modifier = Modifier.padding(padding)
-                            )
-                        }
-                    }
-
-                    visibleLists.isEmpty() -> {
-                        when (orientation) {
-                            ScreenOrientation.PORTRAIT -> ShoppingListsEmptyPortrait(
-                                modifier = Modifier.padding(padding)
-                            )
-
-                            ScreenOrientation.LANDSCAPE -> ShoppingListsEmptyLandscape(
-                                modifier = Modifier.padding(padding)
-                            )
-                        }
-                    }
-
-                    else -> {
-                        ShoppingListsContent(
-                            lists = visibleLists,
-                            onEvent = { event ->
-                                val intent = when (event) {
-                                    is ShoppingListCardEvent.Click ->
-                                        ShoppingListsIntent.ListClicked(event.item)
-
-                                    is ShoppingListCardEvent.Edit ->
-                                        ShoppingListsIntent.EditClicked(event.item)
-
-                                    is ShoppingListCardEvent.Copy ->
-                                        ShoppingListsIntent.CopyClicked(event.item)
-
-                                    is ShoppingListCardEvent.ChangeIcon ->
-                                        ShoppingListsIntent.ChangeIconClicked(event.item)
-
-                                    is ShoppingListCardEvent.Delete ->
-                                        ShoppingListsIntent.DeleteClicked(event.item)
-
-                                }
-                                onIntent(intent)
-                            },
-
-                            modifier = Modifier.padding(padding)
-                        )
-                    }
-                }
-            }
-
+            SearchModeContent(
+                state = state,
+                visibleLists = visibleLists,
+                orientation = orientation,
+                onIntent = onIntent
+            )
         } else {
-
-            ShoppingListsScaffold(
-                modifier = modifier,
-                title = stringResource(Res.string.screen_title),
-                onSearchClick = ActionItem(
-                    iconRes = Res.drawable.ic_search_24,
-                    label = stringResource(Res.string.action_search),
-                    onClick = { onIntent(ShoppingListsIntent.SearchClick) }
-                ),
-                onDeleteAllClick = ActionItem(
-                    iconRes = Res.drawable.ic_delete_list_24,
-                    label = stringResource(Res.string.action_delete_all),
-                    onClick = { onIntent(ShoppingListsIntent.DeleteAllClick) }
-                ),
-                onThemeSwitch = ActionItem(
-                    iconRes = when (LocalThemeMode.current) {
-                        ThemeMode.SYSTEM -> Res.drawable.ic_system_theme_24
-                        ThemeMode.LIGHT -> Res.drawable.ic_theme_24
-                        ThemeMode.DARK -> Res.drawable.ic_theme_light_24
-                    },
-                    label = stringResource(Res.string.action_theme),
-                    onClick = onThemeToggle
-                ),
-                onAuthorizationClick = ActionItem(
-                    iconRes = when (isAuthorized) {
-                        true -> Res.drawable.ic_logout_24
-                        false -> Res.drawable.ic_login_24
-                    },
-                    label = stringResource(
-                        if (isAuthorized) Res.string.action_logout else Res.string.action_login
-                    ),
-                    onClick = { onIntent(ShoppingListsIntent.AuthorizationClicked(isAuthorized)) }
-                ),
-                onAddListClick = if (state.isFabVisible) {
-                    { onIntent(ShoppingListsIntent.FabClick) }
-                } else {
-                    null
-                }
-            ) { padding ->
-
-                if (visibleLists.isEmpty()) {
-                    when (orientation) {
-                        ScreenOrientation.PORTRAIT -> ShoppingListsEmptyPortrait(
-                            modifier = Modifier.padding(padding)
-                        )
-
-                        ScreenOrientation.LANDSCAPE -> ShoppingListsEmptyLandscape(
-                            modifier = Modifier.padding(padding)
-                        )
-                    }
-                } else {
-                    ShoppingListsContent(
-                        lists = visibleLists,
-                        onEvent = { event ->
-                            val intent = when (event) {
-                                is ShoppingListCardEvent.Click ->
-                                    ShoppingListsIntent.ListClicked(event.item)
-
-                                is ShoppingListCardEvent.Edit ->
-                                    ShoppingListsIntent.EditClicked(event.item)
-
-                                is ShoppingListCardEvent.Copy ->
-                                    ShoppingListsIntent.CopyClicked(event.item)
-
-                                is ShoppingListCardEvent.ChangeIcon ->
-                                    ShoppingListsIntent.ChangeIconClicked(event.item)
-
-                                is ShoppingListCardEvent.Delete ->
-                                    ShoppingListsIntent.DeleteClicked(event.item)
-                            }
-                            onIntent(intent)
-                        },
-
-                        modifier = Modifier.padding(padding)
-                    )
-                }
-            }
-        }
-
-        if (state.isIconSheetVisible) {
-            IconPickerBottomSheet(
-                selectedIcon = state.lists
-                    .find { it.id == state.selectedListId }
-                    ?.icon,
-                onIconSelect = { icon: ShoppingListIcon ->
-                    onIntent(ShoppingListsIntent.IconSelected(icon))
-                },
-                onDismiss = { onIntent(ShoppingListsIntent.SheetDismiss) }
+            DefaultModeContent(
+                state = state,
+                visibleLists = visibleLists,
+                orientation = orientation,
+                isAuthorized = isAuthorized,
+                onIntent = onIntent,
+                onThemeToggle = onThemeToggle,
+                modifier = modifier
             )
         }
 
-        when (val dialog = state.dialog) {
-            ShoppingListDialog.None -> Unit
+        ShoppingListsDialogs(
+            state = state,
+            onIntent = onIntent
+        )
+    }
+}
 
-            ShoppingListDialog.Create -> {
-                CreateListDialog(
-                    name = state.newListName,
-                    onNameChange = { onIntent(NameChanged(it)) },
-                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
-                    onConfirm = { onIntent(ShoppingListsIntent.CreateList) }
+@Composable
+private fun SearchModeContent(
+    state: ShoppingListsState,
+    visibleLists: List<ShoppingList>,
+    orientation: ScreenOrientation,
+    onIntent: (ShoppingListsIntent) -> Unit
+) {
+    ShoppingListsScaffoldSearch(
+        query = state.searchQuery,
+        onQueryChange = {
+            onIntent(ShoppingListsIntent.SearchQueryChanged(it))
+        },
+        onBack = {
+            onIntent(ShoppingListsIntent.SearchDismiss)
+        },
+        onClear = {
+            onIntent(ShoppingListsIntent.SearchQueryChanged(""))
+        }
+    ) { padding ->
+
+        ShoppingListsBody(
+            visibleLists = visibleLists,
+            searchQuery = state.searchQuery,
+            orientation = orientation,
+            onIntent = onIntent,
+            modifier = Modifier.padding(padding)
+        )
+    }
+}
+
+@Composable
+private fun DefaultModeContent(
+    state: ShoppingListsState,
+    visibleLists: List<ShoppingList>,
+    orientation: ScreenOrientation,
+    isAuthorized: Boolean,
+    onIntent: (ShoppingListsIntent) -> Unit,
+    onThemeToggle: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ShoppingListsScaffold(
+        modifier = modifier,
+        title = stringResource(Res.string.screen_title),
+
+        onSearchClick = ActionItem(
+            iconRes = Res.drawable.ic_search_24,
+            label = stringResource(Res.string.action_search),
+            onClick = {
+                onIntent(ShoppingListsIntent.SearchClick)
+            }
+        ),
+
+        onDeleteAllClick = ActionItem(
+            iconRes = Res.drawable.ic_delete_list_24,
+            label = stringResource(Res.string.action_delete_all),
+            onClick = {
+                onIntent(ShoppingListsIntent.DeleteAllClick)
+            }
+        ),
+
+        onThemeSwitch = ActionItem(
+            iconRes = when (LocalThemeMode.current) {
+                ThemeMode.SYSTEM -> Res.drawable.ic_system_theme_24
+                ThemeMode.LIGHT -> Res.drawable.ic_theme_24
+                ThemeMode.DARK -> Res.drawable.ic_theme_light_24
+            },
+            label = stringResource(Res.string.action_theme),
+            onClick = onThemeToggle
+        ),
+
+        onAuthorizationClick = ActionItem(
+            iconRes = if (isAuthorized) {
+                Res.drawable.ic_logout_24
+            } else {
+                Res.drawable.ic_login_24
+            },
+
+            label = stringResource(
+                if (isAuthorized) {
+                    Res.string.action_logout
+                } else {
+                    Res.string.action_login
+                }
+            ),
+
+            onClick = {
+                onIntent(
+                    ShoppingListsIntent.AuthorizationClicked(isAuthorized)
                 )
             }
+        ),
 
-            is ShoppingListDialog.Rename -> {
-                RenameListDialog(
-                    newName = state.renameValue,
-                    onRenameChange = { onIntent(RenameValueChanged(it)) },
-                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
-                    onConfirm = { onIntent(ShoppingListsIntent.RenameConfirm) }
-                )
-            }
+        onAddListClick = if (state.isFabVisible) {
+            { onIntent(ShoppingListsIntent.FabClick) }
+        } else {
+            null
+        }
 
-            is ShoppingListDialog.Delete -> {
-                DeleteListDialog(
-                    listName = dialog.name,
-                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
-                    onConfirm = { onIntent(ShoppingListsIntent.DeleteConfirm) }
-                )
-            }
+    ) { padding ->
 
-            ShoppingListDialog.DeleteAll -> {
-                DeleteAllListsDialog(
-                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
-                    onConfirm = { onIntent(ShoppingListsIntent.DeleteAllConfirm) }
-                )
-            }
+        ShoppingListsBody(
+            visibleLists = visibleLists,
+            searchQuery = "",
+            orientation = orientation,
+            onIntent = onIntent,
+            modifier = Modifier.padding(padding)
+        )
+    }
+}
 
-            ShoppingListDialog.Logout -> {
-                LogoutDialog(
-                    onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
-                    onConfirm = { onIntent(ShoppingListsIntent.LogoutClick) })
-            }
+@Composable
+private fun ShoppingListsBody(
+    visibleLists: List<ShoppingList>,
+    searchQuery: String,
+    orientation: ScreenOrientation,
+    onIntent: (ShoppingListsIntent) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    when {
+        visibleLists.isEmpty() && searchQuery.isNotEmpty() -> {
+            SearchEmptyContent(
+                orientation = orientation,
+                modifier = modifier
+            )
+        }
+
+        visibleLists.isEmpty() -> {
+            EmptyContent(
+                orientation = orientation,
+                modifier = modifier
+            )
+        }
+
+        else -> {
+            ShoppingListsContent(
+                lists = visibleLists,
+                onEvent = { event ->
+                    onIntent(event.toIntent())
+                },
+                modifier = modifier
+            )
         }
     }
 }
+
+@Composable
+private fun EmptyContent(
+    orientation: ScreenOrientation,
+    modifier: Modifier = Modifier
+) {
+    when (orientation) {
+        ScreenOrientation.PORTRAIT ->
+            ShoppingListsEmptyPortrait(modifier)
+
+        ScreenOrientation.LANDSCAPE ->
+            ShoppingListsEmptyLandscape(modifier)
+    }
+}
+
+@Composable
+private fun SearchEmptyContent(
+    orientation: ScreenOrientation,
+    modifier: Modifier = Modifier
+) {
+    when (orientation) {
+        ScreenOrientation.PORTRAIT ->
+            ShoppingListsSearchEmptyPortrait(modifier)
+
+        ScreenOrientation.LANDSCAPE ->
+            ShoppingListsSearchEmptyLandscape(modifier)
+    }
+}
+
+@Composable
+private fun ShoppingListsDialogs(
+    state: ShoppingListsState,
+    onIntent: (ShoppingListsIntent) -> Unit
+) {
+    if (state.isIconSheetVisible) {
+        IconPickerBottomSheet(
+            selectedIcon = state.lists
+                .find { it.id == state.selectedListId }
+                ?.icon,
+
+            onIconSelect = {
+                onIntent(ShoppingListsIntent.IconSelected(it))
+            },
+
+            onDismiss = {
+                onIntent(ShoppingListsIntent.SheetDismiss)
+            }
+        )
+    }
+
+    when (val dialog = state.dialog) {
+
+        ShoppingListDialog.None -> Unit
+
+        ShoppingListDialog.Create -> {
+            CreateListDialog(
+                name = state.newListName,
+                onNameChange = {
+                    onIntent(NameChanged(it))
+                },
+                onDismiss = {
+                    onIntent(ShoppingListsIntent.DialogDismiss)
+                },
+                onConfirm = {
+                    onIntent(ShoppingListsIntent.CreateList)
+                }
+            )
+        }
+
+        is ShoppingListDialog.Rename -> {
+            RenameListDialog(
+                newName = state.renameValue,
+                onRenameChange = {
+                    onIntent(RenameValueChanged(it))
+                },
+                onDismiss = {
+                    onIntent(ShoppingListsIntent.DialogDismiss)
+                },
+                onConfirm = {
+                    onIntent(ShoppingListsIntent.RenameConfirm)
+                }
+            )
+        }
+
+        is ShoppingListDialog.Delete -> {
+            DeleteListDialog(
+                listName = dialog.name,
+                onDismiss = {
+                    onIntent(ShoppingListsIntent.DialogDismiss)
+                },
+                onConfirm = {
+                    onIntent(ShoppingListsIntent.DeleteConfirm)
+                }
+            )
+        }
+
+        ShoppingListDialog.DeleteAll -> {
+            DeleteAllListsDialog(
+                onDismiss = {
+                    onIntent(ShoppingListsIntent.DialogDismiss)
+                },
+                onConfirm = {
+                    onIntent(ShoppingListsIntent.DeleteAllConfirm)
+                }
+            )
+        }
+
+        ShoppingListDialog.Logout -> {
+            LogoutDialog(
+                onDismiss = {
+                    onIntent(ShoppingListsIntent.DialogDismiss)
+                },
+                onConfirm = {
+                    onIntent(ShoppingListsIntent.LogoutClick)
+                }
+            )
+        }
+    }
+}
+
+private fun ShoppingListCardEvent.toIntent(): ShoppingListsIntent =
+    when (this) {
+        is ShoppingListCardEvent.Click ->
+            ShoppingListsIntent.ListClicked(item)
+
+        is ShoppingListCardEvent.Edit ->
+            ShoppingListsIntent.EditClicked(item)
+
+        is ShoppingListCardEvent.Copy ->
+            ShoppingListsIntent.CopyClicked(item)
+
+        is ShoppingListCardEvent.ChangeIcon ->
+            ShoppingListsIntent.ChangeIconClicked(item)
+
+        is ShoppingListCardEvent.Delete ->
+            ShoppingListsIntent.DeleteClicked(item)
+    }
 
 @Preview
 @PreviewLightDark

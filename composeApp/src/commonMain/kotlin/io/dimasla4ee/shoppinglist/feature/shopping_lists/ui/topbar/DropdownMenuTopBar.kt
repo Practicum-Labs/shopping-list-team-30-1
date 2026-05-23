@@ -38,8 +38,8 @@ fun DropdownMenuTopBar(
     onDeleteAllClick: ActionItem,
     onThemeSwitch: ActionItem,
     themeMode: ThemeMode,
-    modifier: Modifier = Modifier,
-    onAuthorizationClick: ActionItem
+    onAuthorizationClick: ActionItem,
+    modifier: Modifier = Modifier
 ) {
     var menuIsExpanded by remember { mutableStateOf(false) }
 

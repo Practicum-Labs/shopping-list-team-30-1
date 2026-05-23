@@ -43,8 +43,8 @@ import shoppinglist.composeapp.generated.resources.ic_arrow_back_24
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AuthorizationScreen(
-    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     val (annotatedString, inlineContentMap) = createWelcomeLogo()

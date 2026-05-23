@@ -63,34 +63,43 @@ class ProductsViewModel(
         is ProductsIntent.UI.ReorderProduct -> current.reduceReorderProduct(intent)
         is ProductsIntent.UI.RenameValueChanged -> current.copy(renameValue = intent.name)
         ProductsIntent.UI.DismissDialog -> current.copy(dialog = ProductDialog.None)
-        ProductsIntent.UI.DecreaseCount -> {
-            val amount = current.amount.toIntOrZero()
-            current.copy(amount = (amount - 1).coerceAtLeast(0).toString())
-        }
-
+        ProductsIntent.UI.DecreaseCount -> current.reduceDecreaseCount()
+        ProductsIntent.UI.IncreaseCount -> current.reduceIncreaseCount()
         is ProductsIntent.UI.EditProduct -> current.reduceEditProduct(intent)
-        ProductsIntent.UI.IncreaseCount ->
-            current.copy(amount = (current.amount.toIntOrZero() + 1).toString())
 
-        ProductsIntent.UI.ShowDeleteAllDialog ->
-            current.copy(dialog = ProductDialog.DeleteAll)
-
-        ProductsIntent.UI.ShowDeleteCheckedDialog ->
-            current.copy(dialog = ProductDialog.DeleteCheckedProducts)
-
-        ProductsIntent.UI.ShowDeleteListDialog ->
-            current.copy(dialog = DeleteListDialog(current.listName.ifBlank { listName }))
-
-        ProductsIntent.UI.ShowEditListDialog -> current.copy(
-            dialog = EditList(current.listName.ifBlank { listName }),
-            renameValue = current.listName.ifBlank { listName }
-        )
-
-        ProductsIntent.UI.ToggleBottomSheet -> current.reduceToggleBottomSheet()
-
+        is ProductsIntent.UI.ToggleBottomSheet -> current.reduceToggleBottomSheet()
         ProductsIntent.UI.ToggleMenuBottomSheet ->
             current.copy(isMenuBottomSheetOpen = !current.isMenuBottomSheetOpen)
+
+        is ProductsIntent.UI.Dialog -> reduceDialog(intent, current)
     }
+
+    private fun reduceDialog(
+        intent: ProductsIntent.UI.Dialog,
+        current: ProductsState
+    ): ProductsState = when (intent) {
+        ProductsIntent.UI.Dialog.ShowDeleteAllDialog ->
+            current.copy(dialog = ProductDialog.DeleteAll)
+
+        ProductsIntent.UI.Dialog.ShowDeleteCheckedDialog ->
+            current.copy(dialog = ProductDialog.DeleteCheckedProducts)
+
+        ProductsIntent.UI.Dialog.ShowDeleteListDialog ->
+            current.copy(dialog = DeleteListDialog(current.getListName()))
+
+        ProductsIntent.UI.Dialog.ShowEditListDialog -> current.copy(
+            dialog = EditList(current.getListName()),
+            renameValue = current.getListName()
+        )
+    }
+
+    private fun ProductsState.getListName(): String = this.listName.ifBlank { listName }
+
+    private fun ProductsState.reduceDecreaseCount(): ProductsState =
+        copy(amount = (amount.toIntOrZero() - 1).coerceAtLeast(0).toString())
+
+    private fun ProductsState.reduceIncreaseCount(): ProductsState =
+        copy(amount = (amount.toIntOrZero() + 1).toString())
 
     private suspend fun getCurrentShoppingList(): ShoppingList? = listsInteractor.getShoppingLists()
         .firstOrNull()

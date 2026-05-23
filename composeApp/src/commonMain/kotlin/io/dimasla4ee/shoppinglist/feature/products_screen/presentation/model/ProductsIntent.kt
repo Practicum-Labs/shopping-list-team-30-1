@@ -23,17 +23,20 @@ sealed interface ProductsIntent : MviIntent {
         data class ChangeName(val name: String) : UI
         data class ChangeCount(val amount: String) : UI
         data class ChangeUnit(val unit: String) : UI
-        data class RenameValueChanged(val name: String): UI
+        data class RenameValueChanged(val name: String) : UI
         data object IncreaseCount : UI
         data object DecreaseCount : UI
         data object ToggleBottomSheet : UI
         data class ReorderProduct(val fromIndex: Int, val toIndex: Int) : UI
-        data object ShowDeleteAllDialog : UI
-        data object ShowDeleteCheckedDialog : UI
-        data object ShowDeleteListDialog : UI
-        data object ShowEditListDialog : UI
         data object DismissDialog : UI
         data object ToggleMenuBottomSheet : UI
         data class EditProduct(val product: Product) : UI
+
+        sealed interface Dialog : UI {
+            data object ShowDeleteAllDialog : Dialog
+            data object ShowDeleteCheckedDialog : Dialog
+            data object ShowDeleteListDialog : Dialog
+            data object ShowEditListDialog : Dialog
+        }
     }
 }

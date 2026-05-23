@@ -25,75 +25,20 @@ class ShoppingListsViewModel(
         intent: ShoppingListsIntent,
         current: ShoppingListsState
     ): ShoppingListsState = when (intent) {
-
-        ShoppingListsIntent.FabClick -> {
-            reduceFabClick(current)
-        }
-
-        is ShoppingListsIntent.NameChanged -> {
-            reduceNameChanged(intent, current)
-        }
-
-        ShoppingListsIntent.DialogDismiss -> {
-            reduceDialogDismiss(current)
-        }
-
-        ShoppingListsIntent.DeleteAllClick -> {
-            reduceDeleteAllClick(current)
-        }
-
-        ShoppingListsIntent.SearchClick -> {
-            reduceSearchClick(current)
-        }
-
-        ShoppingListsIntent.SearchDismiss -> {
-            reduceSearchDismiss(current)
-        }
-
-        is ShoppingListsIntent.SearchQueryChanged -> {
-            reduceSearchQueryChanged(intent, current)
-        }
-
-        is ShoppingListsIntent.RenameValueChanged -> {
-            reduceRenameValueChanged(intent, current)
-        }
-
-        is ShoppingListsIntent.EditClicked -> {
-            reduceEditClicked(intent, current)
-        }
-
-        is ShoppingListsIntent.DeleteClicked -> {
-            reduceDeleteClicked(intent, current)
-        }
-
-        is ShoppingListsIntent.ChangeIconClicked -> {
-            reduceChangeIconClicked(intent, current)
-        }
-
-        ShoppingListsIntent.SheetDismiss -> {
-            reduceSheetDismiss(current)
-        }
+        ShoppingListsIntent.FabClick -> current.copy(dialog = ShoppingListDialog.Create)
+        is ShoppingListsIntent.NameChanged -> current.copy(newListName = intent.value)
+        ShoppingListsIntent.DialogDismiss -> reduceDialogDismiss(current)
+        ShoppingListsIntent.DeleteAllClick -> reduceDeleteAllClick(current)
+        ShoppingListsIntent.SearchClick -> reduceSearchClick(current)
+        ShoppingListsIntent.SearchDismiss -> reduceSearchDismiss(current)
+        is ShoppingListsIntent.SearchQueryChanged -> reduceSearchQueryChanged(intent, current)
+        is ShoppingListsIntent.RenameValueChanged -> reduceRenameValueChanged(intent, current)
+        is ShoppingListsIntent.EditClicked -> reduceEditClicked(intent, current)
+        is ShoppingListsIntent.DeleteClicked -> reduceDeleteClicked(intent, current)
+        is ShoppingListsIntent.ChangeIconClicked -> reduceChangeIconClicked(intent, current)
+        ShoppingListsIntent.SheetDismiss -> reduceSheetDismiss(current)
 
         else -> current
-    }
-
-    private fun reduceFabClick(
-        current: ShoppingListsState
-    ): ShoppingListsState {
-
-        return current.copy(
-            dialog = ShoppingListDialog.Create
-        )
-    }
-
-    private fun reduceNameChanged(
-        intent: ShoppingListsIntent.NameChanged,
-        current: ShoppingListsState
-    ): ShoppingListsState {
-
-        return current.copy(
-            newListName = intent.value
-        )
     }
 
     private fun reduceDialogDismiss(
@@ -210,69 +155,39 @@ class ShoppingListsViewModel(
     override suspend fun handleIntent(
         intent: ShoppingListsIntent
     ) {
-
         when (intent) {
-
-            ShoppingListsIntent.ObserveLists -> {
-                handleObserveLists()
-            }
-
-            ShoppingListsIntent.CreateList -> {
-                handleCreateList()
-            }
-
-            ShoppingListsIntent.DeleteAllConfirm -> {
-                handleDeleteAllConfirm()
-            }
-
-            is ShoppingListsIntent.CopyClicked -> {
-                handleCopyClicked(intent)
-            }
-
-            is ShoppingListsIntent.IconSelected -> {
-                handleIconSelected(intent)
-            }
-
-            ShoppingListsIntent.RenameConfirm -> {
-                handleRenameConfirm()
-            }
-
-            ShoppingListsIntent.DeleteConfirm -> {
-                handleDeleteConfirm()
-            }
-
-            is ShoppingListsIntent.ListClicked -> {
-                handleListClicked(intent)
-            }
-
-            is ShoppingListsIntent.AuthorizationClicked -> with(intent) {
-                when (isAuthorized) {
-                    true -> updateState { it.copy(dialog = ShoppingListDialog.Logout) }
-                    false -> emitEffect(ShoppingListsEffect.NavigateToAuthorization)
-                }
-            }
-
-            is ShoppingListsIntent.LogoutClick -> {
-                clearAuthTokensUseCase()
-                dispatch(ShoppingListsIntent.DialogDismiss)
-            }
+            ShoppingListsIntent.ObserveLists -> observeLists()
+            ShoppingListsIntent.CreateList -> handleCreateList()
+            ShoppingListsIntent.DeleteAllConfirm -> handleDeleteAllConfirm()
+            is ShoppingListsIntent.CopyClicked -> handleCopyClicked(intent)
+            is ShoppingListsIntent.IconSelected -> handleIconSelected(intent)
+            ShoppingListsIntent.RenameConfirm -> handleRenameConfirm()
+            ShoppingListsIntent.DeleteConfirm -> handleDeleteConfirm()
+            is ShoppingListsIntent.ListClicked -> handleListClicked(intent)
+            is ShoppingListsIntent.LogoutClick -> handleLogoutClick()
+            is ShoppingListsIntent.AuthorizationClicked ->
+                handleAuthorizationClicked(intent.isAuthorized)
 
             else -> Unit
         }
     }
 
-    private fun handleObserveLists() {
-        observeLists()
+    private suspend fun handleAuthorizationClicked(isAuthorized: Boolean) = when (isAuthorized) {
+        true -> updateState { it.copy(dialog = ShoppingListDialog.Logout) }
+        false -> emitEffect(ShoppingListsEffect.NavigateToAuthorization)
+    }
+
+    private suspend fun handleLogoutClick() {
+        clearAuthTokensUseCase()
+        dispatch(ShoppingListsIntent.DialogDismiss)
     }
 
     private suspend fun handleCreateList() {
-
         val name = state.value.newListName.trim()
 
         if (name.isEmpty()) return
 
         interactor.addShoppingList(name)
-
         updateState {
             it.copy(
                 dialog = ShoppingListDialog.None,
@@ -282,18 +197,13 @@ class ShoppingListsViewModel(
     }
 
     private suspend fun handleDeleteAllConfirm() {
-
         interactor.deleteAllShoppingLists()
-
-        dispatch(
-            ShoppingListsIntent.DialogDismiss
-        )
+        dispatch(ShoppingListsIntent.DialogDismiss)
     }
 
     private suspend fun handleCopyClicked(
         intent: ShoppingListsIntent.CopyClicked
     ) {
-
         val target = findListById(
             intent.item.id
         ) ?: return
@@ -304,24 +214,17 @@ class ShoppingListsViewModel(
     private suspend fun handleIconSelected(
         intent: ShoppingListsIntent.IconSelected
     ) {
-
-        val selectedId = state.value.selectedListId
-            ?: return
-
-        val target = findListById(selectedId)
-            ?: return
+        val selectedId = state.value.selectedListId ?: return
+        val target = findListById(selectedId) ?: return
 
         interactor.updateShoppingList(
             target.copy(icon = intent.icon)
         )
 
-        dispatch(
-            ShoppingListsIntent.SheetDismiss
-        )
+        dispatch(ShoppingListsIntent.SheetDismiss)
     }
 
     private suspend fun handleRenameConfirm() {
-
         val dialog = state.value.dialog
                 as? ShoppingListDialog.Rename
             ?: return
@@ -330,16 +233,13 @@ class ShoppingListsViewModel(
 
         if (name.isEmpty()) return
 
-        val oldList = findListById(dialog.id)
-            ?: return
+        val oldList = findListById(dialog.id) ?: return
 
         interactor.updateShoppingList(
             oldList.copy(name = name)
         )
 
-        dispatch(
-            ShoppingListsIntent.DialogDismiss
-        )
+        dispatch(ShoppingListsIntent.DialogDismiss)
     }
 
     private suspend fun handleDeleteConfirm() {
@@ -362,7 +262,6 @@ class ShoppingListsViewModel(
     private suspend fun handleListClicked(
         intent: ShoppingListsIntent.ListClicked
     ) {
-
         emitEffect(
             ShoppingListsEffect.NavigateToProducts(
                 listId = intent.item.id,

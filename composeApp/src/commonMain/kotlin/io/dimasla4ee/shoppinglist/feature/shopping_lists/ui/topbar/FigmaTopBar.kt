@@ -11,11 +11,11 @@ import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 @Composable
 fun FigmaTopBar(
     title: String,
+    onAuthorizationClick: ActionItem,
     modifier: Modifier = Modifier,
     onSearchClick: ActionItem? = null,
     onDeleteAllClick: ActionItem? = null,
-    onThemeSwitch: ActionItem? = null,
-    onAuthorizationClick: ActionItem
+    onThemeSwitch: ActionItem? = null
 ) {
     val actions: List<ActionItem> = listOfNotNull(
         onSearchClick,

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsEffect
@@ -15,9 +16,11 @@ fun AddItemRoute(
     listName: String,
     listId: Long,
     onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: ProductsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val currentOnBackClick by rememberUpdatedState(onBackClick)
 
     LaunchedEffect(listId) {
         viewModel.init(listId, listName)
@@ -26,7 +29,7 @@ fun AddItemRoute(
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
             when (effect) {
-                ProductsEffect.NavigateBack -> onBackClick()
+                ProductsEffect.NavigateBack -> currentOnBackClick()
             }
         }
     }
@@ -35,6 +38,6 @@ fun AddItemRoute(
         listName = state.listName.ifBlank { listName },
         state = state,
         onIntent = { viewModel.dispatch(it) },
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     )
 }

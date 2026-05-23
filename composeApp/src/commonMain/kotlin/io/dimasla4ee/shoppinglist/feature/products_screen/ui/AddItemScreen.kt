@@ -102,7 +102,7 @@ fun AddItemScreen(
                     ActionItem(
                         iconRes = Res.drawable.ic_edit_24,
                         label = stringResource(Res.string.cd_edit_shopping_list),
-                        onClick = { onIntent(ProductsIntent.UI.ShowEditListDialog) }
+                        onClick = { onIntent(ProductsIntent.UI.Dialog.ShowEditListDialog) }
                     ),
                     ActionItem(
                         iconRes = Res.drawable.ic_menu_24,
@@ -166,15 +166,15 @@ fun AddItemScreen(
                 onDismiss = { onIntent(ProductsIntent.UI.ToggleMenuBottomSheet) },
                 onSortClick = { onIntent(ProductsIntent.Action.ToggleSortMode) },
                 onDeleteAllClick = {
-                    onIntent(ProductsIntent.UI.ShowDeleteAllDialog)
+                    onIntent(ProductsIntent.UI.Dialog.ShowDeleteAllDialog)
                     onIntent(ProductsIntent.UI.ToggleMenuBottomSheet)
                 },
                 onDeleteCheckClick = {
-                    onIntent(ProductsIntent.UI.ShowDeleteCheckedDialog)
+                    onIntent(ProductsIntent.UI.Dialog.ShowDeleteCheckedDialog)
                     onIntent(ProductsIntent.UI.ToggleMenuBottomSheet)
                 },
                 onDeleteList = {
-                    onIntent(ProductsIntent.UI.ShowDeleteListDialog)
+                    onIntent(ProductsIntent.UI.Dialog.ShowDeleteListDialog)
                     onIntent(ProductsIntent.UI.ToggleMenuBottomSheet)
                 }
             )
