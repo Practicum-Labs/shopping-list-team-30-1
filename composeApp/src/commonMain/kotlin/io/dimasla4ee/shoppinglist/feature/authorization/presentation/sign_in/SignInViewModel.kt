@@ -1,6 +1,6 @@
 package io.dimasla4ee.shoppinglist.feature.authorization.presentation.sign_in
 
-import io.dimasla4ee.shoppinglist.core.domain.interactor.LoginUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.auth.LoginUseCase
 import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import io.dimasla4ee.shoppinglist.utils.AppLog

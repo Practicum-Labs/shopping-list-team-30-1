@@ -1,6 +1,6 @@
 package io.dimasla4ee.shoppinglist.feature.authorization.presentation.register
 
-import io.dimasla4ee.shoppinglist.core.domain.interactor.RegisterUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.auth.RegisterUseCase
 import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 

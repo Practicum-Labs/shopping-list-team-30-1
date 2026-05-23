@@ -1,6 +1,6 @@
 package io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password
 
-import io.dimasla4ee.shoppinglist.core.domain.interactor.RecoverPasswordUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.auth.RecoverPasswordUseCase
 import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 

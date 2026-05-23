@@ -1,14 +1,18 @@
 package io.dimasla4ee.shoppinglist.app.startup.session.presentation
 
-import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.ClearAuthTokensUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.GetAccessTokenUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.GetRefreshTokenUseCase
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 
 class SessionViewModel(
-    private val authRepository: AuthRepository
+    private val accessTokenUseCase: GetAccessTokenUseCase,
+    private val refreshTokenUseCase: GetRefreshTokenUseCase,
+    private val clearAuthTokensUseCase: ClearAuthTokensUseCase
 ) : MviViewModel<SessionIntent, SessionState, SessionEffect>(
     initialState = SessionState()
 ) {
-    
+
     override fun reduce(
         intent: SessionIntent,
         current: SessionState
@@ -28,8 +32,8 @@ class SessionViewModel(
     }
 
     private suspend fun loadSession() {
-        val accessToken = authRepository.getAccessToken()
-        val refreshToken = authRepository.getRefreshToken()
+        val accessToken = accessTokenUseCase()
+        val refreshToken = refreshTokenUseCase()
         updateState {
             it.copy(
                 isLoading = false,
@@ -41,7 +45,7 @@ class SessionViewModel(
     }
 
     private suspend fun logout() {
-        authRepository.clearTokens()
+        clearAuthTokensUseCase()
         updateState { SessionState() }
     }
 }

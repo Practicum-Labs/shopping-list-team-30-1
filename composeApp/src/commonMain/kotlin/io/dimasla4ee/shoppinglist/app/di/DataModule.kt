@@ -8,6 +8,7 @@ import io.dimasla4ee.shoppinglist.app.startup.session.domain.AppLaunchRepository
 import io.dimasla4ee.shoppinglist.core.data.network.api.AuthApi
 import io.dimasla4ee.shoppinglist.core.data.network.client.KtorfitNetworkClient
 import io.dimasla4ee.shoppinglist.core.data.network.client.NetworkClient
+import io.dimasla4ee.shoppinglist.core.data.repository.AuthRepositoryImpl
 import io.dimasla4ee.shoppinglist.core.data.repository.MockAuthRepository
 import io.dimasla4ee.shoppinglist.core.data.repository.SettingsRepositoryImpl
 import io.dimasla4ee.shoppinglist.core.data.repository.TokenStorageImpl
@@ -31,6 +32,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private const val BASE_URL = "https://practicumopbackend-production.up.railway.app/"
+private const val USE_MOCK_API = true
 
 /**
  * Модуль Koin, отвечающий за зависимости Repository и Data sources.
@@ -87,15 +89,11 @@ val dataModule = module {
         KtorfitNetworkClient(api = get())
     }
 
-    single<AuthRepository> {
-//        AuthRepositoryImpl(
-//            networkClient = get(),
-//            tokenStorage = get()
-//        )
-        MockAuthRepository(
-            tokenStorage = get()
-        )
+    val authRepositoryImplementation = when (USE_MOCK_API) {
+        true -> singleOf(::MockAuthRepository)
+        false -> singleOf(::AuthRepositoryImpl)
     }
+    authRepositoryImplementation bind AuthRepository::class
 
     singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
     singleOf(::TokenStorageImpl) bind TokenStorage::class
@@ -109,8 +107,6 @@ val dataModule = module {
     single<AppLaunchRepository> {
         AppLaunchRepositoryImpl(get())
     }
-
-
 }
 
 /**

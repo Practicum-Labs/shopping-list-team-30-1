@@ -4,13 +4,10 @@ import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
 import io.dimasla4ee.shoppinglist.core.domain.model.Response
 import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
-import io.dimasla4ee.shoppinglist.core.domain.storage.TokenStorage
 import kotlinx.coroutines.delay
 import java.util.UUID
 
-class MockAuthRepository(
-    private val tokenStorage: TokenStorage
-) : AuthRepository {
+class MockAuthRepository : AuthRepository {
 
     override suspend fun register(
         email: String,
@@ -42,11 +39,6 @@ class MockAuthRepository(
         val session = createSession(user.id)
         sessions.removeAll { it.userId == user.id }
         sessions += session
-
-        tokenStorage.saveTokens(
-            accessToken = session.accessToken,
-            refreshToken = session.refreshToken
-        )
 
         return DomainResult.Success(
             Response.RegisterResponse(
@@ -81,11 +73,6 @@ class MockAuthRepository(
         sessions.removeAll { it.userId == user.id }
         sessions += session
 
-        tokenStorage.saveTokens(
-            accessToken = session.accessToken,
-            refreshToken = session.refreshToken
-        )
-
         return DomainResult.Success(
             Response.UserAuthResponse(
                 accessToken = session.accessToken,
@@ -112,11 +99,6 @@ class MockAuthRepository(
         sessions.remove(oldSession)
         sessions += newSession
 
-        tokenStorage.saveTokens(
-            accessToken = newSession.accessToken,
-            refreshToken = newSession.refreshToken
-        )
-
         return DomainResult.Success(
             Response.RefreshTokenResponse(
                 accessToken = newSession.accessToken,
@@ -133,7 +115,9 @@ class MockAuthRepository(
         val normalizedEmail = email.trim().lowercase()
 
         if (!isValidEmail(normalizedEmail)) {
-            return DomainResult.Error(NetworkError.BadRequest("Некорректный email"))
+            return DomainResult.Error(
+                NetworkError.BadRequest("Некорректный email")
+            )
         }
 
         return DomainResult.Success(
@@ -167,18 +151,6 @@ class MockAuthRepository(
         )
     }
 
-    override suspend fun getAccessToken(): String? {
-        return tokenStorage.getAccessToken()
-    }
-
-    override suspend fun getRefreshToken(): String? {
-        return tokenStorage.getRefreshToken()
-    }
-
-    override suspend fun clearTokens() {
-        tokenStorage.clearTokens()
-    }
-
     private fun createSession(userId: Int): MockSession {
         return MockSession(
             userId = userId,
@@ -201,21 +173,15 @@ class MockAuthRepository(
 
     private fun now(): Long = System.currentTimeMillis()
 
-    private fun <T> badRequest(
-        message: String
-    ): DomainResult<T, NetworkError> {
+    private fun <T> badRequest(message: String): DomainResult<T, NetworkError> {
         return DomainResult.Error(NetworkError.BadRequest(message))
     }
 
-    private fun <T> unauthorized(
-        message: String
-    ): DomainResult<T, NetworkError> {
+    private fun <T> unauthorized(message: String): DomainResult<T, NetworkError> {
         return DomainResult.Error(NetworkError.Unauthorized(message))
     }
 
-    private fun <T> conflict(
-        message: String
-    ): DomainResult<T, NetworkError> {
+    private fun <T> conflict(message: String): DomainResult<T, NetworkError> {
         return DomainResult.Error(NetworkError.Conflict(message))
     }
 
