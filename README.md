@@ -54,12 +54,19 @@ IDE или сделать это через терминал:
 | Network       | [Ktorfit](https://github.com/Foso/Ktorfit)                                          | - Основана на мультиплатформенной библиотеке [Ktor](https://github.com/ktorio/ktor).<br>- Использование Kotlin аннотаций для генерации кода как в [Retrofit](https://github.com/square/retrofit).                              |
 | Navigation    | [Navigation 3](https://kotlinlang.org/docs/multiplatform/compose-navigation-3.html) | - Мультиплатформенная библиотека.<br>- Навигация основана на управлении стеком экранов.<br>- Не полагается на использование строковых констант.                                                                                |
 | Serialization | [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)            | - Нативное решение от JetBrains.<br>- Наличие пользовательских плагинов для поддержки большего количества форматов.<br>- Использование Kotlin аннотаций для генерации кода.                                                    |
+| Storage       | [DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)      | - Нативное решение от JetBrains.<br>- Поддержка KMP.                                                                                                                                                                           |
 
 ## Выбранная архитектура
 
-| Выбранная архитектура    |
-|--------------------------|
-| Clean Architecture + MVI |
+| Выбранная архитектура    | Тип проекта |
+|--------------------------|-------------|
+| Clean Architecture + MVI | Монолитный  |
+
+## Принятые в проекте правила
+[Гайдлайны для команды](TEAM_GUIDELINES.md)
+
+## Демонстрация работы проекта
+https://disk.yandex.ru/d/YTEH4He_1mIg_Q
 
 ## Команда проекта
 
