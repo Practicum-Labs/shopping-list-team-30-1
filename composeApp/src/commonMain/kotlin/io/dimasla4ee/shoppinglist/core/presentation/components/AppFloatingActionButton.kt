@@ -13,9 +13,9 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 
 @Composable
 fun AppFloatingActionButton(
-    modifier: Modifier = Modifier,
     iconRes: Painter,
     onClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
     contentDescription: String? = null,
     containerColor: Color = MaterialTheme.colorScheme.primary,
     contentColor: Color = contentColorFor(containerColor)
