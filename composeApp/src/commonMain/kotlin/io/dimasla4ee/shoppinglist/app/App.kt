@@ -3,6 +3,7 @@ package io.dimasla4ee.shoppinglist.app
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -17,29 +18,27 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 @PreviewLightDark
 fun App() {
-
+    val settingsViewModel: SettingsViewModel = koinViewModel()
     val sessionViewModel: SessionViewModel = koinViewModel()
-
-    val viewModel: SettingsViewModel = koinViewModel()
-
-    val themeMode by viewModel.themeMode.collectAsState()
-
+    val themeMode by settingsViewModel.themeMode.collectAsState()
     val systemDarkTheme = isSystemInDarkTheme()
-
     val isDarkTheme = when (themeMode) {
         ThemeMode.SYSTEM -> systemDarkTheme
         ThemeMode.DARK -> true
         ThemeMode.LIGHT -> false
     }
 
+    LaunchedEffect(Unit) {
+        sessionViewModel.observeSession()
+    }
+
     ShoppingListTheme(
         darkTheme = isDarkTheme,
         themeMode = themeMode
     ) {
-
         NavigationRoot(
             sessionViewModel = sessionViewModel,
-            onThemeToggle = viewModel::toggleTheme,
+            onThemeToggle = settingsViewModel::toggleTheme,
             modifier = Modifier.fillMaxSize()
         )
     }

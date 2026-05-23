@@ -12,6 +12,7 @@ import io.dimasla4ee.shoppinglist.core.domain.interactor.token.CheckTokenUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.token.ClearAuthTokensUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.token.GetAccessTokenUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.token.GetRefreshTokenUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.ObserveSessionUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.token.RefreshSessionUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.token.SaveAuthTokensUseCase
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
@@ -55,6 +56,7 @@ val domainModule = module {
     factoryOf(::RegisterUseCase)
     factoryOf(::LoginUseCase)
     factoryOf(::RefreshSessionUseCase)
+    factoryOf(::ObserveSessionUseCase)
     factoryOf(::RecoverPasswordUseCase)
     factoryOf(::CheckTokenUseCase)
 
