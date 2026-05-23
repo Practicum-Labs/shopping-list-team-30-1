@@ -31,11 +31,14 @@ import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.Re
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.authorization_button
+import shoppinglist.composeapp.generated.resources.authorization_email_error_format
 import shoppinglist.composeapp.generated.resources.authorization_email_hint
 import shoppinglist.composeapp.generated.resources.authorization_email_label
 import shoppinglist.composeapp.generated.resources.authorization_have_account
+import shoppinglist.composeapp.generated.resources.authorization_password_confirm_error_match
 import shoppinglist.composeapp.generated.resources.authorization_password_confirm_hint
 import shoppinglist.composeapp.generated.resources.authorization_password_confirm_label
+import shoppinglist.composeapp.generated.resources.authorization_password_error_length
 import shoppinglist.composeapp.generated.resources.authorization_password_hint
 import shoppinglist.composeapp.generated.resources.authorization_password_label
 import shoppinglist.composeapp.generated.resources.authorization_sign_in
@@ -58,7 +61,9 @@ fun RegisterContent(
             state = state.email,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             placeholder = stringResource(Res.string.authorization_email_hint),
-            label = stringResource(Res.string.authorization_email_label)
+            label = stringResource(Res.string.authorization_email_label),
+            supportingText = stringResource(Res.string.authorization_email_error_format),
+            isSupportingTextVisible = !state.isEmailValid
         )
 
         Column(
@@ -70,7 +75,9 @@ fun RegisterContent(
                 label = stringResource(Res.string.authorization_password_label),
                 placeholder = stringResource(Res.string.authorization_password_hint),
                 isPasswordVisible = state.isPasswordVisible,
-                onShowPassword = onShowPassword
+                onShowPassword = onShowPassword,
+                supportingText = stringResource(Res.string.authorization_password_error_length),
+                isSupportingTextVisible = !state.isPasswordLongEnough
             )
 
             PasswordStrengthMeter(level = state.passwordStrength.level)
@@ -81,7 +88,9 @@ fun RegisterContent(
             label = stringResource(Res.string.authorization_password_confirm_label),
             placeholder = stringResource(Res.string.authorization_password_confirm_hint),
             isPasswordVisible = state.isConfirmPasswordVisible,
-            onShowPassword = onShowConfirmPassword
+            onShowPassword = onShowConfirmPassword,
+            supportingText = stringResource(Res.string.authorization_password_confirm_error_match),
+            isSupportingTextVisible = !state.isPasswordConfirmed
         )
 
         Button(

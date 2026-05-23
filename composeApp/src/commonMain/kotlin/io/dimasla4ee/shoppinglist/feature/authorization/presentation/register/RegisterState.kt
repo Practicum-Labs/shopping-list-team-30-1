@@ -24,9 +24,19 @@ data class RegisterState(
             )
         }
 
-    private val isPasswordConfirmed: Boolean
+    val isEmailValid: Boolean
+        get() = email.text.isValidEmail()
+
+    val isPasswordLongEnough: Boolean
+        get() = password.text.length >= PASSWORD_MIN_LENGTH
+
+    val isPasswordConfirmed: Boolean
         get() = password.text == confirmPassword.text
 
     val isRegisterAllowed: Boolean
-        get() = passwordStrength.isAcceptable && email.text.isValidEmail() && isPasswordConfirmed
+        get() = passwordStrength.isAcceptable && isEmailValid && isPasswordConfirmed
+
+    companion object {
+        private const val PASSWORD_MIN_LENGTH = 8
+    }
 }

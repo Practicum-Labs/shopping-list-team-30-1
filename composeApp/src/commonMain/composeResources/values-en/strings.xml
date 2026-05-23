@@ -22,6 +22,9 @@
     <string name="authorization_recover_password_button">Recover password</string>
     <string name="authorization_recover_password_cancel">Cancel</string>
     <string name="authorization_continue_as_guest">Continue as Guest</string>
+    <string name="authorization_email_error_format">Email format is invalid</string>
+    <string name="authorization_password_error_length">Password is shorter than 6 characters</string>
+    <string name="authorization_password_confirm_error_match">Passwords do not match</string>
 
     <!-- Password strength -->
     <string name="password_strength_very_weak">Very weak</string>

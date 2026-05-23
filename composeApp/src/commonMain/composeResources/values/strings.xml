@@ -24,6 +24,9 @@
     <string name="authorization_recover_password_button">Восстановить пароль</string>
     <string name="authorization_recover_password_cancel">Отмена</string>
     <string name="authorization_continue_as_guest">Продолжить как гость</string>
+    <string name="authorization_email_error_format">Почта не соответствует формату</string>
+    <string name="authorization_password_error_length">Пароль короче 6 символов</string>
+    <string name="authorization_password_confirm_error_match">Поля не совпадают</string>
 
     <!-- Сложность пароля -->
     <string name="password_strength_very_weak">Очень слабый</string>
