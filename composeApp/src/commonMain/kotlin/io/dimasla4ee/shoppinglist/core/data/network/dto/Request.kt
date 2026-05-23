@@ -23,7 +23,7 @@ sealed interface Request {
 
     /** Используется в `/auth/recovery` эндпоинте. */
     @Serializable
-    data object RecoverPasswordRequest : Request
+    data class RecoverPasswordRequest(val email: String) : Request
 
     /**
      * Используется в `/auth/check` эндпоинте.

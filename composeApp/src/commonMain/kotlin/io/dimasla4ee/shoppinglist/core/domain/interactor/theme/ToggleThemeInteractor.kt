@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.core.domain.interactor
+package io.dimasla4ee.shoppinglist.core.domain.interactor.theme
 
 import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository

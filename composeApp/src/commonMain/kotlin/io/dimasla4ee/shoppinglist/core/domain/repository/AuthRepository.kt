@@ -5,7 +5,6 @@ import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
 import io.dimasla4ee.shoppinglist.core.domain.model.Response
 
 interface AuthRepository {
-
     suspend fun register(
         email: String,
         password: String
@@ -20,15 +19,11 @@ interface AuthRepository {
         refreshToken: String
     ): DomainResult<Response.RefreshTokenResponse, NetworkError>
 
-    suspend fun recoverPassword(): DomainResult<Response.RecoverPasswordResponse, NetworkError>
+    suspend fun recoverPassword(
+        email: String
+    ): DomainResult<Response.RecoverPasswordResponse, NetworkError>
 
     suspend fun checkToken(
         accessToken: String
     ): DomainResult<Response.CheckResponse, NetworkError>
-
-    suspend fun getAccessToken(): String?
-
-    suspend fun getRefreshToken(): String?
-
-    suspend fun clearTokens()
 }

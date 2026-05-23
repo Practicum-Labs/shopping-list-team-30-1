@@ -16,19 +16,17 @@ fun RegisterScreen(
     modifier: Modifier = Modifier
 ) {
     AuthorizationScreen(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        onBackClick = { onIntent(RegisterIntent.Action.BackClicked)}
     ) {
         RegisterContent(
             state = state,
-            onShowPassword = {
-                onIntent(RegisterIntent.PasswordVisibilityToggleClicked)
-            },
-            onRegister = {
-                onIntent(RegisterIntent.RegisterClicked)
-            },
-            onAuthorization = {
-                onIntent(RegisterIntent.SignInClicked)
-            },
+            onShowPassword =
+                { onIntent(RegisterIntent.UI.PasswordVisibilityToggled) },
+            onShowConfirmPassword =
+                { onIntent(RegisterIntent.UI.ConfirmPasswordVisibilityToggled) },
+            onRegister = { onIntent(RegisterIntent.Action.RegisterClicked) },
+            onAuthorization = { onIntent(RegisterIntent.Action.SignInClicked) },
             modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)
         )
     }

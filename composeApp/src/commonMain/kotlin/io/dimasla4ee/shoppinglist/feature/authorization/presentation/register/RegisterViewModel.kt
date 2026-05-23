@@ -1,9 +1,8 @@
 package io.dimasla4ee.shoppinglist.feature.authorization.presentation.register
 
-import io.dimasla4ee.shoppinglist.core.domain.interactor.RegisterUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.auth.RegisterUseCase
 import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
-import io.dimasla4ee.shoppinglist.utils.AppLog
 
 @Suppress("ForbiddenComment")
 class RegisterViewModel(
@@ -16,27 +15,29 @@ class RegisterViewModel(
         intent: RegisterIntent,
         current: RegisterState
     ): RegisterState = when (intent) {
-        RegisterIntent.PasswordVisibilityToggleClicked -> {
-            current.copy(
-                isPasswordVisible = !current.isPasswordVisible
-            )
-        }
+        is RegisterIntent.Action -> current
 
-        RegisterIntent.RegisterClicked,
-        RegisterIntent.SignInClicked -> current
+        RegisterIntent.UI.PasswordVisibilityToggled ->
+            current.reducePasswordVisibilityToggled()
+
+        RegisterIntent.UI.ConfirmPasswordVisibilityToggled ->
+            current.reduceConfirmPasswordVisibilityToggled()
     }
+
+    private fun RegisterState.reducePasswordVisibilityToggled(): RegisterState =
+        copy(isPasswordVisible = !isPasswordVisible)
+
+    private fun RegisterState.reduceConfirmPasswordVisibilityToggled(): RegisterState =
+        copy(isConfirmPasswordVisible = !isConfirmPasswordVisible)
 
     override suspend fun handleIntent(intent: RegisterIntent) {
         val currentState = state.value
-
-        AppLog.d("RegisterVM", state.value.toString())
-
         val effect = when (intent) {
-            RegisterIntent.SignInClicked -> RegisterEffect.NavigateToSignIn
-            RegisterIntent.RegisterClicked -> handleRegister(currentState) ?: return
-            RegisterIntent.PasswordVisibilityToggleClicked -> return
+            is RegisterIntent.UI -> return
+            RegisterIntent.Action.SignInClicked -> RegisterEffect.NavigateToSignIn
+            RegisterIntent.Action.RegisterClicked -> handleRegister(currentState) ?: return
+            RegisterIntent.Action.BackClicked -> RegisterEffect.NavigateBack
         }
-
         emitEffect(effect)
     }
 
@@ -48,8 +49,6 @@ class RegisterViewModel(
         if (email.isBlank() || password.isBlank() || !current.isRegisterAllowed) return null
 
         val result = registerUseCase.invoke(email, password)
-
-        AppLog.d("RegisterVM", result.toString())
 
         return when (result) {
             is DomainResult.Error<*> -> null

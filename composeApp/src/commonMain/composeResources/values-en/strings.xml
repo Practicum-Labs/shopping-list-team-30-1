@@ -10,6 +10,8 @@
     <string name="authorization_email_label">Email</string>
     <string name="authorization_password_hint">Enter password</string>
     <string name="authorization_password_label">Password</string>
+    <string name="authorization_password_confirm_hint">Repeat the password</string>
+    <string name="authorization_password_confirm_label">Confirm password</string>
     <string name="authorization_button">Sign Up</string>
     <string name="authorization_have_account">Already have an account?</string>
     <string name="authorization_sign_in">Sign In</string>
@@ -20,6 +22,9 @@
     <string name="authorization_recover_password_button">Recover password</string>
     <string name="authorization_recover_password_cancel">Cancel</string>
     <string name="authorization_continue_as_guest">Continue as Guest</string>
+    <string name="authorization_email_error_format">Email format is invalid</string>
+    <string name="authorization_password_error_length">Password is shorter than 8 characters</string>
+    <string name="authorization_password_confirm_error_match">Passwords do not match</string>
 
     <!-- Password strength -->
     <string name="password_strength_very_weak">Very weak</string>

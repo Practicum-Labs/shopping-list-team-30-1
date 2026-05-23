@@ -10,7 +10,9 @@ import io.dimasla4ee.shoppinglist.feature.authorization.domain.password_strength
 data class RegisterState(
     val email: TextFieldState = TextFieldState(),
     val password: TextFieldState = TextFieldState(),
-    val isPasswordVisible: Boolean = false
+    val confirmPassword: TextFieldState = TextFieldState(),
+    val isPasswordVisible: Boolean = false,
+    val isConfirmPasswordVisible: Boolean = false
 ) : MviState {
     private val passwordEstimator = PasswordEstimator()
     val passwordStrength: PasswordStrengthResult
@@ -22,6 +24,19 @@ data class RegisterState(
             )
         }
 
+    val isEmailValid: Boolean
+        get() = email.text.isValidEmail()
+
+    val isPasswordLongEnough: Boolean
+        get() = password.text.length >= PASSWORD_MIN_LENGTH
+
+    val isPasswordConfirmed: Boolean
+        get() = password.text == confirmPassword.text
+
     val isRegisterAllowed: Boolean
-        get() = passwordStrength.isAcceptable && email.text.isValidEmail()
+        get() = passwordStrength.isAcceptable && isEmailValid && isPasswordConfirmed
+
+    companion object {
+        private const val PASSWORD_MIN_LENGTH = 8
+    }
 }

@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import io.dimasla4ee.shoppinglist.app.startup.session.domain.AppLaunchRepository
-import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionIntent
 import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionViewModel
 import io.dimasla4ee.shoppinglist.app.startup.session.splash.presentation.SplashEffect
 import io.dimasla4ee.shoppinglist.app.startup.session.splash.presentation.SplashIntent
@@ -77,10 +76,9 @@ fun entryProvider(
 
     entry<Route.ShoppingLists> {
         val viewModel: ShoppingListsViewModel = koinViewModel()
-        val sessionState by sessionViewModel.state.collectAsState()
-
         val state by viewModel.state.collectAsState()
-        val isAuthorized = sessionState.refreshToken != null
+        val sessionState by sessionViewModel.state.collectAsState()
+        val isAuthorized = sessionState.isAuthorized
 
         LaunchedEffect(Unit) {
             viewModel.dispatch(
@@ -131,18 +129,17 @@ fun entryProvider(
         LaunchedEffect(viewModel) {
             viewModel.effects.collect { effect ->
                 when (effect) {
-                    SignInEffect.NavigateToMain -> {
-                        sessionViewModel.dispatch(SessionIntent.LoadSession)
+                    SignInEffect.NavigateToMain ->
                         topLevelBackStack.removeLast()
-                    }
 
-                    SignInEffect.NavigateToRecoverPassword -> {
+                    SignInEffect.NavigateToRecoverPassword ->
                         topLevelBackStack.add(Route.PasswordRecovery)
-                    }
 
-                    SignInEffect.NavigateToRegister -> {
+                    SignInEffect.NavigateToRegister ->
                         topLevelBackStack.add(Route.Registration)
-                    }
+
+                    SignInEffect.NavigateBack ->
+                        topLevelBackStack.removeLast()
                 }
             }
         }
@@ -161,14 +158,11 @@ fun entryProvider(
         LaunchedEffect(viewModel) {
             viewModel.effects.collect { effect ->
                 when (effect) {
-                    RegisterEffect.NavigateToMain -> {
-                        sessionViewModel.dispatch(SessionIntent.LoadSession)
-                        topLevelBackStack.removeLast()
-                    }
+                    RegisterEffect.NavigateToMain ->
+                        topLevelBackStack.replaceStack(Route.ShoppingLists)
 
-                    RegisterEffect.NavigateToSignIn -> {
-                        topLevelBackStack.removeLast()
-                    }
+                    RegisterEffect.NavigateToSignIn -> topLevelBackStack.removeLast()
+                    RegisterEffect.NavigateBack -> topLevelBackStack.removeLast()
                 }
             }
         }
@@ -187,9 +181,8 @@ fun entryProvider(
         LaunchedEffect(viewModel) {
             viewModel.effects.collect { effect ->
                 when (effect) {
-                    RecoverPasswordEffect.NavigateToSignIn -> {
-                        topLevelBackStack.removeLast()
-                    }
+                    RecoverPasswordEffect.NavigateToSignIn -> topLevelBackStack.removeLast()
+                    RecoverPasswordEffect.NavigateBack -> topLevelBackStack.removeLast()
                 }
             }
         }

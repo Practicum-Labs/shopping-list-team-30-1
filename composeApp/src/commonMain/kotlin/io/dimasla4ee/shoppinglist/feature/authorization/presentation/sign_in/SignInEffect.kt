@@ -6,4 +6,5 @@ sealed interface SignInEffect : MviEffect {
     data object NavigateToMain : SignInEffect
     data object NavigateToRecoverPassword : SignInEffect
     data object NavigateToRegister : SignInEffect
+    data object NavigateBack : SignInEffect
 }

@@ -1,16 +1,20 @@
 package io.dimasla4ee.shoppinglist.app.di
 
-import io.dimasla4ee.shoppinglist.core.domain.interactor.CheckTokenUseCase
-import io.dimasla4ee.shoppinglist.core.domain.interactor.GetThemeInteractor
-import io.dimasla4ee.shoppinglist.core.domain.interactor.LoginUseCase
-import io.dimasla4ee.shoppinglist.core.domain.interactor.RecoverPasswordUseCase
-import io.dimasla4ee.shoppinglist.core.domain.interactor.RefreshTokenUseCase
-import io.dimasla4ee.shoppinglist.core.domain.interactor.RegisterUseCase
-import io.dimasla4ee.shoppinglist.core.domain.interactor.ToggleThemeInteractor
+import io.dimasla4ee.shoppinglist.core.domain.interactor.auth.LoginUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.auth.RecoverPasswordUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.auth.RegisterUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.GetSortModeUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.RemoveSortModeUseCase
 import io.dimasla4ee.shoppinglist.core.domain.interactor.sorting.SetSortModeUseCase
-import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
+import io.dimasla4ee.shoppinglist.core.domain.interactor.theme.GetThemeInteractor
+import io.dimasla4ee.shoppinglist.core.domain.interactor.theme.ToggleThemeInteractor
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.CheckTokenUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.ClearAuthTokensUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.GetAccessTokenUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.GetRefreshTokenUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.ObserveSessionUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.RefreshSessionUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.SaveAuthTokensUseCase
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractor
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractorImpl
@@ -44,35 +48,17 @@ val domainModule = module {
         )
     }
 
-    factory<RegisterUseCase> {
-        RegisterUseCase(
-            authRepository = get<AuthRepository>()
-        )
-    }
+    factoryOf(::SaveAuthTokensUseCase)
+    factoryOf(::GetAccessTokenUseCase)
+    factoryOf(::GetRefreshTokenUseCase)
+    factoryOf(::ClearAuthTokensUseCase)
 
-    factory<LoginUseCase> {
-        LoginUseCase(
-            authRepository = get<AuthRepository>()
-        )
-    }
-
-    factory<RefreshTokenUseCase> {
-        RefreshTokenUseCase(
-            authRepository = get<AuthRepository>()
-        )
-    }
-
-    factory<RecoverPasswordUseCase> {
-        RecoverPasswordUseCase(
-            authRepository = get<AuthRepository>()
-        )
-    }
-
-    factory<CheckTokenUseCase> {
-        CheckTokenUseCase(
-            authRepository = get<AuthRepository>()
-        )
-    }
+    factoryOf(::RegisterUseCase)
+    factoryOf(::LoginUseCase)
+    factoryOf(::RefreshSessionUseCase)
+    factoryOf(::ObserveSessionUseCase)
+    factoryOf(::RecoverPasswordUseCase)
+    factoryOf(::CheckTokenUseCase)
 
     factoryOf(::SetSortModeUseCase)
     factoryOf(::GetSortModeUseCase)

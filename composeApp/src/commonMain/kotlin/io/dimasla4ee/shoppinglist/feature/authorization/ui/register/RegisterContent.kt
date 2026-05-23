@@ -2,7 +2,6 @@ package io.dimasla4ee.shoppinglist.feature.authorization.ui.register
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions.RegisterDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
@@ -33,9 +31,14 @@ import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.Re
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.authorization_button
+import shoppinglist.composeapp.generated.resources.authorization_email_error_format
 import shoppinglist.composeapp.generated.resources.authorization_email_hint
 import shoppinglist.composeapp.generated.resources.authorization_email_label
 import shoppinglist.composeapp.generated.resources.authorization_have_account
+import shoppinglist.composeapp.generated.resources.authorization_password_confirm_error_match
+import shoppinglist.composeapp.generated.resources.authorization_password_confirm_hint
+import shoppinglist.composeapp.generated.resources.authorization_password_confirm_label
+import shoppinglist.composeapp.generated.resources.authorization_password_error_length
 import shoppinglist.composeapp.generated.resources.authorization_password_hint
 import shoppinglist.composeapp.generated.resources.authorization_password_label
 import shoppinglist.composeapp.generated.resources.authorization_sign_in
@@ -44,6 +47,7 @@ import shoppinglist.composeapp.generated.resources.authorization_sign_in
 fun RegisterContent(
     state: RegisterState,
     onShowPassword: () -> Unit,
+    onShowConfirmPassword: () -> Unit,
     onRegister: () -> Unit,
     onAuthorization: () -> Unit,
     modifier: Modifier = Modifier
@@ -57,23 +61,37 @@ fun RegisterContent(
             state = state.email,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             placeholder = stringResource(Res.string.authorization_email_hint),
-            label = stringResource(Res.string.authorization_email_label)
+            label = stringResource(Res.string.authorization_email_label),
+            supportingText = stringResource(Res.string.authorization_email_error_format),
+            isSupportingTextVisible = !state.isEmailValid
         )
 
-        Column(modifier = Modifier.appDefaultFormSize()) {
+        Column(
+            modifier = Modifier.appDefaultFormSize(),
+            verticalArrangement = Arrangement.spacedBy(AppDimensions.paddingBig)
+        ) {
             AppOutlinedPasswordTextField(
                 state = state.password,
                 label = stringResource(Res.string.authorization_password_label),
                 placeholder = stringResource(Res.string.authorization_password_hint),
                 isPasswordVisible = state.isPasswordVisible,
-                onShowPassword = onShowPassword
+                onShowPassword = onShowPassword,
+                supportingText = stringResource(Res.string.authorization_password_error_length),
+                isSupportingTextVisible = !state.isPasswordLongEnough
             )
 
-            PasswordStrengthMeter(
-                level = state.passwordStrength.level,
-                modifier = Modifier.fillMaxWidth().padding(top = 12.dp)
-            )
+            PasswordStrengthMeter(level = state.passwordStrength.level)
         }
+
+        AppOutlinedPasswordTextField(
+            state = state.confirmPassword,
+            label = stringResource(Res.string.authorization_password_confirm_label),
+            placeholder = stringResource(Res.string.authorization_password_confirm_hint),
+            isPasswordVisible = state.isConfirmPasswordVisible,
+            onShowPassword = onShowConfirmPassword,
+            supportingText = stringResource(Res.string.authorization_password_confirm_error_match),
+            isSupportingTextVisible = !state.isPasswordConfirmed
+        )
 
         Button(
             modifier = Modifier
@@ -115,6 +133,11 @@ private fun PreviewRegisterContent(
             onShowPassword = {
                 localState = localState.copy(
                     isPasswordVisible = !localState.isPasswordVisible
+                )
+            },
+            onShowConfirmPassword = {
+                localState = localState.copy(
+                    isConfirmPasswordVisible = !localState.isConfirmPasswordVisible
                 )
             },
             modifier = Modifier.padding(horizontal = AppDimensions.paddingMedium)

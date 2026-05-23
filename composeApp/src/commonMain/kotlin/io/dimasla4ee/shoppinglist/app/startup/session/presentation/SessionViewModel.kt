@@ -1,14 +1,19 @@
 package io.dimasla4ee.shoppinglist.app.startup.session.presentation
 
-import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
+import androidx.lifecycle.viewModelScope
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.ClearAuthTokensUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.token.ObserveSessionUseCase
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class SessionViewModel(
-    private val authRepository: AuthRepository
+    private val observeSessionUseCase: ObserveSessionUseCase,
+    private val clearAuthTokensUseCase: ClearAuthTokensUseCase
 ) : MviViewModel<SessionIntent, SessionState, SessionEffect>(
-    initialState = SessionState()
+    initialState = SessionState(isLoading = true)
 ) {
-    
+
     override fun reduce(
         intent: SessionIntent,
         current: SessionState
@@ -21,27 +26,30 @@ class SessionViewModel(
 
     override suspend fun handleIntent(intent: SessionIntent) {
         when (intent) {
-            SessionIntent.LoadSession -> loadSession()
-            SessionIntent.RefreshSession -> loadSession()
+            SessionIntent.LoadSession,
+            SessionIntent.RefreshSession -> Unit
+
             SessionIntent.Logout -> logout()
         }
     }
 
-    private suspend fun loadSession() {
-        val accessToken = authRepository.getAccessToken()
-        val refreshToken = authRepository.getRefreshToken()
-        updateState {
-            it.copy(
-                isLoading = false,
-                isAuthorized = refreshToken != null,
-                accessToken = accessToken,
-                refreshToken = refreshToken
-            )
+    fun observeSession() {
+        viewModelScope.launch {
+            observeSessionUseCase().collectLatest { session ->
+                updateState {
+                    it.copy(
+                        isLoading = false,
+                        isAuthorized = session.isAuthorized,
+                        accessToken = session.accessToken,
+                        refreshToken = session.refreshToken
+                    )
+                }
+            }
         }
     }
 
     private suspend fun logout() {
-        authRepository.clearTokens()
+        clearAuthTokensUseCase()
         updateState { SessionState() }
     }
 }

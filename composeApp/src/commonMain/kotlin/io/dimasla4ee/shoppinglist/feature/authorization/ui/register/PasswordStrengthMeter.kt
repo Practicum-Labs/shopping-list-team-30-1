@@ -1,7 +1,10 @@
 package io.dimasla4ee.shoppinglist.feature.authorization.ui.register
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,30 +34,36 @@ fun PasswordStrengthMeter(
     level: PasswordStrengthLevel,
     modifier: Modifier = Modifier
 ) {
-    if (level == PasswordStrengthLevel.Empty) return
+    val isPasswordNotEmpty = level != PasswordStrengthLevel.Empty
 
-    val label = level.labelRes()?.let { stringResource(it) } ?: return
-    val progress = level.progress()
-    val trackColor = MaterialTheme.colorScheme.outlineVariant
-    val color by animateColorAsState(
-        targetValue = level.color(),
-        animationSpec = tween(durationMillis = 300)
-    )
-
-    Column(modifier = modifier) {
-        LinearWavyProgressIndicator(
-            progress = { progress },
-            modifier = Modifier.fillMaxWidth(),
-            color = color,
-            trackColor = trackColor
+    AnimatedVisibility(
+        visible = isPasswordNotEmpty,
+        enter = expandVertically(),
+        exit = shrinkVertically()
+    ) {
+        val label = level.labelRes()?.let { stringResource(it) } ?: return@AnimatedVisibility
+        val progress = level.progress()
+        val trackColor = MaterialTheme.colorScheme.outlineVariant
+        val color by animateColorAsState(
+            targetValue = level.color(),
+            animationSpec = tween(durationMillis = 300)
         )
 
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = color,
-            modifier = Modifier.align(Alignment.End)
-        )
+        Column(modifier = modifier) {
+            LinearWavyProgressIndicator(
+                progress = { progress },
+                modifier = Modifier.fillMaxWidth(),
+                color = color,
+                trackColor = trackColor
+            )
+
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall,
+                color = color,
+                modifier = Modifier.align(Alignment.End)
+            )
+        }
     }
 }
 

@@ -22,7 +22,7 @@ class KtorfitNetworkClient(
             is Request.RegisterRequest -> api.registerUser(request)
             is Request.UserAuthRequest -> api.login(request)
             is Request.CheckUserRequest -> api.checkUser(request.authorization)
-            is Request.RecoverPasswordRequest -> api.recoverPassword()
+            is Request.RecoverPasswordRequest -> api.recoverPassword(request.email)
         }
 
         @Suppress("UNCHECKED_CAST")
@@ -55,5 +55,3 @@ suspend fun Throwable.toNetworkError(): NetworkError = when (this) {
 
     else -> NetworkError.Unknown(this)
 }
-
-

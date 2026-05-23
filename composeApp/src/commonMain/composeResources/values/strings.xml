@@ -12,6 +12,8 @@
     <string name="authorization_email_label">Email</string>
     <string name="authorization_password_hint">Введите пароль</string>
     <string name="authorization_password_label">Пароль</string>
+    <string name="authorization_password_confirm_hint">Повторите пароль</string>
+    <string name="authorization_password_confirm_label">Подтверждение пароля</string>
     <string name="authorization_button">Зарегистрироваться</string>
     <string name="authorization_have_account">Уже есть аккаунт?</string>
     <string name="authorization_sign_in">Войти</string>
@@ -22,6 +24,9 @@
     <string name="authorization_recover_password_button">Восстановить пароль</string>
     <string name="authorization_recover_password_cancel">Отмена</string>
     <string name="authorization_continue_as_guest">Продолжить как гость</string>
+    <string name="authorization_email_error_format">Почта не соответствует формату</string>
+    <string name="authorization_password_error_length">Пароль короче 8 символов</string>
+    <string name="authorization_password_confirm_error_match">Поля не совпадают</string>
 
     <!-- Сложность пароля -->
     <string name="password_strength_very_weak">Очень слабый</string>

@@ -1,9 +1,8 @@
 package io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password
 
-import io.dimasla4ee.shoppinglist.core.domain.interactor.RecoverPasswordUseCase
+import io.dimasla4ee.shoppinglist.core.domain.interactor.auth.RecoverPasswordUseCase
 import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
 import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
-import io.dimasla4ee.shoppinglist.utils.AppLog
 
 @Suppress("ForbiddenComment")
 class RecoverPasswordViewModel(
@@ -16,19 +15,17 @@ class RecoverPasswordViewModel(
         intent: RecoverPasswordIntent,
         current: RecoverPasswordState
     ): RecoverPasswordState = when (intent) {
-        RecoverPasswordIntent.RecoverPasswordClicked,
-        RecoverPasswordIntent.CancelClicked -> current
+        is RecoverPasswordIntent.Action -> current
     }
 
     override suspend fun handleIntent(intent: RecoverPasswordIntent) {
         val currentState = state.value
-
         val effect = when (intent) {
-            RecoverPasswordIntent.CancelClicked -> RecoverPasswordEffect.NavigateToSignIn
-            RecoverPasswordIntent.RecoverPasswordClicked -> handleRecoverPassword(currentState)
-                ?: return
+            RecoverPasswordIntent.Action.BackClicked -> RecoverPasswordEffect.NavigateBack
+            RecoverPasswordIntent.Action.CancelClicked -> RecoverPasswordEffect.NavigateToSignIn
+            RecoverPasswordIntent.Action.RecoverPasswordClicked ->
+                handleRecoverPassword(currentState) ?: return
         }
-
         emitEffect(effect)
     }
 
@@ -38,9 +35,7 @@ class RecoverPasswordViewModel(
         // TODO: Показывать snackbar / ошибки валидации
         if (email.isBlank() || !current.isRecoverEnabled) return null
 
-        val result = recoverPasswordUseCase.invoke()
-
-        AppLog.d("RecoverPasswordVM", result.toString())
+        val result = recoverPasswordUseCase.invoke(email)
 
         return when (result) {
             is DomainResult.Error<*> -> null
