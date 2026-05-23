@@ -1,6 +1,8 @@
 package io.dimasla4ee.shoppinglist.app.di
 
 import io.dimasla4ee.shoppinglist.app.navigation.NavigationViewModel
+import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionViewModel
+import io.dimasla4ee.shoppinglist.app.startup.session.splash.presentation.SplashViewModel
 import io.dimasla4ee.shoppinglist.core.presentation.settings.SettingsViewModel
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordViewModel
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.register.RegisterViewModel
@@ -33,6 +35,8 @@ val presentationModule = module {
     viewModelOf(::SignInViewModel)
     viewModelOf(::RegisterViewModel)
     viewModelOf(::RecoverPasswordViewModel)
+    viewModelOf(::SessionViewModel)
+    viewModelOf(::SplashViewModel)
 }
 
 /**

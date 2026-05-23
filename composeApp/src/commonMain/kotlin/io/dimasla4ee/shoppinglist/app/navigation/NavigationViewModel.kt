@@ -5,6 +5,6 @@ import androidx.navigation3.runtime.NavKey
 
 class NavigationViewModel : ViewModel() {
     val backStack = TopLevelBackStack<NavKey>(
-        startKey = Route.Welcome
+        startKey = Route.Splash
     )
 }

@@ -143,6 +143,8 @@
     <string name="action_authorization">Authorization</string>
     <string name="action_login">Log in</string>
     <string name="action_logout">Log out</string>
+    <string name="fab_menu_delete_all">Delete all</string>
+    <string name="fab_menu_create_shopping_list">Create shopping list</string>
 
     <!-- Empty states -->
     <string name="empty_lists_title">Shopping list is empty</string>

@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.navigation.NavigationRoot
+import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionViewModel
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.core.presentation.settings.SettingsViewModel
@@ -16,6 +17,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 @PreviewLightDark
 fun App() {
+
+    val sessionViewModel: SessionViewModel = koinViewModel()
 
     val viewModel: SettingsViewModel = koinViewModel()
 
@@ -35,6 +38,7 @@ fun App() {
     ) {
 
         NavigationRoot(
+            sessionViewModel = sessionViewModel,
             onThemeToggle = viewModel::toggleTheme,
             modifier = Modifier.fillMaxSize()
         )
