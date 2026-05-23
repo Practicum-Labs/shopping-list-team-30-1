@@ -13,7 +13,7 @@ class MockAuthRepository : AuthRepository {
         email: String,
         password: String
     ): DomainResult<Response.RegisterResponse, NetworkError> {
-        delay(NETWORK_DELAY_MS)
+        delay(BIG_DELAY_MS)
 
         val normalizedEmail = email.trim().lowercase()
 
@@ -53,7 +53,7 @@ class MockAuthRepository : AuthRepository {
         email: String,
         password: String
     ): DomainResult<Response.UserAuthResponse, NetworkError> {
-        delay(NETWORK_DELAY_MS)
+        delay(BIG_DELAY_MS)
 
         val normalizedEmail = email.trim().lowercase()
 
@@ -85,7 +85,7 @@ class MockAuthRepository : AuthRepository {
     override suspend fun refresh(
         refreshToken: String
     ): DomainResult<Response.RefreshTokenResponse, NetworkError> {
-        delay(400)
+        delay(MEDIUM_DELAY_MS)
 
         val oldSession = sessions.firstOrNull { it.refreshToken == refreshToken }
             ?: return unauthorized("Некорректный refresh token")
@@ -110,7 +110,7 @@ class MockAuthRepository : AuthRepository {
     override suspend fun recoverPassword(
         email: String
     ): DomainResult<Response.RecoverPasswordResponse, NetworkError> {
-        delay(NETWORK_DELAY_MS)
+        delay(BIG_DELAY_MS)
 
         val normalizedEmail = email.trim().lowercase()
 
@@ -130,7 +130,7 @@ class MockAuthRepository : AuthRepository {
     override suspend fun checkToken(
         accessToken: String
     ): DomainResult<Response.CheckResponse, NetworkError> {
-        delay(250)
+        delay(SMALL_DELAY_MS)
 
         val session = sessions.firstOrNull { it.accessToken == accessToken }
             ?: return DomainResult.Success(
@@ -200,7 +200,9 @@ class MockAuthRepository : AuthRepository {
     )
 
     companion object {
-        private const val NETWORK_DELAY_MS = 700L
+        private const val BIG_DELAY_MS = 700L
+        private const val MEDIUM_DELAY_MS = 400L
+        private const val SMALL_DELAY_MS = 250L
         private const val MIN_PASSWORD_LENGTH = 7
         private const val ACCESS_TOKEN_LIFETIME_MS = 60 * 60 * 1000L
         private const val REFRESH_TOKEN_LIFETIME_MS = 7 * 24 * 60 * 60 * 1000L
