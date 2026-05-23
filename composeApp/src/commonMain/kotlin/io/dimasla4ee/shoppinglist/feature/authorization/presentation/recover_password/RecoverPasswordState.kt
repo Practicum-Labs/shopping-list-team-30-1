@@ -7,6 +7,10 @@ import io.dimasla4ee.shoppinglist.core.utils.isValidEmail
 data class RecoverPasswordState(
     val email: TextFieldState = TextFieldState()
 ) : MviState {
+
+    val isEmailValid: Boolean
+        get() = email.text.isValidEmail()
+
     val isRecoverEnabled: Boolean
         get() = email.text.isValidEmail()
 }

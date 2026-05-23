@@ -28,6 +28,7 @@ import io.dimasla4ee.shoppinglist.core.utils.appDefaultFormSize
 import io.dimasla4ee.shoppinglist.feature.authorization.presentation.recover_password.RecoverPasswordState
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.authorization_email_error_format
 import shoppinglist.composeapp.generated.resources.authorization_email_hint
 import shoppinglist.composeapp.generated.resources.authorization_email_label
 import shoppinglist.composeapp.generated.resources.authorization_recover_password_button
@@ -69,7 +70,9 @@ fun RecoverPasswordContent(
             state = state.email,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             placeholder = stringResource(Res.string.authorization_email_hint),
-            label = stringResource(Res.string.authorization_email_label)
+            label = stringResource(Res.string.authorization_email_label),
+            supportingText = stringResource(Res.string.authorization_email_error_format),
+            isSupportingTextVisible = !state.isEmailValid
         )
 
         Button(

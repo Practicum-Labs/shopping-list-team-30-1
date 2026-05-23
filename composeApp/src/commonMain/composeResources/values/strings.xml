@@ -25,7 +25,7 @@
     <string name="authorization_recover_password_cancel">Отмена</string>
     <string name="authorization_continue_as_guest">Продолжить как гость</string>
     <string name="authorization_email_error_format">Почта не соответствует формату</string>
-    <string name="authorization_password_error_length">Пароль короче 6 символов</string>
+    <string name="authorization_password_error_length">Пароль короче 8 символов</string>
     <string name="authorization_password_confirm_error_match">Поля не совпадают</string>
 
     <!-- Сложность пароля -->

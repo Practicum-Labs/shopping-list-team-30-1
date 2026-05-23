@@ -9,8 +9,15 @@ data class SignInState(
     val password: TextFieldState = TextFieldState(),
     val isPasswordVisible: Boolean = false
 ) : MviState {
+
+    val isEmailValid: Boolean
+        get() = email.text.isValidEmail()
+
+    val isPasswordLongEnough: Boolean
+        get() = password.text.length >= PASSWORD_MIN_LENGTH
+
     val isSignInAllowed: Boolean
-        get() = email.text.isValidEmail() && password.text.length >= PASSWORD_MIN_LENGTH
+        get() = isEmailValid && isPasswordLongEnough
 
     companion object {
         private const val PASSWORD_MIN_LENGTH = 8
