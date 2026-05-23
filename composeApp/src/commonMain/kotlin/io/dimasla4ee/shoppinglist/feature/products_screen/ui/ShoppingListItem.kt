@@ -17,7 +17,6 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.presentation.mappers.toStringResource
-import io.dimasla4ee.shoppinglist.core.utils.toFormattedString
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

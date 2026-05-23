@@ -86,8 +86,6 @@ class ProductsViewModel(
             renameValue = current.listName.ifBlank { listName }
         )
 
-        //ProductsIntent.UI.ToggleBottomSheet ->
-        //    current.copy(isBottomSheetOpen = !current.isBottomSheetOpen)
         ProductsIntent.UI.ToggleBottomSheet -> current.reduceToggleBottomSheet()
 
         ProductsIntent.UI.ToggleMenuBottomSheet ->
