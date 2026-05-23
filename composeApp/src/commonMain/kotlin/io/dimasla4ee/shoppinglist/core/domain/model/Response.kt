@@ -23,7 +23,7 @@ sealed interface Response {
         val userId: Int,
         val accessToken: String,
         val refreshToken: String
-    ): Response
+    ) : Response
 
     /** Используется в `/auth/recovery` эндпоинте. */
     @Serializable
@@ -36,7 +36,7 @@ sealed interface Response {
     data class CheckResponse(
         val success: Boolean,
         val refresh: Boolean
-    ): Response
+    ) : Response
 
     /** Используется в `/auth/refresh` эндпоинте. */
     @Serializable

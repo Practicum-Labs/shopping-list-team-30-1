@@ -44,6 +44,11 @@
     <string name="content_back">Back</string>
     <string name="content_minus">Minus</string>
     <string name="content_plus">Plus</string>
+    <string name="content_toggle_menu">Toggle menu</string>
+
+    <!-- Accessibility -->
+    <string name="state_expanded">Expanded</string>
+    <string name="state_collapsed">Collapsed</string>
 
     <!-- Message about empty list -->
     <string name="empty_list_message">The shopping list is empty</string>
@@ -74,9 +79,11 @@
 
     <!-- Shopping list interactions -->
     <string name="cd_edit_shopping_list">Edit shopping list</string>
+    <string name="cd_edit">Edit</string>
     <string name="cd_copy_shopping_list">Copy shopping list</string>
     <string name="cd_change_shopping_list_icon">Change shopping list icon</string>
     <string name="cd_delete_shopping_list">Delete shopping list</string>
+    <string name="cd_delete_list">Delete list</string>
 
     <!-- Password actions -->
     <string name="cd_show_password">Show password</string>
@@ -107,6 +114,7 @@
 
     <!-- Bottom menu -->
     <string name="btm_menu_sorting">Sort</string>
+    <string name="btm_menu">Menu</string>
     <string name="btm_menu_delete_all">Delete all</string>
     <string name="btm_menu_clear_purchased_items">Clear purchased items</string>
     <string name="sort_alphabetical">Alphabetical</string>

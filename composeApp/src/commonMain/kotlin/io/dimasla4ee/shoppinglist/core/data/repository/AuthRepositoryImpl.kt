@@ -1,11 +1,11 @@
 package io.dimasla4ee.shoppinglist.core.data.repository
 
-import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
 import io.dimasla4ee.shoppinglist.core.data.network.client.NetworkClient
 import io.dimasla4ee.shoppinglist.core.data.network.client.toNetworkError
 import io.dimasla4ee.shoppinglist.core.data.network.dto.Request
-import io.dimasla4ee.shoppinglist.core.domain.model.Response
 import io.dimasla4ee.shoppinglist.core.domain.model.DomainResult
+import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
+import io.dimasla4ee.shoppinglist.core.domain.model.Response
 import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
 import io.dimasla4ee.shoppinglist.core.domain.storage.TokenStorage
 

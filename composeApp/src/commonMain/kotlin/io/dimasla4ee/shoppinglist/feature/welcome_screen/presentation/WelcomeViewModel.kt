@@ -5,7 +5,7 @@ import io.dimasla4ee.shoppinglist.core.mvi.MviViewModel
 import kotlinx.coroutines.delay
 import java.lang.System.currentTimeMillis
 
-class WelcomeViewModel (
+class WelcomeViewModel(
     private val checkSessionUseCase: CheckSessionUseCase
 ) : MviViewModel<WelcomeIntent, WelcomeState, WelcomeEffect>(
     initialState = WelcomeState()

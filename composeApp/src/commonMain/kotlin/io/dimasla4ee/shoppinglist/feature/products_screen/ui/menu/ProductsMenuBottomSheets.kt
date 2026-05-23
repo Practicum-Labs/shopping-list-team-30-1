@@ -22,6 +22,7 @@ import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.btm_menu_clear_purchased_items
 import shoppinglist.composeapp.generated.resources.btm_menu_delete_all
+import shoppinglist.composeapp.generated.resources.cd_delete_list
 import shoppinglist.composeapp.generated.resources.ic_clear_24
 import shoppinglist.composeapp.generated.resources.ic_delete_24
 
@@ -71,7 +72,7 @@ fun ProductsMenuBottomSheet(
 
                 MenuItem(
                     icon = painterResource(Res.drawable.ic_delete_24),
-                    text = "Удалить список",
+                    text = stringResource(Res.string.cd_delete_list),
                     onClick = onDeleteList,
                     contentColor = Color.Red
                 )

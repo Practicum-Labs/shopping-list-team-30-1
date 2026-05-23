@@ -11,7 +11,6 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import io.dimasla4ee.shoppinglist.app.startup.session.presentation.SessionViewModel
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.collections.listOf
 
 @Composable
 fun NavigationRoot(

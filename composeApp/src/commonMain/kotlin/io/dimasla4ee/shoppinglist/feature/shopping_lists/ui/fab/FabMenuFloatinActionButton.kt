@@ -24,12 +24,15 @@ import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.content_toggle_menu
 import shoppinglist.composeapp.generated.resources.fab_menu_create_shopping_list
 import shoppinglist.composeapp.generated.resources.fab_menu_delete_all
 import shoppinglist.composeapp.generated.resources.ic_close_24
 import shoppinglist.composeapp.generated.resources.ic_delete_24
 import shoppinglist.composeapp.generated.resources.ic_list_alt_add_24
 import shoppinglist.composeapp.generated.resources.ic_shopping_cart_24
+import shoppinglist.composeapp.generated.resources.state_collapsed
+import shoppinglist.composeapp.generated.resources.state_expanded
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -40,14 +43,22 @@ fun FabMenuFloatingActionButton(
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
+    val stateDesc = if (isExpanded) {
+        stringResource(Res.string.state_expanded)
+    } else {
+        stringResource(Res.string.state_collapsed)
+    }
+
+    val contentDesc = stringResource(Res.string.content_toggle_menu)
+
     FloatingActionButtonMenu(
         expanded = isExpanded,
         button = {
             ToggleFloatingActionButton(
                 modifier = modifier.semantics {
                     traversalIndex = -1f
-                    stateDescription = if (isExpanded) "Expanded" else "Collapsed"
-                    contentDescription = "Toggle menu"
+                    stateDescription = stateDesc
+                    contentDescription = contentDesc
                 },
                 checked = isExpanded,
                 onCheckedChange = { isExpanded = !isExpanded },
