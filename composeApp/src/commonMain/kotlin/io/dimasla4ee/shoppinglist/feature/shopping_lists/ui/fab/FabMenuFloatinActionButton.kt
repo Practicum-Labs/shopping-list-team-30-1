@@ -22,7 +22,10 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.traversalIndex
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.fab_menu_create_shopping_list
+import shoppinglist.composeapp.generated.resources.fab_menu_delete_all
 import shoppinglist.composeapp.generated.resources.ic_close_24
 import shoppinglist.composeapp.generated.resources.ic_delete_24
 import shoppinglist.composeapp.generated.resources.ic_list_alt_add_24
@@ -80,7 +83,12 @@ fun FabMenuFloatingActionButton(
                 onDeleteAllClick.onClick()
                 isExpanded = false
             },
-            text = { Text("Delete all", style = MaterialTheme.typography.labelMedium) },
+            text = {
+                Text(
+                    text = stringResource(Res.string.fab_menu_delete_all),
+                    style = MaterialTheme.typography.labelMedium
+                )
+            },
             icon = {
                 Icon(
                     painter = painterResource(Res.drawable.ic_delete_24),
@@ -95,7 +103,7 @@ fun FabMenuFloatingActionButton(
             },
             text = {
                 Text(
-                    "Create shopping list",
+                    text = stringResource(Res.string.fab_menu_create_shopping_list),
                     style = MaterialTheme.typography.labelMedium
                 )
             },
