@@ -46,6 +46,12 @@
     <string name="content_back">Назад</string>
     <string name="content_minus">Уменьшение</string>
     <string name="content_plus">Увеличение</string>
+    <string name="content_toggle_menu">Переключить меню</string>
+
+    <!-- Accessibility -->
+    <string name="state_expanded">Развернуто</string>
+    <string name="state_collapsed">Свернуто</string>
+
 
     <!-- Сообщение о пустом списке -->
     <string name="empty_list_message">В списке покупок пока пусто</string>
@@ -76,9 +82,11 @@
 
     <!-- Действия со списком покупок -->
     <string name="cd_edit_shopping_list">Редактировать список покупок</string>
+    <string name="cd_edit">Редактировать</string>
     <string name="cd_copy_shopping_list">Копировать список покупок</string>
     <string name="cd_change_shopping_list_icon">Изменить иконку списка покупок</string>
     <string name="cd_delete_shopping_list">Удалить список покупок</string>
+    <string name="cd_delete_list">Удалить список</string>
 
     <!-- Действия с паролем -->
     <string name="cd_show_password">Показать пароль</string>
@@ -109,6 +117,7 @@
 
     <!-- Нижнее меню -->
     <string name="btm_menu_sorting">Сортировка</string>
+    <string name="btm_menu">Меню</string>
     <string name="btm_menu_delete_all">Удалить все</string>
     <string name="btm_menu_clear_purchased_items">Очистить купленные</string>
     <string name="sort_alphabetical">По алфавиту</string>
@@ -138,6 +147,8 @@
     <string name="action_authorization">Авторизация</string>
     <string name="action_login">Войти</string>
     <string name="action_logout">Выйти</string>
+    <string name="fab_menu_delete_all">Удалить всё</string>
+    <string name="fab_menu_create_shopping_list">Создать список покупок</string>
 
     <!-- Пустые состояния -->
     <string name="empty_lists_title">Список покупок пуст</string>

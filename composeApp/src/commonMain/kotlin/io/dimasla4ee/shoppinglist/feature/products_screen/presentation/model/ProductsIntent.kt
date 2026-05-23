@@ -16,7 +16,7 @@ sealed interface ProductsIntent : MviIntent {
         data class ToggleItemChecked(val product: Product) : Action
         data object ToggleSortMode : Action
         data object OnBackClick : Action
-        data object RenameList: Action
+        data object RenameList : Action
     }
 
     sealed interface UI : ProductsIntent {

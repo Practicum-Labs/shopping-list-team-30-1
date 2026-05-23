@@ -1,8 +1,8 @@
 package io.dimasla4ee.shoppinglist.core.data.network.client
 
-import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
 import io.dimasla4ee.shoppinglist.core.data.network.api.AuthApi
 import io.dimasla4ee.shoppinglist.core.data.network.dto.Request
+import io.dimasla4ee.shoppinglist.core.domain.model.NetworkError
 import io.dimasla4ee.shoppinglist.core.domain.model.Response
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException

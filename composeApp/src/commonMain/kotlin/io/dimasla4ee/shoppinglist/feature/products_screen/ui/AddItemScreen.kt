@@ -256,44 +256,6 @@ fun AddItemScreen(
     }
 }
 
-@Deprecated("Временная заглушка. Заменить на меню")
-@Composable
-fun SortModeIndicator(
-    sortMode: SortMode,
-    onToggle: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onToggle)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Icon(
-            painter = painterResource(
-                when (sortMode) {
-                    SortMode.CUSTOM -> Res.drawable.ic_drag_pan_24
-                    SortMode.ALPHABETICAL -> Res.drawable.ic_sort_by_alpha_24
-                }
-            ),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.size(20.dp)
-        )
-
-        Text(
-            text = when (sortMode) {
-                SortMode.CUSTOM -> "Sort custom"
-                SortMode.ALPHABETICAL -> "Sort alphabet"
-            },
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-    }
-}
-
 @Preview
 @PreviewLightDark
 @Composable
