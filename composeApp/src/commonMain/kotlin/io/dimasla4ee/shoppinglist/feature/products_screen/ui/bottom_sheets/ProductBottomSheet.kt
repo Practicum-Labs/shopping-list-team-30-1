@@ -42,7 +42,7 @@ private const val HALF_WEIGHT = 0.5f
 private const val MAX_LENGTH_QUANTITY = 15
 
 @Composable
-fun AddProductBottomSheet(
+fun ProductBottomSheet(
     name: String,
     unit: String,
     amount: String,
@@ -177,9 +177,9 @@ fun shoppingListTextFieldColors() = OutlinedTextFieldDefaults.colors(
 @Preview(showBackground = true)
 @PreviewLightDark
 @Composable
-private fun AddProductBottomSheetPreview() {
+private fun ProductBottomSheetPreview() {
     ShoppingListTheme {
-        AddProductBottomSheet(
+        ProductBottomSheet(
             name = "",
             unit = stringResource(MeasurementUnit.PIECE.toStringResource()),
             amount = "",

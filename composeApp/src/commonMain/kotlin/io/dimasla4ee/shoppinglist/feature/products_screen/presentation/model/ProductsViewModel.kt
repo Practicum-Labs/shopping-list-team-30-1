@@ -163,6 +163,10 @@ class ProductsViewModel(
         unit = ""
     )
 
+    private fun ProductsState.reduceChangeUnit(
+        intent: ProductsIntent.UI.ChangeUnit
+    ) = copy(unit = intent.unit)
+
     private fun ProductsState.reduceReorderProduct(
         intent: ProductsIntent.UI.ReorderProduct
     ): ProductsState = when (sortMode) {
@@ -195,7 +199,7 @@ class ProductsViewModel(
                 id = currentState.id ?: System.currentTimeMillis(),
                 listId = listId,
                 name = currentState.name.trim(),
-                amount = currentState.amount.toFloatOrNull() ?: 0f,
+                amount = currentState.amount,
                 unit = currentState.unit,
                 isChecked = false,
                 position = currentState.position ?: currentState.items.size

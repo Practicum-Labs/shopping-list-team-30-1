@@ -40,7 +40,7 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.domain.SortMode
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsIntent
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.model.ProductsState
 import io.dimasla4ee.shoppinglist.feature.products_screen.presentation.state.ProductDialog
-import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.AddProductBottomSheet
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.bottom_sheets.ProductBottomSheet
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteAllProductsDialog
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteCheckedProductsDialog
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
@@ -238,7 +238,7 @@ fun AddItemScreen(
                     ) {}
                 }
 
-                AddProductBottomSheet(
+                ProductBottomSheet(
                     editMode = state.id in state.items.map { it.id },
                     name = state.name,
                     amount = state.amount,

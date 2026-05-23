@@ -53,9 +53,9 @@ fun ShoppingListItem(
                 }
             )
 
-            if (item.amount == 0f) return@Column
+            if (item.amount.isBlank()) return@Column
 
-            val amount = item.amount.toFormattedString()
+            val amount = item.amount
             val unit = item.unit
 
             Text(
@@ -76,7 +76,7 @@ private fun ShoppingListItemPreview() {
                 id = 1L,
                 listId = 1,
                 name = "Колбасевич",
-                amount = 1f,
+                amount = "1",
                 unit = stringResource(MeasurementUnit.KILOGRAM.toStringResource()),
                 isChecked = false,
                 position = 0
@@ -96,7 +96,7 @@ private fun ShoppingListItemCheckedPreview() {
                 id = 1L,
                 listId = 1,
                 name = "Хлеб",
-                amount = 2f,
+                amount = "2",
                 unit = stringResource(MeasurementUnit.PIECE.toStringResource()),
                 isChecked = true,
                 position = 0

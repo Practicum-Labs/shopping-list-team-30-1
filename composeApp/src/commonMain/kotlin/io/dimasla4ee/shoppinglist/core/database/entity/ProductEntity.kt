@@ -19,7 +19,7 @@ data class ProductEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val listId: Long,
     val name: String,
-    val amount: Float,
+    val amount: String,
     val unit: String,
     val isChecked: Boolean = false,
     val position: Int = 0,
