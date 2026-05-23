@@ -20,7 +20,9 @@ interface AuthRepository {
         refreshToken: String
     ): DomainResult<Response.RefreshTokenResponse, NetworkError>
 
-    suspend fun recoverPassword(): DomainResult<Response.RecoverPasswordResponse, NetworkError>
+    suspend fun recoverPassword(
+        email: String
+    ): DomainResult<Response.RecoverPasswordResponse, NetworkError>
 
     suspend fun checkToken(
         accessToken: String

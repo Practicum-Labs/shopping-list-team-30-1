@@ -67,7 +67,9 @@ interface AuthApi {
      */
     @Headers(ACCEPT_JSON)
     @POST("$AUTH/recovery")
-    suspend fun recoverPassword(): Response.RecoverPasswordResponse
+    suspend fun recoverPassword(
+        @Header("email") email: String
+    ): Response.RecoverPasswordResponse
 
     /**
      * Выполняет авторизацию пользователя по email и password.

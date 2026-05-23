@@ -69,8 +69,11 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun recoverPassword(): DomainResult<Response.RecoverPasswordResponse, NetworkError> {
-        val request = Request.RecoverPasswordRequest
+    override suspend fun recoverPassword(
+        email: String
+    ): DomainResult<Response.RecoverPasswordResponse, NetworkError> {
+        val request = Request.RecoverPasswordRequest(email)
+
         return networkClient
             .doRequest<Response.RecoverPasswordResponse>(request)
             .toDomainResult { response ->

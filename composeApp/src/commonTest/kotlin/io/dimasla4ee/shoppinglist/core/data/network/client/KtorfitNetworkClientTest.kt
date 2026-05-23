@@ -155,7 +155,7 @@ class KtorfitNetworkClientTest {
     @Test
     fun `recoverPassword - delegates to api and returns RecoverPasswordResponse`() = runTest {
         // given
-        val request = Request.RecoverPasswordRequest
+        val request = Request.RecoverPasswordRequest("")
         val expectedResponse = Response.RecoverPasswordResponse(
             message = "Check your email"
         )
@@ -200,7 +200,7 @@ class KtorfitNetworkClientTest {
             Request.UserAuthRequest("a@b.com", "pass"),
             Request.RefreshTokenRequest("token"),
             Request.CheckUserRequest("Bearer token"),
-            Request.RecoverPasswordRequest
+            Request.RecoverPasswordRequest("")
         )
 
         // when & then

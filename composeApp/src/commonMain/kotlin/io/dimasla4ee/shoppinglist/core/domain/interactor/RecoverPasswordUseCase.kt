@@ -8,7 +8,7 @@ import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
 class RecoverPasswordUseCase(
     private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke(): DomainResult<Response.RecoverPasswordResponse, NetworkError> {
-        return authRepository.recoverPassword()
+    suspend operator fun invoke(email: String): DomainResult<Response.RecoverPasswordResponse, NetworkError> {
+        return authRepository.recoverPassword(email)
     }
 }

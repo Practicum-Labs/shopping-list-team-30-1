@@ -8,16 +8,16 @@ import io.dimasla4ee.shoppinglist.app.startup.session.domain.AppLaunchRepository
 import io.dimasla4ee.shoppinglist.core.data.network.api.AuthApi
 import io.dimasla4ee.shoppinglist.core.data.network.client.KtorfitNetworkClient
 import io.dimasla4ee.shoppinglist.core.data.network.client.NetworkClient
-import io.dimasla4ee.shoppinglist.core.data.repository.AuthRepositoryImpl
+import io.dimasla4ee.shoppinglist.core.data.repository.MockAuthRepository
 import io.dimasla4ee.shoppinglist.core.data.repository.SettingsRepositoryImpl
 import io.dimasla4ee.shoppinglist.core.data.repository.TokenStorageImpl
 import io.dimasla4ee.shoppinglist.core.database.dao.ShoppingListDao
 import io.dimasla4ee.shoppinglist.core.database.db.ShoppingListDatabase
 import io.dimasla4ee.shoppinglist.core.domain.repository.AuthRepository
-import io.dimasla4ee.shoppinglist.feature.products_screen.data.ProductRepositoryImpl
-import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductRepository
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
 import io.dimasla4ee.shoppinglist.core.domain.storage.TokenStorage
+import io.dimasla4ee.shoppinglist.feature.products_screen.data.ProductRepositoryImpl
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductRepository
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.data.ShoppingListsRepositoryImpl
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsRepository
 import io.ktor.client.HttpClient
@@ -88,8 +88,11 @@ val dataModule = module {
     }
 
     single<AuthRepository> {
-        AuthRepositoryImpl(
-            networkClient = get(),
+//        AuthRepositoryImpl(
+//            networkClient = get(),
+//            tokenStorage = get()
+//        )
+        MockAuthRepository(
             tokenStorage = get()
         )
     }
