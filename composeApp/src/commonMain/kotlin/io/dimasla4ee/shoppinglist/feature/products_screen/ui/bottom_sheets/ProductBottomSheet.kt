@@ -23,7 +23,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
-import io.dimasla4ee.shoppinglist.feature.products_screen.ui.AppFloatingActionButton
+import io.dimasla4ee.shoppinglist.core.presentation.components.AppFloatingActionButton
+import io.dimasla4ee.shoppinglist.core.presentation.mappers.toStringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -38,15 +39,16 @@ import shoppinglist.composeapp.generated.resources.ic_plus_24
 
 
 private const val HALF_WEIGHT = 0.5f
+private const val MAX_LENGTH_QUANTITY = 15
 
 @Composable
-fun AddProductBottomSheet(
+fun ProductBottomSheet(
     name: String,
-    unit: MeasurementUnit?,
+    unit: String,
     amount: String,
     onNameChange: (String) -> Unit,
     onCountChange: (String) -> Unit,
-    onUnitChange: (MeasurementUnit) -> Unit,
+    onUnitChange: (String) -> Unit,
     onIncreaseClick: () -> Unit,
     onDecreaseClick: () -> Unit,
     onApplyClick: () -> Unit,
@@ -86,7 +88,7 @@ fun AddProductBottomSheet(
                 OutlinedTextField(
                     value = amount,
                     onValueChange = { value ->
-                        onCountChange(value)
+                        if (value.length <= MAX_LENGTH_QUANTITY) onCountChange(value)
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = MaterialTheme.typography.bodyLarge,
@@ -98,7 +100,8 @@ fun AddProductBottomSheet(
                             overflow = TextOverflow.Ellipsis
                         )
                     },
-                    modifier = Modifier.weight(HALF_WEIGHT)
+                    modifier = Modifier.weight(HALF_WEIGHT),
+                    singleLine = true
                 )
 
                 Spacer(modifier = Modifier.width(AppDimensions.spacerMedium))
@@ -146,6 +149,7 @@ fun AddProductBottomSheet(
             }
 
             AppFloatingActionButton(
+                modifier = Modifier.padding(end = AppDimensions.paddingMedium),
                 onClick = onApplyClick,
                 iconRes = painterResource(Res.drawable.ic_fab_check_56)
             )
@@ -173,11 +177,11 @@ fun shoppingListTextFieldColors() = OutlinedTextFieldDefaults.colors(
 @Preview(showBackground = true)
 @PreviewLightDark
 @Composable
-private fun AddProductBottomSheetPreview() {
+private fun ProductBottomSheetPreview() {
     ShoppingListTheme {
-        AddProductBottomSheet(
+        ProductBottomSheet(
             name = "",
-            unit = MeasurementUnit.PIECE,
+            unit = stringResource(MeasurementUnit.PIECE.toStringResource()),
             amount = "",
             onNameChange = {},
             onCountChange = {},

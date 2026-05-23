@@ -17,7 +17,6 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.core.presentation.mappers.toStringResource
-import io.dimasla4ee.shoppinglist.core.utils.toFormattedString
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -53,10 +52,10 @@ fun ShoppingListItem(
                 }
             )
 
-            if (item.amount == 0f) return@Column
+            if (item.amount.isBlank()) return@Column
 
-            val amount = item.amount.toFormattedString()
-            val unit = item.unit?.let { stringResource(it.toStringResource()) } ?: ""
+            val amount = item.amount
+            val unit = item.unit
 
             Text(
                 text = "$amount $unit",
@@ -76,8 +75,8 @@ private fun ShoppingListItemPreview() {
                 id = 1L,
                 listId = 1,
                 name = "Колбасевич",
-                amount = 1f,
-                unit = MeasurementUnit.KILOGRAM,
+                amount = "1",
+                unit = stringResource(MeasurementUnit.KILOGRAM.toStringResource()),
                 isChecked = false,
                 position = 0
             ),
@@ -96,8 +95,8 @@ private fun ShoppingListItemCheckedPreview() {
                 id = 1L,
                 listId = 1,
                 name = "Хлеб",
-                amount = 2f,
-                unit = MeasurementUnit.PIECE,
+                amount = "2",
+                unit = stringResource(MeasurementUnit.PIECE.toStringResource()),
                 isChecked = true,
                 position = 0
             ),

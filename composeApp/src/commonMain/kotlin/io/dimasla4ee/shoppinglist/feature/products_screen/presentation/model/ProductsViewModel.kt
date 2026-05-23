@@ -86,8 +86,7 @@ class ProductsViewModel(
             renameValue = current.listName.ifBlank { listName }
         )
 
-        ProductsIntent.UI.ToggleBottomSheet ->
-            current.copy(isBottomSheetOpen = !current.isBottomSheetOpen)
+        ProductsIntent.UI.ToggleBottomSheet -> current.reduceToggleBottomSheet()
 
         ProductsIntent.UI.ToggleMenuBottomSheet ->
             current.copy(isMenuBottomSheetOpen = !current.isMenuBottomSheetOpen)
@@ -121,7 +120,7 @@ class ProductsViewModel(
                 id = null,
                 name = "",
                 amount = "",
-                unit = null,
+                unit = "",
                 position = null,
                 isBottomSheetOpen = false
             )
@@ -150,8 +149,16 @@ class ProductsViewModel(
         id = intent.product.id,
         isBottomSheetOpen = !isBottomSheetOpen,
         name = intent.product.name,
-        amount = intent.product.amount.toString(),
+        amount = intent.product.amount,
         unit = intent.product.unit
+    )
+
+    private fun ProductsState.reduceToggleBottomSheet() = copy(
+        id = null,
+        isBottomSheetOpen = !isBottomSheetOpen,
+        name = "",
+        amount = "",
+        unit = ""
     )
 
     private fun ProductsState.reduceReorderProduct(
@@ -176,13 +183,17 @@ class ProductsViewModel(
     private suspend fun handleAddItem() {
         val currentState = state.value
 
-        if (currentState.name.isBlank()) return
+        if (currentState.name.isBlank()) {
+            updateState { it.copy(isBottomSheetOpen = !it.isBottomSheetOpen) }
+            return
+        }
+
         productInteractor.addProduct(
             Product(
                 id = currentState.id ?: System.currentTimeMillis(),
                 listId = listId,
                 name = currentState.name.trim(),
-                amount = currentState.amount.toFloatOrNull() ?: 0f,
+                amount = currentState.amount,
                 unit = currentState.unit,
                 isChecked = false,
                 position = currentState.position ?: currentState.items.size

@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,29 +19,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.domain.model.MeasurementUnit
 import io.dimasla4ee.shoppinglist.core.presentation.mappers.toStringResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
 import shoppinglist.composeapp.generated.resources.hint_units
+import shoppinglist.composeapp.generated.resources.ic_trailing_down_48
+import shoppinglist.composeapp.generated.resources.ic_trailing_up_48
+
+private const val MAX_LENGTH_UNIT = 15
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UnitDropdownField(
-    selectedUnit: MeasurementUnit?,
-    onUnitSelect: (MeasurementUnit) -> Unit,
+    selectedUnit: String,
+    onUnitSelect: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+    var textValue by remember { mutableStateOf(selectedUnit) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        onExpandedChange = {},
         modifier = modifier
     ) {
-
         OutlinedTextField(
-            value = selectedUnit?.let { unit -> stringResource(unit.toStringResource()) } ?: "",
-            onValueChange = {},
-            readOnly = true,
+            value = textValue,
+            onValueChange = { newText ->
+                if (newText.length <= MAX_LENGTH_UNIT) {
+                    textValue = newText
+                    onUnitSelect(textValue)
+                }
+            },
             label = {
                 Text(
                     text = stringResource(Res.string.hint_units),
@@ -49,28 +59,35 @@ fun UnitDropdownField(
                 )
             },
             trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded)
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(
+                        painter = if (expanded) {
+                            painterResource(Res.drawable.ic_trailing_up_48)
+                        } else {
+                            painterResource(Res.drawable.ic_trailing_down_48)
+                        },
+                        contentDescription = null
+                    )
+                }
             },
             colors = shoppingListTextFieldColors(),
             modifier = Modifier
-                .menuAnchor()
-                .fillMaxWidth()
+//                .menuAnchor()
+                .fillMaxWidth(),
+            singleLine = true
         )
 
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-
             MeasurementUnit.entries.forEach { currentUnit ->
-
+                val textUnit = stringResource(currentUnit.toStringResource())
                 DropdownMenuItem(
-                    text = {
-                        Text(stringResource(currentUnit.toStringResource()))
-                    },
-
+                    text = { Text(textUnit) },
                     onClick = {
-                        onUnitSelect(currentUnit)
+                        textValue = textUnit
+                        onUnitSelect(textValue)
                         expanded = false
                     }
                 )
@@ -84,7 +101,7 @@ fun UnitDropdownField(
 private fun UnitDropdownFieldPreview() {
     ShoppingListTheme {
         UnitDropdownField(
-            selectedUnit = MeasurementUnit.LITER,
+            selectedUnit = stringResource(MeasurementUnit.LITER.toStringResource()),
             onUnitSelect = {}
         )
     }

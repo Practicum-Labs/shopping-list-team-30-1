@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -30,7 +31,7 @@ fun ItemListPlaceholder(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(Res.drawable.img_product_list),
+            painter = painterResource(LocalAppPlaceholders.current.imgProductList),
             contentDescription = null
         )
 
