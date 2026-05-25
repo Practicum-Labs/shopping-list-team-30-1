@@ -21,6 +21,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.SkeletonDefaults.ITEMS_COUNT
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.SkeletonDefaults.SUBTITLE_LENGTH
+import io.dimasla4ee.shoppinglist.feature.products_screen.ui.SkeletonDefaults.TITLE_LENGTH
+
+private object SkeletonDefaults {
+    const val ITEMS_COUNT = 9
+    const val TITLE_LENGTH = 0.75f
+    const val SUBTITLE_LENGTH = 0.45f
+}
 
 @Composable
 fun ProductsListSkeleton(
@@ -31,7 +40,7 @@ fun ProductsListSkeleton(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        items(9) {
+        items(ITEMS_COUNT) {
             SkeletonShoppingItem()
         }
     }
@@ -62,7 +71,7 @@ private fun SkeletonShoppingItem() {
 
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.75f)
+                    .fillMaxWidth(TITLE_LENGTH)
                     .height(22.dp)
                     .background(
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.11f),
@@ -74,7 +83,7 @@ private fun SkeletonShoppingItem() {
 
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.45f)
+                    .fillMaxWidth(SUBTITLE_LENGTH)
                     .height(18.dp)
                     .background(
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
