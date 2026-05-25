@@ -40,7 +40,12 @@ class ProductsViewModel(
         productInteractor
             .getProductsOfList(listId)
             .collect { products ->
-                updateState { it.copy(items = products) }
+                updateState {
+                    it.copy(
+                        items = products,
+                        isLoading = false
+                    )
+                }
             }
     }
 
