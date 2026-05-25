@@ -34,6 +34,9 @@ interface ShoppingListDao {
     @Update
     suspend fun updateProducts(products: List<ProductEntity>)
 
+    @Update
+    suspend fun updateShoppingList(shoppingListEntity: ShoppingListEntity)
+
     @Delete
     suspend fun deleteProduct(productEntity: ProductEntity)
 

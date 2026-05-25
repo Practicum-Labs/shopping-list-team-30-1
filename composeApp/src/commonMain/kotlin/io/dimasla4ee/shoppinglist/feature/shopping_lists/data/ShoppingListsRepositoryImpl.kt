@@ -34,6 +34,6 @@ class ShoppingListsRepositoryImpl(
     }
 
     override suspend fun updateShoppingList(shoppingList: ShoppingList) {
-        dao.addShoppingList(shoppingList.toEntity())
+        dao.updateShoppingList(shoppingList.toEntity())
     }
 }
