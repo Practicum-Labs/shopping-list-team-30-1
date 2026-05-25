@@ -180,33 +180,41 @@ fun AddItemScreen(
             )
 
             // Основной контент
-            val isPlaceholderVisible = state.items.isEmpty() && !state.isBottomSheetOpen
+            when {
+                // 1. Пока загружается — показываем скелетон
+                state.isLoading -> {
+                    ProductsListSkeleton()
+                }
 
-            when (isPlaceholderVisible) {
-                true -> ItemListPlaceholder(Modifier.fillMaxSize())
-                false -> LazyColumn(
-                    state = lazyListState,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(
-                        items = state.displayedItems,
-                        key = { item -> item.id }
-                    ) { item ->
-                        ReorderableShoppingItem(
-                            item = item,
-                            state = reorderableLazyListState,
-                            hapticFeedback = hapticFeedback,
-                            onCheckedChange = {
-                                onIntent(
-                                    ProductsIntent.Action.ToggleItemChecked(
-                                        item
+                // 2. Загрузилось, но список пустой — показываем плейсхолдер
+                state.items.isEmpty() && !state.isBottomSheetOpen -> {
+                    ItemListPlaceholder(Modifier.fillMaxSize())
+                }
+
+                // 3. Всё нормально — показываем реальный список
+                else -> {
+                    LazyColumn(
+                        state = lazyListState,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(
+                            items = state.displayedItems,
+                            key = { item -> item.id }
+                        ) { item ->
+                            ReorderableShoppingItem(
+                                item = item,
+                                state = reorderableLazyListState,
+                                hapticFeedback = hapticFeedback,
+                                onCheckedChange = {
+                                    onIntent(
+                                        ProductsIntent.Action.ToggleItemChecked(item)
                                     )
-                                )
-                            },
-                            onLongPress = { onIntent(ProductsIntent.UI.EditProduct(item)) },
-                            onDragStop = { onIntent(ProductsIntent.Action.CommitReorder) },
-                            showDragHandle = isCustomSort
-                        )
+                                },
+                                onLongPress = { onIntent(ProductsIntent.UI.EditProduct(item)) },
+                                onDragStop = { onIntent(ProductsIntent.Action.CommitReorder) },
+                                showDragHandle = isCustomSort
+                            )
+                        }
                     }
                 }
             }

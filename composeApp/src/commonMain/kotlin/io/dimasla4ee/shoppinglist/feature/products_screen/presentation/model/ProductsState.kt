@@ -17,6 +17,7 @@ data class ProductsState(
     val isBottomSheetOpen: Boolean = false,
     val dialog: ProductDialog = ProductDialog.None,
     val isMenuBottomSheetOpen: Boolean = false,
+    val isLoading: Boolean = true,
     val renameValue: String = ""
 ) : MviState {
     val displayedItems: List<Product>
