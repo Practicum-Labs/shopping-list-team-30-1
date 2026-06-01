@@ -28,7 +28,7 @@ import shoppinglist.composeapp.generated.resources.welcome_screen_title
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun ShoppingListLogo(onWidthKnown: (Dp) -> Unit) {
+fun ShoppingListLogo(onWidth: (Dp) -> Unit) {
     val (annotatedString, inlineContentMap) = createWelcomeLogo()
     val density = LocalDensity.current
 
@@ -42,7 +42,7 @@ fun ShoppingListLogo(onWidthKnown: (Dp) -> Unit) {
             .padding(end = AppDimensions.paddingMedium)
             .onGloballyPositioned { coordinates ->
                 val width = with(density) { coordinates.size.width.toDp() }
-                onWidthKnown(width)
+                onWidth(width)
             },
     )
 }
