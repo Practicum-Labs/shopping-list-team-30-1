@@ -1,10 +1,10 @@
 package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
@@ -32,15 +31,12 @@ fun ShoppingListsEmptyPortrait(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = AppDimensions.paddingLarge),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(AppDimensions.spacerVeryLarge))
-
         Image(
             painter = painterResource(LocalAppPlaceholders.current.imgShoppingLists),
-            contentDescription = null,
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.Crop
+            contentDescription = null
         )
 
         Spacer(modifier = Modifier.height(AppDimensions.spacerVeryBig))

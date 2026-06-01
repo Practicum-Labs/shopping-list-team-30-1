@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
@@ -30,13 +29,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
+import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListLogo
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -48,8 +47,6 @@ import shoppinglist.composeapp.generated.resources.shopping
 @Composable
 fun WelcomeScreenLandscape(
     onGoToShopping: () -> Unit,
-    annotatedString: AnnotatedString,
-    inlineContentMap: Map<String, InlineTextContent>,
     modifier: Modifier = Modifier
 ) {
     var showContent by remember { mutableStateOf(true) }
@@ -102,20 +99,7 @@ fun WelcomeScreenLandscape(
                     modifier = Modifier.weight(1F),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        inlineContent = inlineContentMap,
-                        text = annotatedString,
-                        style = MaterialTheme.typography.titleLargeEmphasized,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(end = AppDimensions.paddingMedium)
-                            .onGloballyPositioned { coordinates ->
-                                logoWidth = with(density) {
-                                    coordinates.size.width.toDp()
-                                }
-                            },
-                    )
+                    ShoppingListLogo { width -> logoWidth = width }
                 }
 
                 AnimatedVisibility(
@@ -176,12 +160,9 @@ fun WelcomeScreenLandscape(
 @Composable
 private fun WelcomeScreenLandscapePreview() {
     ShoppingListTheme {
-        val (annotatedString, inlineContentMap) = createWelcomeLogo()
         WelcomeScreenLandscape(
             onGoToShopping = {},
-            modifier = Modifier.fillMaxSize(),
-            annotatedString = annotatedString,
-            inlineContentMap = inlineContentMap
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
