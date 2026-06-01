@@ -23,6 +23,13 @@ class ShoppingListsRepositoryImpl(
         dao.addShoppingList(shoppingList.toEntity())
     }
 
+    override suspend fun addShoppingListAndReturnId(
+        shoppingList: ShoppingList): Long {
+        return dao.addShoppingList(
+            shoppingList.toEntity()
+        )
+    }
+
     override suspend fun deleteShoppingList(shoppingList: ShoppingList) {
         dao.deleteShoppingList(shoppingList.toEntity())
     }

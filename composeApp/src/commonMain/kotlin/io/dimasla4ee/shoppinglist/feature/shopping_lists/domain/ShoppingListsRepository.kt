@@ -9,6 +9,8 @@ interface ShoppingListsRepository {
 
     suspend fun addShoppingList(shoppingList: ShoppingList)
 
+    suspend fun addShoppingListAndReturnId(shoppingList: ShoppingList): Long
+
     suspend fun deleteShoppingList(shoppingList: ShoppingList)
 
     suspend fun deleteAllShoppingLists()
