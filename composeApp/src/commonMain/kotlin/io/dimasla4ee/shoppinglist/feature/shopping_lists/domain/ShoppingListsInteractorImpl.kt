@@ -42,7 +42,7 @@ class ShoppingListsInteractorImpl(
     }
 
     override suspend fun duplicateShoppingList(shoppingList: ShoppingList) {
-        val newListId = repository.addShoppingListAndReturnId(
+        val newListId = repository.addShoppingList(
             shoppingList.copy(
                 id = 0,
                 name = "${shoppingList.name} (копия)"
