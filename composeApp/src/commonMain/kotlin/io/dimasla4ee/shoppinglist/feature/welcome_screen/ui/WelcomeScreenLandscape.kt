@@ -99,7 +99,7 @@ fun WelcomeScreenLandscape(
                     modifier = Modifier.weight(1F),
                     contentAlignment = Alignment.Center
                 ) {
-                    ShoppingListLogo { width -> logoWidth = width }
+                    ShoppingListLogo({ width -> logoWidth = width })
                 }
 
                 AnimatedVisibility(

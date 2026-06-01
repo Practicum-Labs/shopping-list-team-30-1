@@ -54,7 +54,7 @@ fun WelcomeScreenPortrait(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        ShoppingListLogo { width -> logoWidth = width }
+        ShoppingListLogo({ width -> logoWidth = width })
 
         AnimatedVisibility(
             modifier = Modifier.weight(1F),

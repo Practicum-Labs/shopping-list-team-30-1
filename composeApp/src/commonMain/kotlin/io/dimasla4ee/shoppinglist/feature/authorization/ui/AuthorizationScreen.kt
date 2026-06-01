@@ -75,7 +75,7 @@ fun AuthorizationScreen(
                     .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ShoppingListLogo {}
+                ShoppingListLogo({})
 
                 Box(
                     modifier = Modifier.weight(1F),
