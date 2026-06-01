@@ -15,15 +15,22 @@ class ProductRepositoryImpl(
     override fun getProductsOfList(
         listId: Long
     ): Flow<List<Product>> {
-
         return dao.getProductsOfList(listId)
             .map { entities ->
                 entities.map { it.toDomain() }
             }
     }
 
+    override suspend fun getProductsOfListOnce(listId: Long): List<Product> {
+        return dao.getProductsOfListOnce(listId).map { it.toDomain() }
+    }
+
     override suspend fun addProduct(product: Product) {
         dao.addProduct(product.toEntity())
+    }
+
+    override suspend fun addProducts(products: List<Product>) {
+        dao.addProducts(products.map { it.toEntity() })
     }
 
     override suspend fun updateProducts(products: List<Product>) {

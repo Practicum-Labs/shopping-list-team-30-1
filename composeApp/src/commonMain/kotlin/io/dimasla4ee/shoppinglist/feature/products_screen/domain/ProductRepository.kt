@@ -7,7 +7,11 @@ interface ProductRepository {
 
     fun getProductsOfList(listId: Long): Flow<List<Product>>
 
+    suspend fun getProductsOfListOnce(listId: Long): List<Product>
+
     suspend fun addProduct(product: Product)
+
+    suspend fun addProducts(products: List<Product>)
 
     suspend fun updateProducts(products: List<Product>)
 
