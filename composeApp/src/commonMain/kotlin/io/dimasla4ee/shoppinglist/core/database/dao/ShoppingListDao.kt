@@ -31,9 +31,6 @@ interface ShoppingListDao {
     @Query("SELECT * FROM ProductEntity WHERE listId = :listId ORDER BY position ASC")
     fun getProductsOfList(listId: Long): Flow<List<ProductEntity>>
 
-    @Query("SELECT * FROM ProductEntity WHERE listId = :listId ORDER BY position ASC")
-    suspend fun getProductsOfListOnce(listId: Long): List<ProductEntity>
-
     @Delete
     suspend fun deleteShoppingList(shoppingListEntity: ShoppingListEntity)
 

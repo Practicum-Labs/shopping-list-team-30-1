@@ -6,6 +6,7 @@ import io.dimasla4ee.shoppinglist.core.database.mapper.toEntity
 import io.dimasla4ee.shoppinglist.core.domain.model.Product
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class ProductRepositoryImpl(
@@ -22,7 +23,9 @@ class ProductRepositoryImpl(
     }
 
     override suspend fun getProductsOfListOnce(listId: Long): List<Product> {
-        return dao.getProductsOfListOnce(listId).map { it.toDomain() }
+        return dao.getProductsOfList(listId)
+            .first()
+            .map { it.toDomain() }
     }
 
     override suspend fun addProduct(product: Product) {
