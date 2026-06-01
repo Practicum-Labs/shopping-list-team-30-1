@@ -18,6 +18,7 @@ import io.dimasla4ee.shoppinglist.core.domain.interactor.token.SaveAuthTokensUse
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractor
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractorImpl
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductRepository
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractorImpl
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsRepository
@@ -44,7 +45,8 @@ val domainModule = module {
 
     single<ShoppingListsInteractor> {
         ShoppingListsInteractorImpl(
-            repository = get<ShoppingListsRepository>()
+            repository = get<ShoppingListsRepository>(),
+            productRepository = get<ProductRepository>()
         )
     }
 
