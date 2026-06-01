@@ -18,12 +18,12 @@ import io.dimasla4ee.shoppinglist.core.domain.interactor.token.SaveAuthTokensUse
 import io.dimasla4ee.shoppinglist.core.domain.repository.SettingsRepository
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractor
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractorImpl
-import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductRepository
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractorImpl
-import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsRepository
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 /**
@@ -43,11 +43,8 @@ val domainModule = module {
         )
     }
 
-    single<ShoppingListsInteractor> {
-        ShoppingListsInteractorImpl(
-            repository = get<ShoppingListsRepository>(),
-            productRepository = get<ProductRepository>()
-        )
+    singleOf(::ShoppingListsInteractorImpl) {
+        bind<ShoppingListsInteractor>()
     }
 
     factoryOf(::SaveAuthTokensUseCase)
@@ -66,10 +63,8 @@ val domainModule = module {
     factoryOf(::GetSortModeUseCase)
     factoryOf(::RemoveSortModeUseCase)
 
-    single<ProductInteractor> {
-        ProductInteractorImpl(
-            repository = get()
-        )
+    singleOf(::ProductInteractorImpl) {
+        bind<ProductInteractor>()
     }
 }
 
