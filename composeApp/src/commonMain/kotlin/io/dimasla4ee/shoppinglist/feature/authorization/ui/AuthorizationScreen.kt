@@ -71,14 +71,15 @@ fun AuthorizationScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .defaultMinSize(minHeight = maxHeight)
-                    .verticalScroll(scrollState),
+                    .defaultMinSize(minHeight = maxHeight),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 ShoppingListLogo({})
 
                 Box(
-                    modifier = Modifier.weight(1F),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(scrollState),
                     contentAlignment = Alignment.Center
                 ) {
                     content()
