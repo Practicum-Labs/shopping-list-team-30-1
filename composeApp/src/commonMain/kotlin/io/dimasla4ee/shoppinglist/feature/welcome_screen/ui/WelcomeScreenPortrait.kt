@@ -3,7 +3,6 @@ package io.dimasla4ee.shoppinglist.feature.welcome_screen.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
@@ -25,16 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalAppPlaceholders
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
+import io.dimasla4ee.shoppinglist.core.presentation.components.ShoppingListLogo
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
@@ -46,13 +41,9 @@ import shoppinglist.composeapp.generated.resources.shopping
 @Composable
 fun WelcomeScreenPortrait(
     onGoToShopping: () -> Unit,
-    annotatedString: AnnotatedString,
-    inlineContentMap: Map<String, InlineTextContent>,
     modifier: Modifier = Modifier
 ) {
-    var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }
-    val density = LocalDensity.current
     var logoWidth by remember { mutableStateOf(0.dp) }
 
     Column(
@@ -63,40 +54,22 @@ fun WelcomeScreenPortrait(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Box(
-            contentAlignment = Alignment.Center
+        ShoppingListLogo({ width -> logoWidth = width })
+
+        AnimatedVisibility(
+            modifier = Modifier.weight(1F),
+            visible = true
         ) {
-            Text(
-                inlineContent = inlineContentMap,
-                text = annotatedString,
-                style = MaterialTheme.typography.titleLargeEmphasized,
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(end = AppDimensions.paddingMedium)
-                    .onGloballyPositioned { coordinates ->
-                        logoWidth = with(density) {
-                            coordinates.size.width.toDp()
-                        }
-                    },
-            )
-        }
-
-        Spacer(modifier = Modifier.height(AppDimensions.spacerLarge))
-
-        AnimatedVisibility(visible = showContent) {
-
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(horizontal = AppDimensions.paddingLarge),
                 horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Image(
                     painter = painterResource(LocalAppPlaceholders.current.imgMainScreen),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth(),
-                    contentScale = ContentScale.Crop
+                    contentDescription = null
                 )
 
                 Spacer(modifier = Modifier.height(AppDimensions.spacerVeryBig))
@@ -116,23 +89,23 @@ fun WelcomeScreenPortrait(
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.bodyMedium
                 )
-            }
-        }
 
-        Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
+                Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
 
-        Button(
-            onClick = {
-                if (!clicked) {
-                    clicked = true
-                    onGoToShopping()
+                Button(
+                    onClick = {
+                        if (!clicked) {
+                            clicked = true
+                            onGoToShopping()
+                        }
+                    },
+                    modifier = Modifier
+                        .widthIn(max = logoWidth)
+                        .fillMaxWidth()
+                ) {
+                    Text(text = stringResource(Res.string.shopping))
                 }
-            },
-            modifier = Modifier
-                .widthIn(max = logoWidth)
-                .fillMaxWidth()
-        ) {
-            Text(text = stringResource(Res.string.shopping))
+            }
         }
     }
 }
@@ -141,12 +114,9 @@ fun WelcomeScreenPortrait(
 @Composable
 private fun WelcomeScreenPortraitPreview() {
     ShoppingListTheme {
-        val (annotatedString, inlineContentMap) = createWelcomeLogo()
         WelcomeScreenPortrait(
             onGoToShopping = {},
-            modifier = Modifier.fillMaxSize(),
-            annotatedString = annotatedString,
-            inlineContentMap = inlineContentMap
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
