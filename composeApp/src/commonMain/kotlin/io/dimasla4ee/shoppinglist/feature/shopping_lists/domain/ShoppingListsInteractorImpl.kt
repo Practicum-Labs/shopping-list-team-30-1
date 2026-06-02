@@ -2,11 +2,13 @@ package io.dimasla4ee.shoppinglist.feature.shopping_lists.domain
 
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
+import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
 class ShoppingListsInteractorImpl(
-    private val repository: ShoppingListsRepository
+    private val repository: ShoppingListsRepository,
+    private val productRepository: ProductRepository
 ) : ShoppingListsInteractor {
 
     override fun getShoppingLists(): Flow<List<ShoppingList>> {
@@ -29,7 +31,6 @@ class ShoppingListsInteractorImpl(
     }
 
     override suspend fun deleteAllShoppingLists() {
-
         repository
             .getShoppingLists()
             .first()
@@ -41,12 +42,23 @@ class ShoppingListsInteractorImpl(
     }
 
     override suspend fun duplicateShoppingList(shoppingList: ShoppingList) {
-
-        repository.addShoppingList(
+        val newListId = repository.addShoppingList(
             shoppingList.copy(
                 id = 0,
                 name = "${shoppingList.name} (копия)"
             )
+        )
+
+        val copiedProducts = productRepository.getProductsOfListOnce(
+            shoppingList.id).map { product ->
+                product.copy(
+                    id = 0,
+                    listId = newListId
+                )
+        }
+
+        productRepository.addProducts(
+            copiedProducts
         )
     }
 }

@@ -14,10 +14,13 @@ import kotlinx.coroutines.flow.Flow
 interface ShoppingListDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addShoppingList(shoppingListEntity: ShoppingListEntity)
+    suspend fun addShoppingList(shoppingListEntity: ShoppingListEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addProduct(productEntity: ProductEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addProducts(products: List<ProductEntity>)
 
     @Query("SELECT * FROM ShoppingListEntity ORDER BY addedAtMillis DESC")
     fun getShoppingLists(): Flow<List<ShoppingListEntity>>

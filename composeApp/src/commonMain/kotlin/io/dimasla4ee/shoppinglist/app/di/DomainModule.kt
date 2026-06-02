@@ -20,9 +20,10 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteract
 import io.dimasla4ee.shoppinglist.feature.products_screen.domain.ProductInteractorImpl
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractor
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsInteractorImpl
-import io.dimasla4ee.shoppinglist.feature.shopping_lists.domain.ShoppingListsRepository
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 /**
@@ -42,10 +43,8 @@ val domainModule = module {
         )
     }
 
-    single<ShoppingListsInteractor> {
-        ShoppingListsInteractorImpl(
-            repository = get<ShoppingListsRepository>()
-        )
+    singleOf(::ShoppingListsInteractorImpl) {
+        bind<ShoppingListsInteractor>()
     }
 
     factoryOf(::SaveAuthTokensUseCase)
@@ -64,10 +63,8 @@ val domainModule = module {
     factoryOf(::GetSortModeUseCase)
     factoryOf(::RemoveSortModeUseCase)
 
-    single<ProductInteractor> {
-        ProductInteractorImpl(
-            repository = get()
-        )
+    singleOf(::ProductInteractorImpl) {
+        bind<ProductInteractor>()
     }
 }
 
