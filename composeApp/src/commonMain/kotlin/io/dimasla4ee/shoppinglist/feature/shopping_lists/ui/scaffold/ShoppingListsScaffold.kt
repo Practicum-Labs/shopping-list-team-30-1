@@ -3,7 +3,11 @@ package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppFloatingActionButton
@@ -28,6 +32,8 @@ fun ShoppingListsScaffold(
     screenVariant: ShoppingListsScreenVariant = ShoppingListsScreenVariant.FAB_MENU,
     content: @Composable (PaddingValues) -> Unit
 ) {
+    var isFabMenuExpanded by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -68,7 +74,9 @@ fun ShoppingListsScaffold(
                     FabMenuFloatingActionButton(
                         onDeleteAllClick = onDeleteAllClick,
                         onAddListClick = { onAddListClick?.invoke() },
-                        hasShoppingLists = hasShoppingLists
+                        hasShoppingLists = hasShoppingLists,
+                        isMenuExpanded = isFabMenuExpanded,
+                        onMenuExpand = { isFabMenuExpanded = !isFabMenuExpanded },
                     )
                 }
 
