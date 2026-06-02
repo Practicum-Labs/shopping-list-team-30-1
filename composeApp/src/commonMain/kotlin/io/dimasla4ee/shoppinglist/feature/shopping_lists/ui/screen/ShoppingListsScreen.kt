@@ -11,7 +11,6 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
-import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
@@ -185,8 +184,8 @@ private fun DefaultModeContent(
             { onIntent(ShoppingListsIntent.FabClick) }
         } else {
             null
-        }
-
+        },
+        hasShoppingLists = state.lists.isNotEmpty()
     ) { padding ->
 
         ShoppingListsBody(

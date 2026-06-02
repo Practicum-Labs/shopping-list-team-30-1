@@ -3,6 +3,7 @@ package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppFloatingActionButton
@@ -17,6 +18,7 @@ import shoppinglist.composeapp.generated.resources.ic_fab_24
 @Composable
 fun ShoppingListsScaffold(
     title: String,
+    hasShoppingLists: Boolean,
     onSearchClick: ActionItem,
     onDeleteAllClick: ActionItem,
     onThemeSwitch: ActionItem,
@@ -62,10 +64,13 @@ fun ShoppingListsScaffold(
                     onClick = onAddListClick
                 )
 
-                ShoppingListsScreenVariant.FAB_MENU -> FabMenuFloatingActionButton(
-                    onDeleteAllClick = onDeleteAllClick,
-                    onAddListClick = onAddListClick
-                )
+                ShoppingListsScreenVariant.FAB_MENU -> key(hasShoppingLists) {
+                    FabMenuFloatingActionButton(
+                        onDeleteAllClick = onDeleteAllClick,
+                        onAddListClick = { onAddListClick?.invoke() },
+                        hasShoppingLists = hasShoppingLists
+                    )
+                }
 
                 ShoppingListsScreenVariant.DROPDOWN_MENU -> AppFloatingActionButton(
                     iconRes = painterResource(Res.drawable.ic_fab_24),

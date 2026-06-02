@@ -61,6 +61,7 @@ private fun PreviewContainer(
                 label = null,
                 onClick = { }
             ),
+            hasShoppingLists = true
         )
     }
 }
