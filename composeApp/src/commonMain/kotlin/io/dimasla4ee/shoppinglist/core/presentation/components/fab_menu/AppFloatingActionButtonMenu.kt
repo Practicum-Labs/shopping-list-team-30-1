@@ -45,7 +45,7 @@ fun AppFloatingActionButtonMenu(
         expanded = isExpanded,
         button = {
             ToggleFloatingActionButton(
-                modifier = modifier.semantics {
+                modifier = Modifier.semantics {
                     traversalIndex = -1f
                     stateDescription = description.byState(isExpanded = isExpanded)
                     contentDescription = description.content

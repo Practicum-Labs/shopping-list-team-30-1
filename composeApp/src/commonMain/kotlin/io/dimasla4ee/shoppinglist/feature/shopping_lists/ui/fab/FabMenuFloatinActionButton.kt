@@ -52,6 +52,8 @@ private fun fabIcon(
     checkedProgress: Float
 ): DrawableResource = when {
     !hasShoppingLists -> Res.drawable.ic_add_56
-    checkedProgress > 0.5f -> Res.drawable.ic_close_24
+    checkedProgress > ICON_PROGRESS_THRESHOLD -> Res.drawable.ic_close_24
     else -> Res.drawable.ic_shopping_cart_24
 }
+
+private const val ICON_PROGRESS_THRESHOLD = 0.5f
