@@ -16,15 +16,18 @@ import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.fab.FabMenuFloatingA
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.topbar.DropdownMenuTopBar
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.topbar.FigmaTopBar
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
+import shoppinglist.composeapp.generated.resources.fab_menu_create_shopping_list
 import shoppinglist.composeapp.generated.resources.ic_fab_24
+import shoppinglist.composeapp.generated.resources.ic_list_alt_add_24
 
 @Composable
 fun ShoppingListsScaffold(
     title: String,
     hasShoppingLists: Boolean,
     onSearchClick: ActionItem,
-    onDeleteAllClick: ActionItem,
+    onDeleteAllAction: ActionItem,
     onThemeSwitch: ActionItem,
     onAuthorizationClick: ActionItem,
     onAddListClick: (() -> Unit)?,
@@ -41,7 +44,7 @@ fun ShoppingListsScaffold(
                 ShoppingListsScreenVariant.FIGMA -> FigmaTopBar(
                     title = title,
                     onSearchClick = onSearchClick,
-                    onDeleteAllClick = onDeleteAllClick,
+                    onDeleteAllClick = onDeleteAllAction,
                     onThemeSwitch = onThemeSwitch,
                     onAuthorizationClick = onAuthorizationClick
                 )
@@ -56,7 +59,7 @@ fun ShoppingListsScaffold(
                 ShoppingListsScreenVariant.DROPDOWN_MENU -> DropdownMenuTopBar(
                     title = title,
                     onSearchClick = onSearchClick,
-                    onDeleteAllClick = onDeleteAllClick,
+                    onDeleteAllClick = onDeleteAllAction,
                     onThemeSwitch = onThemeSwitch,
                     onAuthorizationClick = onAuthorizationClick,
                     themeMode = LocalThemeMode.current
@@ -72,11 +75,15 @@ fun ShoppingListsScaffold(
 
                 ShoppingListsScreenVariant.FAB_MENU -> key(hasShoppingLists) {
                     FabMenuFloatingActionButton(
-                        onDeleteAllClick = onDeleteAllClick,
-                        onAddListClick = { onAddListClick?.invoke() },
+                        onDeleteAllAction = onDeleteAllAction,
+                        onAddListAction = ActionItem(
+                            iconRes = Res.drawable.ic_list_alt_add_24,
+                            label = stringResource(Res.string.fab_menu_create_shopping_list),
+                            onClick = { onAddListClick?.invoke() }
+                        ),
                         hasShoppingLists = hasShoppingLists,
                         isMenuExpanded = isFabMenuExpanded,
-                        onMenuExpand = { isFabMenuExpanded = !isFabMenuExpanded },
+                        onMenuExpand = { isExpanded -> isFabMenuExpanded = isExpanded },
                     )
                 }
 

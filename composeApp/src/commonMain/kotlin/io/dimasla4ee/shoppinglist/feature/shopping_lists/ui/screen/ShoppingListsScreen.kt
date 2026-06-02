@@ -35,7 +35,7 @@ import shoppinglist.composeapp.generated.resources.action_login
 import shoppinglist.composeapp.generated.resources.action_logout
 import shoppinglist.composeapp.generated.resources.action_search
 import shoppinglist.composeapp.generated.resources.action_theme
-import shoppinglist.composeapp.generated.resources.ic_delete_list_24
+import shoppinglist.composeapp.generated.resources.ic_delete_24
 import shoppinglist.composeapp.generated.resources.ic_login_24
 import shoppinglist.composeapp.generated.resources.ic_logout_24
 import shoppinglist.composeapp.generated.resources.ic_search_24
@@ -140,12 +140,10 @@ private fun DefaultModeContent(
             }
         ),
 
-        onDeleteAllClick = ActionItem(
-            iconRes = Res.drawable.ic_delete_list_24,
+        onDeleteAllAction = ActionItem(
+            iconRes = Res.drawable.ic_delete_24,
             label = stringResource(Res.string.action_delete_all),
-            onClick = {
-                onIntent(ShoppingListsIntent.DeleteAllClick)
-            }
+            onClick = { onIntent(ShoppingListsIntent.DeleteAllClick) }
         ),
 
         onThemeSwitch = ActionItem(
