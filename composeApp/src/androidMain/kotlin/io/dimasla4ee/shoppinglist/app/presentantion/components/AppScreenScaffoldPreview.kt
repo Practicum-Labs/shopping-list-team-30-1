@@ -19,7 +19,7 @@ import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.scaffold.ShoppingListsScaffold
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.composeapp.generated.resources.Res
-import shoppinglist.composeapp.generated.resources.ic_delete_list_24
+import shoppinglist.composeapp.generated.resources.ic_delete_24
 import shoppinglist.composeapp.generated.resources.ic_login_24
 import shoppinglist.composeapp.generated.resources.ic_search_24
 import shoppinglist.composeapp.generated.resources.ic_system_theme_24
@@ -39,8 +39,8 @@ private fun PreviewContainer(
                 label = "Search",
                 onClick = { }
             ),
-            onDeleteAllClick = ActionItem(
-                iconRes = Res.drawable.ic_delete_list_24,
+            onDeleteAllAction = ActionItem(
+                iconRes = Res.drawable.ic_delete_24,
                 label = "Delete",
                 onClick = { }
             ),
@@ -61,6 +61,7 @@ private fun PreviewContainer(
                 label = null,
                 onClick = { }
             ),
+            hasShoppingLists = true
         )
     }
 }

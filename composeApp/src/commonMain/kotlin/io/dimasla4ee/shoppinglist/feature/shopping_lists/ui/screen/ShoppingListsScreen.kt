@@ -11,7 +11,6 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.LocalThemeMode
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.app.ui.theme.ThemeMode
 import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingList
-import io.dimasla4ee.shoppinglist.core.domain.model.ShoppingListIcon
 import io.dimasla4ee.shoppinglist.core.presentation.model.ActionItem
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListCardEvent
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.presentation.ShoppingListsIntent
@@ -36,7 +35,7 @@ import shoppinglist.composeapp.generated.resources.action_login
 import shoppinglist.composeapp.generated.resources.action_logout
 import shoppinglist.composeapp.generated.resources.action_search
 import shoppinglist.composeapp.generated.resources.action_theme
-import shoppinglist.composeapp.generated.resources.ic_delete_list_24
+import shoppinglist.composeapp.generated.resources.ic_delete_24
 import shoppinglist.composeapp.generated.resources.ic_login_24
 import shoppinglist.composeapp.generated.resources.ic_logout_24
 import shoppinglist.composeapp.generated.resources.ic_search_24
@@ -141,12 +140,10 @@ private fun DefaultModeContent(
             }
         ),
 
-        onDeleteAllClick = ActionItem(
-            iconRes = Res.drawable.ic_delete_list_24,
+        onDeleteAllAction = ActionItem(
+            iconRes = Res.drawable.ic_delete_24,
             label = stringResource(Res.string.action_delete_all),
-            onClick = {
-                onIntent(ShoppingListsIntent.DeleteAllClick)
-            }
+            onClick = { onIntent(ShoppingListsIntent.DeleteAllClick) }
         ),
 
         onThemeSwitch = ActionItem(
@@ -185,8 +182,8 @@ private fun DefaultModeContent(
             { onIntent(ShoppingListsIntent.FabClick) }
         } else {
             null
-        }
-
+        },
+        hasShoppingLists = state.lists.isNotEmpty()
     ) { padding ->
 
         ShoppingListsBody(

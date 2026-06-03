@@ -280,7 +280,7 @@ class ShoppingListsViewModel(
         interactor.getShoppingLists().collectLatest { list ->
             updateState {
                 it.copy(
-                    lists = list
+                    lists = list.toList()
                 )
             }
         }
