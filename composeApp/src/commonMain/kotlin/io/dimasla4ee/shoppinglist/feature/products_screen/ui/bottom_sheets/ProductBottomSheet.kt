@@ -88,7 +88,12 @@ fun ProductBottomSheet(
                 OutlinedTextField(
                     value = amount,
                     onValueChange = { value ->
-                        if (value.length <= MAX_LENGTH_QUANTITY) onCountChange(value)
+                        if (
+                            value.length <= MAX_LENGTH_QUANTITY &&
+                            (value.isEmpty() || value.all { it.isDigit() })
+                        ) {
+                            onCountChange(value)
+                        }
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     textStyle = MaterialTheme.typography.bodyLarge,
