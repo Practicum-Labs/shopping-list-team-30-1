@@ -49,7 +49,6 @@ fun WelcomeScreenLandscape(
     onGoToShopping: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     var logoWidth by remember { mutableStateOf(0.dp) }
@@ -59,25 +58,23 @@ fun WelcomeScreenLandscape(
         modifier = modifier
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(AppDimensions.paddingMedium)
     ) {
         Box(
             modifier = Modifier
                 .weight(1F)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
+                .padding(AppDimensions.paddingMedium),
+            contentAlignment = Alignment.CenterEnd
         ) {
             Image(
                 painter = painterResource(LocalAppPlaceholders.current.imgMainScreen),
                 contentDescription = null,
                 modifier = Modifier
-                    .fillMaxSize()
                     .onGloballyPositioned { coordinates ->
                         imgWidth = with(density) {
                             coordinates.size.width.toDp()
                         }
-                    },
-                contentScale = ContentScale.Fit
+                    }
             )
         }
 
@@ -85,13 +82,13 @@ fun WelcomeScreenLandscape(
             modifier = Modifier
                 .weight(1F)
                 .fillMaxSize()
-                .padding(start = AppDimensions.paddingMedium),
-            contentAlignment = Alignment.Center
+                .padding(AppDimensions.paddingMedium),
+            contentAlignment = Alignment.CenterStart
         ) {
             Column(
                 modifier = Modifier
-                    .heightIn(max = imgWidth)
-                    .fillMaxSize(),
+                    .heightIn(max = imgWidth),
+//                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -103,7 +100,7 @@ fun WelcomeScreenLandscape(
                 }
 
                 AnimatedVisibility(
-                    visible = showContent,
+                    visible = true,
                     modifier = Modifier
                         .weight(1F)
                         .padding(horizontal = AppDimensions.paddingLarge)
