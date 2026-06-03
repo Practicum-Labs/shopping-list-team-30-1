@@ -33,7 +33,7 @@ fun ShoppingListsScaffold(
     deleteAllAction: ActionItem,
     themeSwitchAction: ActionItem,
     authAction: ActionItem,
-    addListAction: ActionItem,
+    createListAction: ActionItem,
     modifier: Modifier = Modifier,
     screenVariant: ShoppingListsScreenVariant = ShoppingListsScreenVariant.FAB_MENU,
     content: @Composable (PaddingValues) -> Unit
@@ -82,14 +82,14 @@ fun ShoppingListsScaffold(
                 when (screenVariant) {
                     ShoppingListsScreenVariant.FIGMA -> AppFloatingActionButton(
                         iconRes = painterResource(Res.drawable.ic_fab_24),
-                        onClick = addListAction.onClick
+                        onClick = createListAction.onClick
                     )
 
                     ShoppingListsScreenVariant.FAB_MENU -> key(hasShoppingLists) {
                         FabMenuFloatingActionButton(
                             modifier = Modifier.offset(y = 0.dp),
                             onDeleteAllAction = deleteAllAction,
-                            onAddListAction = addListAction,
+                            onAddListAction = createListAction,
                             hasShoppingLists = hasShoppingLists,
                             isMenuExpanded = isFabMenuExpanded,
                             onMenuExpand = { isExpanded -> isFabMenuExpanded = isExpanded },
@@ -98,7 +98,7 @@ fun ShoppingListsScaffold(
 
                     ShoppingListsScreenVariant.DROPDOWN_MENU -> AppFloatingActionButton(
                         iconRes = painterResource(Res.drawable.ic_fab_24),
-                        onClick = addListAction.onClick
+                        onClick = createListAction.onClick
                     )
                 }
             }

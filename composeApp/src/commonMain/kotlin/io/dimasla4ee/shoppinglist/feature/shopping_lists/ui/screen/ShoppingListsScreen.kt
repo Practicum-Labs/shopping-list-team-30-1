@@ -128,7 +128,7 @@ private fun DefaultModeContent(
         searchAction = ActionItem(
             iconRes = Res.drawable.ic_search_24,
             label = stringResource(Res.string.action_search),
-            onClick = { onIntent(ShoppingListsIntent.SearchClick) }
+            onClick = { onIntent(ShoppingListsIntent.SearchClicked) }
         ),
         deleteAllAction = ActionItem(
             iconRes = Res.drawable.ic_delete_24,
@@ -155,10 +155,10 @@ private fun DefaultModeContent(
             }.let { res -> stringResource(res) },
             onClick = { onIntent(ShoppingListsIntent.AuthorizationClicked(isAuthorized)) }
         ),
-        addListAction = ActionItem(
+        createListAction = ActionItem(
             iconRes = Res.drawable.ic_list_alt_add_24,
             label = stringResource(Res.string.fab_menu_create_shopping_list),
-            onClick = { onIntent(ShoppingListsIntent.FabClick) }
+            onClick = { onIntent(ShoppingListsIntent.CreateListClicked) }
         ),
         hasShoppingLists = state.lists.isNotEmpty(),
         isLoading = state.isLoading
@@ -181,57 +181,39 @@ private fun ShoppingListsBody(
     onIntent: (ShoppingListsIntent) -> Unit,
     modifier: Modifier = Modifier
 ) = when {
-    visibleLists.isEmpty() && searchQuery.isNotEmpty() -> {
-        SearchEmptyContent(
-            orientation = orientation,
-            modifier = modifier
-        )
-    }
+    visibleLists.isEmpty() && searchQuery.isNotEmpty() -> SearchEmptyContent(
+        orientation = orientation,
+        modifier = modifier
+    )
 
-    visibleLists.isEmpty() -> {
-        EmptyContent(
-            orientation = orientation,
-            modifier = modifier
-        )
-    }
+    visibleLists.isEmpty() -> EmptyContent(
+        orientation = orientation,
+        modifier = modifier
+    )
 
-    else -> {
-        ShoppingListsContent(
-            lists = visibleLists,
-            onEvent = { event ->
-                onIntent(event.toIntent())
-            },
-            modifier = modifier
-        )
-    }
+    else -> ShoppingListsContent(
+        lists = visibleLists,
+        onEvent = { event -> onIntent(event.toIntent()) },
+        modifier = modifier
+    )
 }
 
 @Composable
 private fun EmptyContent(
     orientation: ScreenOrientation,
     modifier: Modifier = Modifier
-) {
-    when (orientation) {
-        ScreenOrientation.PORTRAIT ->
-            ShoppingListsEmptyPortrait(modifier)
-
-        ScreenOrientation.LANDSCAPE ->
-            ShoppingListsEmptyLandscape(modifier)
-    }
+) = when (orientation) {
+    ScreenOrientation.PORTRAIT -> ShoppingListsEmptyPortrait(modifier)
+    ScreenOrientation.LANDSCAPE -> ShoppingListsEmptyLandscape(modifier)
 }
 
 @Composable
 private fun SearchEmptyContent(
     orientation: ScreenOrientation,
     modifier: Modifier = Modifier
-) {
-    when (orientation) {
-        ScreenOrientation.PORTRAIT ->
-            ShoppingListsSearchEmptyPortrait(modifier)
-
-        ScreenOrientation.LANDSCAPE ->
-            ShoppingListsSearchEmptyLandscape(modifier)
-    }
+) = when (orientation) {
+    ScreenOrientation.PORTRAIT -> ShoppingListsSearchEmptyPortrait(modifier)
+    ScreenOrientation.LANDSCAPE -> ShoppingListsSearchEmptyLandscape(modifier)
 }
 
 @Composable
@@ -244,104 +226,63 @@ private fun ShoppingListsDialogs(
             selectedIcon = state.lists
                 .find { it.id == state.selectedListId }
                 ?.icon,
-
-            onIconSelect = {
-                onIntent(ShoppingListsIntent.IconSelected(it))
-            },
-
-            onDismiss = {
-                onIntent(ShoppingListsIntent.SheetDismiss)
-            }
+            onIconSelect = { onIntent(ShoppingListsIntent.IconSelected(it)) },
+            onDismiss = { onIntent(ShoppingListsIntent.SheetDismiss) }
         )
     }
 
     when (val dialog = state.dialog) {
-
         ShoppingListDialog.None -> Unit
 
         ShoppingListDialog.Create -> {
             CreateListDialog(
                 name = state.newListName,
-                onNameChange = {
-                    onIntent(NameChanged(it))
-                },
-                onDismiss = {
-                    onIntent(ShoppingListsIntent.DialogDismiss)
-                },
-                onConfirm = {
-                    onIntent(ShoppingListsIntent.CreateList)
-                }
+                onNameChange = { onIntent(NameChanged(it)) },
+                onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                onConfirm = { onIntent(ShoppingListsIntent.CreateList) }
             )
         }
 
         is ShoppingListDialog.Rename -> {
             RenameListDialog(
                 newName = state.renameValue,
-                onRenameChange = {
-                    onIntent(RenameValueChanged(it))
-                },
-                onDismiss = {
-                    onIntent(ShoppingListsIntent.DialogDismiss)
-                },
-                onConfirm = {
-                    onIntent(ShoppingListsIntent.RenameConfirm)
-                }
+                onRenameChange = { onIntent(RenameValueChanged(it)) },
+                onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                onConfirm = { onIntent(ShoppingListsIntent.RenameConfirm) }
             )
         }
 
         is ShoppingListDialog.Delete -> {
             DeleteListDialog(
                 listName = dialog.name,
-                onDismiss = {
-                    onIntent(ShoppingListsIntent.DialogDismiss)
-                },
-                onConfirm = {
-                    onIntent(ShoppingListsIntent.DeleteConfirm)
-                }
+                onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                onConfirm = { onIntent(ShoppingListsIntent.DeleteConfirm) }
             )
         }
 
         ShoppingListDialog.DeleteAll -> {
             DeleteAllListsDialog(
-                onDismiss = {
-                    onIntent(ShoppingListsIntent.DialogDismiss)
-                },
-                onConfirm = {
-                    onIntent(ShoppingListsIntent.DeleteAllConfirm)
-                }
+                onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                onConfirm = { onIntent(ShoppingListsIntent.DeleteAllConfirm) }
             )
         }
 
         ShoppingListDialog.Logout -> {
             LogoutDialog(
-                onDismiss = {
-                    onIntent(ShoppingListsIntent.DialogDismiss)
-                },
-                onConfirm = {
-                    onIntent(ShoppingListsIntent.LogoutClick)
-                }
+                onDismiss = { onIntent(ShoppingListsIntent.DialogDismiss) },
+                onConfirm = { onIntent(ShoppingListsIntent.LogoutClicked) }
             )
         }
     }
 }
 
-private fun ShoppingListCardEvent.toIntent(): ShoppingListsIntent =
-    when (this) {
-        is ShoppingListCardEvent.Click ->
-            ShoppingListsIntent.ListClicked(item)
-
-        is ShoppingListCardEvent.Edit ->
-            ShoppingListsIntent.EditClicked(item)
-
-        is ShoppingListCardEvent.Copy ->
-            ShoppingListsIntent.CopyClicked(item)
-
-        is ShoppingListCardEvent.ChangeIcon ->
-            ShoppingListsIntent.ChangeIconClicked(item)
-
-        is ShoppingListCardEvent.Delete ->
-            ShoppingListsIntent.DeleteClicked(item)
-    }
+private fun ShoppingListCardEvent.toIntent(): ShoppingListsIntent = when (this) {
+    is ShoppingListCardEvent.Click -> ShoppingListsIntent.ListClicked(item)
+    is ShoppingListCardEvent.Edit -> ShoppingListsIntent.EditClicked(item)
+    is ShoppingListCardEvent.Copy -> ShoppingListsIntent.CopyClicked(item)
+    is ShoppingListCardEvent.ChangeIcon -> ShoppingListsIntent.ChangeIconClicked(item)
+    is ShoppingListCardEvent.Delete -> ShoppingListsIntent.DeleteClicked(item)
+}
 
 @Preview
 @PreviewLightDark

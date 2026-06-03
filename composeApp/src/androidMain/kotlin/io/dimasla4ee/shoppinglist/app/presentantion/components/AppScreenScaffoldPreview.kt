@@ -54,7 +54,7 @@ private fun PreviewContainer(
                 onClick = {}
             ),
 
-            addListAction = ActionItem(Res.drawable.ic_login_24) {},
+            createListAction = ActionItem(Res.drawable.ic_login_24) {},
             content = content,
             authAction = ActionItem(
                 iconRes = Res.drawable.ic_login_24,
