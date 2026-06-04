@@ -1,8 +1,8 @@
 package io.dimasla4ee.shoppinglist.feature.welcome_screen.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,9 +56,8 @@ fun WelcomeScreenPortrait(
     ) {
         ShoppingListLogo({ width -> logoWidth = width })
 
-        AnimatedVisibility(
+        Box(
             modifier = Modifier.weight(1F),
-            visible = true
         ) {
             Column(
                 modifier = Modifier
