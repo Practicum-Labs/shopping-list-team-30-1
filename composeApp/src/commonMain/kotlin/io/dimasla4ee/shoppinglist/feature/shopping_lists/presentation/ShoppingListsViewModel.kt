@@ -25,11 +25,11 @@ class ShoppingListsViewModel(
         intent: ShoppingListsIntent,
         current: ShoppingListsState
     ): ShoppingListsState = when (intent) {
-        ShoppingListsIntent.FabClick -> current.copy(dialog = ShoppingListDialog.Create)
+        ShoppingListsIntent.CreateListClicked -> current.copy(dialog = ShoppingListDialog.Create)
         is ShoppingListsIntent.NameChanged -> current.copy(newListName = intent.value)
         ShoppingListsIntent.DialogDismiss -> reduceDialogDismiss(current)
         ShoppingListsIntent.DeleteAllClick -> reduceDeleteAllClick(current)
-        ShoppingListsIntent.SearchClick -> reduceSearchClick(current)
+        ShoppingListsIntent.SearchClicked -> reduceSearchClick(current)
         ShoppingListsIntent.SearchDismiss -> reduceSearchDismiss(current)
         is ShoppingListsIntent.SearchQueryChanged -> reduceSearchQueryChanged(intent, current)
         is ShoppingListsIntent.RenameValueChanged -> reduceRenameValueChanged(intent, current)
@@ -164,7 +164,7 @@ class ShoppingListsViewModel(
             ShoppingListsIntent.RenameConfirm -> handleRenameConfirm()
             ShoppingListsIntent.DeleteConfirm -> handleDeleteConfirm()
             is ShoppingListsIntent.ListClicked -> handleListClicked(intent)
-            is ShoppingListsIntent.LogoutClick -> handleLogoutClick()
+            is ShoppingListsIntent.LogoutClicked -> handleLogoutClick()
             is ShoppingListsIntent.AuthorizationClicked ->
                 handleAuthorizationClicked(intent.isAuthorized)
 
@@ -280,7 +280,8 @@ class ShoppingListsViewModel(
         interactor.getShoppingLists().collectLatest { list ->
             updateState {
                 it.copy(
-                    lists = list.toList()
+                    lists = list.toList(),
+                    isLoading = false
                 )
             }
         }

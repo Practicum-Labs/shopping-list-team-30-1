@@ -34,17 +34,17 @@ private fun PreviewContainer(
     ShoppingListTheme {
         ShoppingListsScaffold(
             title = stringResource(Res.string.screen_title),
-            onSearchClick = ActionItem(
+            searchAction = ActionItem(
                 iconRes = Res.drawable.ic_search_24,
                 label = "Search",
                 onClick = { }
             ),
-            onDeleteAllAction = ActionItem(
+            deleteAllAction = ActionItem(
                 iconRes = Res.drawable.ic_delete_24,
                 label = "Delete",
                 onClick = { }
             ),
-            onThemeSwitch = ActionItem(
+            themeSwitchAction = ActionItem(
                 iconRes = when (LocalThemeMode.current) {
                     ThemeMode.SYSTEM -> Res.drawable.ic_system_theme_24
                     ThemeMode.LIGHT -> Res.drawable.ic_theme_24
@@ -54,14 +54,15 @@ private fun PreviewContainer(
                 onClick = {}
             ),
 
-            onAddListClick = {},
+            createListAction = ActionItem(Res.drawable.ic_login_24) {},
             content = content,
-            onAuthorizationClick = ActionItem(
+            authAction = ActionItem(
                 iconRes = Res.drawable.ic_login_24,
                 label = null,
                 onClick = { }
             ),
-            hasShoppingLists = true
+            hasShoppingLists = true,
+            isLoading = false
         )
     }
 }
