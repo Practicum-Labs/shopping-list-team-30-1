@@ -8,13 +8,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
@@ -32,44 +33,47 @@ fun ShoppingListsEmptyLandscape(
 ) {
     Row(
         modifier = modifier
-            .fillMaxSize()
-            .padding(AppDimensions.paddingMedium)
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         Box(
             modifier = Modifier
                 .weight(1F)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
+                .padding(AppDimensions.paddingMedium),
+            contentAlignment = Alignment.CenterEnd
         ) {
             Image(
                 painter = painterResource(LocalAppPlaceholders.current.imgShoppingLists),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Fit
+                contentDescription = null
             )
         }
 
-        Column(
+        Box(
             modifier = Modifier
                 .weight(1F)
                 .fillMaxSize()
-                .padding(start = AppDimensions.paddingMedium),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(AppDimensions.paddingMedium),
+            contentAlignment = Alignment.CenterStart
         ) {
-            Text(
-                text = stringResource(Res.string.no_lists_message),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelLarge
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(Res.string.no_lists_message),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.labelLarge
+                )
 
-            Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
+                Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
 
-            Text(
-                text = stringResource(Res.string.create_list_hint),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium
-            )
+                Text(
+                    text = stringResource(Res.string.create_list_hint),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
     }
 }
