@@ -1,0 +1,168 @@
+<resources>
+    <!-- Screen welcome -->
+    <string name="welcome_screen_title">Shopping List</string>
+    <string name="onboard_welcome_message">Welcome to the Shopping List!</string>
+    <string name="onboard_instruction">Create lists, add items, mark what has already been purchased</string>
+    <string name="shopping">Shopping</string>
+
+    <!-- Authorization screen -->
+    <string name="authorization_email_hint">Enter Email</string>
+    <string name="authorization_email_label">Email</string>
+    <string name="authorization_password_hint">Enter password</string>
+    <string name="authorization_password_label">Password</string>
+    <string name="authorization_password_confirm_hint">Repeat the password</string>
+    <string name="authorization_password_confirm_label">Confirm password</string>
+    <string name="authorization_button">Sign Up</string>
+    <string name="authorization_have_account">Already have an account?</string>
+    <string name="authorization_sign_in">Sign In</string>
+    <string name="authorization_forgot_password">Forgot password?</string>
+    <string name="authorization_no_account">No account?</string>
+    <string name="authorization_recover_password_title">Password recovery</string>
+    <string name="authorization_recover_password_description">Enter the email you used during registration. We will send you password recovery instructions.</string>
+    <string name="authorization_recover_password_button">Recover password</string>
+    <string name="authorization_recover_password_cancel">Cancel</string>
+    <string name="authorization_continue_as_guest">Continue as Guest</string>
+    <string name="authorization_email_error_format">Email format is invalid</string>
+    <string name="authorization_password_error_length">Password is shorter than 8 characters</string>
+    <string name="authorization_password_confirm_error_match">Passwords do not match</string>
+
+    <!-- Password strength -->
+    <string name="password_strength_very_weak">Very weak</string>
+    <string name="password_strength_weak">Weak</string>
+    <string name="password_strength_medium">Medium</string>
+    <string name="password_strength_good">Good</string>
+    <string name="password_strength_strong">Strong</string>
+
+    <!-- Screen title -->
+    <string name="screen_title">My Lists</string>
+
+    <!-- Message about no lists -->
+    <string name="no_lists_message">You have no lists yet</string>
+    <string name="create_list_hint">Click the + button below to create your first list</string>
+
+    <!-- Search error message -->
+    <string name="search_not_found">We couldn’t find what you were looking for</string>
+    <string name="search_hint">Try changing your search query or checking the spelling</string>
+
+    <!-- Content Description -->
+    <string name="content_menu">Menu</string>
+    <string name="content_back">Back</string>
+    <string name="content_minus">Minus</string>
+    <string name="content_plus">Plus</string>
+    <string name="content_toggle_menu">Toggle menu</string>
+
+    <!-- Accessibility -->
+    <string name="state_expanded">Expanded</string>
+    <string name="state_collapsed">Collapsed</string>
+
+    <!-- Message about empty list -->
+    <string name="empty_list_message">The shopping list is empty</string>
+    <string name="add_items_hint">Click the + button below to add items</string>
+
+    <!-- Dialog titles -->
+    <string name="dialog_list_add">Add a List</string>
+    <string name="dialog_delete_all_lists">Delete all lists?</string>
+    <string name="dialog_delete_list">Delete the list\n«%s»?</string>
+    <string name="dialog_rename_list">Rename the list</string>
+    <string name="dialog_delete_all_items">Delete all items?</string>
+    <string name="dialog_delete_all_purchased_items">Delete\nall purchased\nitems?</string>
+
+    <!-- Dialog buttons -->
+    <string name="button_cancel">Cancel</string>
+    <string name="button_create">Create</string>
+    <string name="button_rename">Rename</string>
+    <string name="button_delete">Delete</string>
+
+    <!-- Hints -->
+    <string name="hint_name_list">List name</string>
+    <string name="hint_new_list">New list</string>
+    <string name="hint_search_list">Search lists</string>
+    <string name="hint_item">Item</string>
+    <string name="hint_new_item">Add a new product</string>
+    <string name="hint_quantity">Quantity</string>
+    <string name="hint_units">Units</string>
+
+    <!-- Shopping list interactions -->
+    <string name="cd_edit_shopping_list">Edit shopping list</string>
+    <string name="cd_edit">Edit</string>
+    <string name="cd_copy_shopping_list">Copy shopping list</string>
+    <string name="cd_change_shopping_list_icon">Change shopping list icon</string>
+    <string name="cd_delete_shopping_list">Delete shopping list</string>
+    <string name="cd_delete_list">Delete list</string>
+
+    <!-- Password actions -->
+    <string name="cd_show_password">Show password</string>
+    <string name="cd_hide_password">Hide password</string>
+
+    <!-- Units -->
+    <string name="liter">l</string>
+    <string name="milliliter">ml</string>
+    <string name="packaging">pkg</string>
+    <string name="pack">pk</string>
+    <string name="piece">pc</string>
+    <string name="kilogram">kg</string>
+    <string name="gram">g</string>
+    <string name="milligrams">mg</string>
+    <string name="metre">m</string>
+    <string name="centimetre">cm</string>
+    <string name="millimetre">mm</string>
+    <string name="inch">in</string>
+    <string name="foot">ft</string>
+    <string name="yard">yd</string>
+    <string name="square_meter">m²</string>
+    <string name="square_centimetre">cm²</string>
+    <string name="square_millimetre">mm²</string>
+    <string name="cubic_meter">m³</string>
+    <string name="cubic_decimeter">dm³</string>
+    <string name="cubic_centimetre">cm³</string>
+    <string name="cubic_millimetre">mm³</string>
+
+    <!-- Bottom menu -->
+    <string name="btm_menu_sorting">Sort</string>
+    <string name="btm_menu">Menu</string>
+    <string name="btm_menu_delete_all">Delete all</string>
+    <string name="btm_menu_clear_purchased_items">Clear purchased items</string>
+    <string name="sort_alphabetical">Alphabetical</string>
+    <string name="sort_custom">Custom</string>
+
+    <!-- Content description для SearchTopBar -->
+    <string name="clear_icon_search_top_bar">Clear</string>
+    <string name="back_icon_search_top_bar">Back</string>
+
+    <!-- Sorting options -->
+    <string-array name="sorting_options">
+        <item>Alphabetical</item>
+        <item>Custom</item>
+    </string-array>
+
+    <!-- Existing strings remain, add new ones: -->
+
+    <!-- Logout dialog -->
+    <string name="dialog_logout_title">Are you sure you want to log out?</string>
+    <string name="button_logout">Log out</string>
+
+    <!-- Shopping lists screen -->
+    <string name="action_search">Search</string>
+    <string name="action_delete_all">Delete all</string>
+    <string name="action_theme">Theme</string>
+    <string name="action_authorization">Authorization</string>
+    <string name="action_login">Log in</string>
+    <string name="action_logout">Log out</string>
+    <string name="fab_menu_create_shopping_list">Create shopping list</string>
+
+    <!-- Empty states -->
+    <string name="empty_lists_title">Shopping list is empty</string>
+    <string name="empty_lists_description">Tap the + button to create your first list</string>
+    <string name="empty_search_title">Nothing found</string>
+    <string name="empty_search_description">Try changing your search query</string>
+
+    <!-- Additional dialog labels -->
+    <string name="dialog_delete_all_lists_title">Delete all lists?</string>
+    <string name="dialog_delete_all_lists_message">This action cannot be undone. All shopping lists will be permanently deleted.</string>
+    <string name="dialog_delete_list_title">Delete list?</string>
+    <string name="dialog_delete_list_message">List "%s" will be deleted. This action cannot be undone.</string>
+    <string name="dialog_create_list_title">Create list</string>
+    <string name="dialog_create_list_hint">List name</string>
+    <string name="dialog_rename_list_title">Rename list</string>
+    <string name="dialog_rename_list_hint">New name</string>
+</resources>
