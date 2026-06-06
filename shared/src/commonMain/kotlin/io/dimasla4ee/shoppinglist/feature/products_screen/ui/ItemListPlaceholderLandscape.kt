@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.screen
+package io.dimasla4ee.shoppinglist.feature.products_screen.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -24,11 +24,11 @@ import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import shoppinglist.shared.generated.resources.Res
-import shoppinglist.shared.generated.resources.create_list_hint
-import shoppinglist.shared.generated.resources.no_lists_message
+import shoppinglist.shared.generated.resources.add_items_hint
+import shoppinglist.shared.generated.resources.empty_list_message
 
 @Composable
-fun ShoppingListsEmptyLandscape(
+fun ItemListPlaceholderLandscape(
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -44,9 +44,9 @@ fun ShoppingListsEmptyLandscape(
             contentAlignment = Alignment.CenterEnd
         ) {
             Image(
-                painter = painterResource(LocalAppPlaceholders.current.imgShoppingLists),
-                contentDescription = null
-            )
+                painter = painterResource(LocalAppPlaceholders.current.imgProductList),
+                contentDescription = null,
+                )
         }
 
         Box(
@@ -61,17 +61,19 @@ fun ShoppingListsEmptyLandscape(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = stringResource(Res.string.no_lists_message),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.labelLarge
+                    text = stringResource(Res.string.empty_list_message),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
 
                 Text(
-                    text = stringResource(Res.string.create_list_hint),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium
+                    text = stringResource(Res.string.add_items_hint),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
@@ -81,11 +83,11 @@ fun ShoppingListsEmptyLandscape(
 @Preview(
     showSystemUi = true,
     device = "spec:width=891dp,height=411dp,dpi=420,orientation=landscape",
-    name = "ShoppingListsEmpty_Landscape"
+    name = "ItemListPlaceholderLandscape"
 )
 @Composable
-private fun ShoppingListsEmptyLandscapePreview() {
+private fun ItemListPlaceholderLandscapePreview() {
     ShoppingListTheme {
-        ShoppingListsEmptyLandscape()
+        ItemListPlaceholderLandscape(Modifier.fillMaxSize())
     }
 }

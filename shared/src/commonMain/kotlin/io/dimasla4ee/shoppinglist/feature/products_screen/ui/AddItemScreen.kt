@@ -1,10 +1,7 @@
 package io.dimasla4ee.shoppinglist.feature.products_screen.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -21,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +26,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.dp
 import io.dimasla4ee.shoppinglist.app.ui.theme.AppDimensions
 import io.dimasla4ee.shoppinglist.app.ui.theme.ShoppingListTheme
 import io.dimasla4ee.shoppinglist.core.presentation.components.AppFloatingActionButton
@@ -46,6 +41,8 @@ import io.dimasla4ee.shoppinglist.feature.products_screen.ui.dialog.DeleteChecke
 import io.dimasla4ee.shoppinglist.feature.products_screen.ui.menu.ProductsMenuBottomSheet
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.DeleteListDialog
 import io.dimasla4ee.shoppinglist.feature.shopping_lists.ui.dialog.RenameListDialog
+import io.dimasla4ee.shoppinglist.utils.OrientationProvider
+import io.dimasla4ee.shoppinglist.utils.ScreenOrientation
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -55,10 +52,8 @@ import shoppinglist.shared.generated.resources.content_back
 import shoppinglist.shared.generated.resources.content_menu
 import shoppinglist.shared.generated.resources.ic_add_56
 import shoppinglist.shared.generated.resources.ic_arrow_back_24
-import shoppinglist.shared.generated.resources.ic_drag_pan_24
 import shoppinglist.shared.generated.resources.ic_edit_24
 import shoppinglist.shared.generated.resources.ic_menu_24
-import shoppinglist.shared.generated.resources.ic_sort_by_alpha_24
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -188,7 +183,13 @@ fun AddItemScreen(
 
                 // 2. Загрузилось, но список пустой — показываем плейсхолдер
                 state.items.isEmpty() && !state.isBottomSheetOpen -> {
-                    ItemListPlaceholder(Modifier.fillMaxSize())
+                    OrientationProvider { orientation ->
+                        when (orientation) {
+                            ScreenOrientation.PORTRAIT -> ItemListPlaceholderPortrait(Modifier.fillMaxSize())
+
+                            ScreenOrientation.LANDSCAPE -> ItemListPlaceholderLandscape(Modifier.fillMaxSize())
+                        }
+                    }
                 }
 
                 // 3. Всё нормально — показываем реальный список

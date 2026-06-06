@@ -1,6 +1,5 @@
 package io.dimasla4ee.shoppinglist.feature.welcome_screen.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
@@ -49,35 +47,32 @@ fun WelcomeScreenLandscape(
     onGoToShopping: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var showContent by remember { mutableStateOf(true) }
     var clicked by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     var logoWidth by remember { mutableStateOf(0.dp) }
-    var imgWidth by remember { mutableStateOf(0.dp) }
+    var imgSize by remember { mutableStateOf(0.dp) }
 
     Row(
         modifier = modifier
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(AppDimensions.paddingMedium)
     ) {
         Box(
             modifier = Modifier
                 .weight(1F)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
+                .padding(AppDimensions.paddingMedium),
+            contentAlignment = Alignment.CenterEnd
         ) {
             Image(
                 painter = painterResource(LocalAppPlaceholders.current.imgMainScreen),
                 contentDescription = null,
                 modifier = Modifier
-                    .fillMaxSize()
                     .onGloballyPositioned { coordinates ->
-                        imgWidth = with(density) {
+                        imgSize = with(density) {
                             coordinates.size.width.toDp()
                         }
-                    },
-                contentScale = ContentScale.Fit
+                    }
             )
         }
 
@@ -85,13 +80,11 @@ fun WelcomeScreenLandscape(
             modifier = Modifier
                 .weight(1F)
                 .fillMaxSize()
-                .padding(start = AppDimensions.paddingMedium),
-            contentAlignment = Alignment.Center
+                .padding(AppDimensions.paddingMedium),
+            contentAlignment = Alignment.CenterStart
         ) {
             Column(
-                modifier = Modifier
-                    .heightIn(max = imgWidth)
-                    .fillMaxSize(),
+                modifier = Modifier.heightIn(max = imgSize),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -102,49 +95,41 @@ fun WelcomeScreenLandscape(
                     ShoppingListLogo({ width -> logoWidth = width })
                 }
 
-                AnimatedVisibility(
-                    visible = showContent,
-                    modifier = Modifier
-                        .weight(1F)
-                        .padding(horizontal = AppDimensions.paddingLarge)
+                Column(
+                    modifier = Modifier.weight(1F),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Column(
+                    Text(
+                        text = stringResource(Res.string.onboard_welcome_message),
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.labelLarge
+                    )
+
+                    Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
+
+                    Text(
+                        text = stringResource(Res.string.onboard_instruction),
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
+
+                    Button(
+                        onClick = {
+                            if (!clicked) {
+                                clicked = true
+                                onGoToShopping()
+                            }
+                        },
                         modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                            .widthIn(max = logoWidth)
+                            .fillMaxWidth()
                     ) {
-                        Text(
-                            text = stringResource(Res.string.onboard_welcome_message),
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.labelLarge
-                        )
-
-                        Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
-
-                        Text(
-                            text = stringResource(Res.string.onboard_instruction),
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-
-                        Spacer(modifier = Modifier.height(AppDimensions.spacerSmall))
-
-                        Button(
-                            onClick = {
-                                if (!clicked) {
-                                    clicked = true
-                                    onGoToShopping()
-                                }
-                            },
-                            modifier = Modifier
-                                .widthIn(max = logoWidth)
-                                .fillMaxWidth()
-                        ) {
-                            Text(text = stringResource(Res.string.shopping))
-                        }
+                        Text(text = stringResource(Res.string.shopping))
                     }
                 }
             }
