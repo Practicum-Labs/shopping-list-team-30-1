@@ -858,7 +858,7 @@ style:
     active: true
     excludeImports:
       - 'java.util.*'
-      - 'shoppinglist.composeapp.generated.resources.*'
+      - 'shoppinglist.shared.generated.resources.*'
 
 Compose:
   ComposableAnnotationNaming:

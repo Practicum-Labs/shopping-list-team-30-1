@@ -38,19 +38,19 @@ jobs:
           EOF
 
       - name: Build release APK
-        run: ./gradlew :composeApp:assembleRelease
+        run: ./gradlew :shared:assembleRelease
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: composeApp-release
-          path: composeApp/build/outputs/apk/release/*.apk
+          name: shared-release
+          path: shared/build/outputs/apk/release/*.apk
 
       - name: Build release AAB
-        run: ./gradlew :composeApp:bundleRelease
+        run: ./gradlew :shared:bundleRelease
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
           name: shoppinglist-release-aab-${{ github.sha }}
-          path: composeApp/build/outputs/bundle/release/*.aab
+          path: shared/build/outputs/bundle/release/*.aab
