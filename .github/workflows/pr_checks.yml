@@ -79,10 +79,10 @@ jobs:
               run: chmod +x gradlew
 
             - name: Build Android debug APK
-              run: ./gradlew :shared:assembleDebug --stacktrace --no-daemon
+              run: ./gradlew :androidApp:assembleDebug --stacktrace --no-daemon
 
             - name: Upload debug APK
               uses: actions/upload-artifact@v4
               with:
-                  name: shared-debug-apk
-                  path: shared/build/outputs/apk/debug/*.apk
+                  name: androidApp-debug-apk
+                  path: androidApp/build/outputs/apk/debug/*.apk
