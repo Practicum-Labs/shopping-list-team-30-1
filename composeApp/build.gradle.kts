@@ -7,10 +7,9 @@ import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeHotReload)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.detekt)
@@ -43,13 +42,23 @@ tasks.withType<Detekt>().configureEach {
 }
 
 kotlin {
-    androidTarget {
+    jvm()
+
+    androidLibrary {
+        namespace = "io.dimasla4ee.shoppinglist.shared"
+        compileSdk = libs.versions.compileSdk.get().toInt()
+        minSdk = libs.versions.minSdk.get().toInt()
+
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget = JvmTarget.JVM_11
+        }
+        androidResources {
+            enable = true
+        }
+        withHostTest {
+            isIncludeAndroidResources = true
         }
     }
-
-    jvm()
 
     sourceSets {
         androidMain.dependencies {
@@ -113,67 +122,7 @@ kotlin {
     }
 }
 
-android {
-    namespace = "io.dimasla4ee.shoppinglist"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        applicationId = "io.dimasla4ee.shoppinglist"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-    }
-
-    val keystoreProperties = Properties()
-    val keystorePropertiesFile = rootProject.file("keystore.properties")
-
-    if (keystorePropertiesFile.exists()) { keystoreProperties.load(FileInputStream(keystorePropertiesFile)) }
-
-    signingConfigs {
-        create("release") {
-            if (keystorePropertiesFile.exists()) {
-                storeFile = rootProject.file(keystoreProperties["STORE_FILE"] as String)
-                storePassword = keystoreProperties["STORE_PASSWORD"] as String
-                keyAlias = keystoreProperties["KEY_ALIAS"] as String
-                keyPassword = keystoreProperties["KEY_PASSWORD"] as String
-            }
-        }
-    }
-
-    buildTypes {
-        getByName("debug") {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
-        }
-
-        getByName("release") {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            isDebuggable = false
-
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            if (keystorePropertiesFile.exists()) { signingConfig = signingConfigs.getByName("release") }
-        }
-    }
-
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-}
-
 dependencies {
-    testImplementation(libs.jupiter.junit.jupiter)
     // Room KSP
     add("kspAndroid", libs.room.compiler)
     add("kspJvm", libs.room.compiler)
@@ -184,7 +133,6 @@ dependencies {
     add("kspJvm", libs.ktorfit.ksp)
 
     // Compose debug tools
-    debugImplementation(libs.compose.ui.tooling)
     detektPlugins(libs.detekt.compose.rules)
 }
 

@@ -1,4 +1,4 @@
-package io.dimasla4ee.shoppinglist.app
+package io.dimasla4ee.shoppinglist
 
 import android.app.Application
 import io.dimasla4ee.shoppinglist.app.di.initKoin
