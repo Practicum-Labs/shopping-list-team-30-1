@@ -6,15 +6,15 @@
 
 Директории в проекте:
 
-- [/composeApp](./composeApp/src) для кода, который будет общим для всех приложений Compose
+- [/shared](./shared/src) для кода, который будет общим для всех приложений Compose
   Multiplatform.
   Эта директория содержит несколько поддиректорий:
-    - [commonMain](./composeApp/src/commonMain/kotlin) для кода, который общий для всех платформ.
+    - [commonMain](./shared/src/commonMain/kotlin) для кода, который общий для всех платформ.
     - Остальные директории хранят код, который компилируется только под определённые платформы.
       Например, если есть необходимость использовать Retrofit для платформы Android, то такой
-      код должен храниться внутри директории [androidMain](./composeApp/src/androidMain/kotlin).
+      код должен храниться внутри директории [androidMain](./shared/src/androidMain/kotlin).
       Таким же образом, если есть необходимость написать код, специфичный для десктоп, необходимо
-      использовать директорию [jvmMain](./composeApp/src/jvmMain/kotlin).
+      использовать директорию [jvmMain](./shared/src/jvmMain/kotlin).
 
 ## Сборка и запуск Android приложения
 
@@ -23,11 +23,11 @@ IDE или сделать это через терминал:
 
 - macOS/Linux
   ```shell
-  ./gradlew :composeApp:assembleDebug
+  ./gradlew :shared:assembleDebug
   ```
 - Windows
   ```shell
-  .\gradlew.bat :composeApp:assembleDebug
+  .\gradlew.bat :shared:assembleDebug
   ```
 
 ## Сборка и запуск Desktop (JVM) приложения
@@ -37,11 +37,11 @@ IDE или сделать это через терминал:
 
 - macOS/Linux
   ```shell
-  ./gradlew :composeApp:run
+  ./gradlew :shared:run
   ```
 - Windows
   ```shell
-  .\gradlew.bat :composeApp:run
+  .\gradlew.bat :shared:run
   ```
 
 ## Выбранный стек технологий

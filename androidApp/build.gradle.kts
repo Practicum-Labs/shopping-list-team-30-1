@@ -10,7 +10,7 @@ plugins {
 
 kotlin {
     dependencies {
-        implementation(project(":composeApp"))
+        implementation(projects.shared)
         debugImplementation(libs.compose.ui.tooling)
         testImplementation(libs.jupiter.junit.jupiter)
         implementation(libs.androidx.core.ktx)

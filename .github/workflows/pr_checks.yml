@@ -7,7 +7,7 @@ on:
 
 env:
     commonGradleFlags: --parallel --stacktrace --no-configuration-cache --no-daemon
-    detektReportPath: ./composeApp/build/reports/detekt/detekt.xml
+    detektReportPath: ./shared/build/reports/detekt/detekt.xml
     reviewdogSetup: -f=checkstyle -name="detekt" -level=error -filter-mode=added
 
 jobs:
@@ -79,10 +79,10 @@ jobs:
               run: chmod +x gradlew
 
             - name: Build Android debug APK
-              run: ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon
+              run: ./gradlew :shared:assembleDebug --stacktrace --no-daemon
 
             - name: Upload debug APK
               uses: actions/upload-artifact@v4
               with:
-                  name: composeApp-debug-apk
-                  path: composeApp/build/outputs/apk/debug/*.apk
+                  name: shared-debug-apk
+                  path: shared/build/outputs/apk/debug/*.apk
